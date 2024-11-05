@@ -1,5 +1,4 @@
-import { Court } from "@/DataClasses/Court";
-import { APIResponseObj } from "../APIConnector";
+import { Court } from "@/types/Court";
 
 export interface CourtDTO {
 	Name: string;
@@ -7,9 +6,7 @@ export interface CourtDTO {
 }
 export type CourtsListDTO = CourtDTO[];
 
-export const CourtsListDTOExtractor = (
-	api_response: APIResponseObj
-): CourtsListDTO => {
+export const CourtsListDTOExtractor = (api_response: any): CourtsListDTO => {
 	return [];
 };
 

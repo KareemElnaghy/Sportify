@@ -1,4 +1,4 @@
-import { Court } from "@/DataClasses/Court";
+import { Court } from "@/types/Court";
 
 export interface PMCourtsList {
 	username: string;

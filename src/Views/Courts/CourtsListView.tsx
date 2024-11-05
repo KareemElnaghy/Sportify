@@ -1,6 +1,6 @@
 import CourtsListItem from "@/Views/Courts/Components/CourtsListItem";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
-import { Court } from "@/DataClasses/Court";
+import { Court } from "@/types/Court";
 
 interface propsType {
 	pm: PMCourtsList;

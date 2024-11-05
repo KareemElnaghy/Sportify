@@ -1,4 +1,4 @@
-import { Court } from "@/DataClasses/Court";
+import { Court } from "@/types/Court";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
 

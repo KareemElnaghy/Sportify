@@ -1,4 +1,4 @@
-import { Court } from "@/DataClasses/Court";
+import { Court } from "@/types/Court";
 import { APIConnector } from "../APIConnector";
 import { CourtsListDTOExtractor, CourtsListDTOTransformer } from "./CourtsDTO";
 
@@ -9,7 +9,7 @@ export async function getCourts(data: getCourtsData): Promise<Court[]> {
 	const response = await APIConnector.get("/courts", { page: `${data.page}` });
 	const responseDTO = CourtsListDTOExtractor(response);
 	const result = CourtsListDTOTransformer(responseDTO);
-	// return result;
+	// return result; // TODO: commented for testing
 	return [
 		{ id: "ABC", name: "rashid" },
 		{ id: "ABD", name: "Basily" },
