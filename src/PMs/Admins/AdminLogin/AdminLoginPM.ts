@@ -1,3 +1,5 @@
+import Admin from "@/types/Admin";
+
 export interface PMAdminLogin {
     email: string;
     onEmailChange: () => void;

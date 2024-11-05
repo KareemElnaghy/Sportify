@@ -12,7 +12,7 @@ export async function getCourts(data: getCourtsData): Promise<Court[]> {
 	const result = CourtsListDTOTransformer(responseDTO);
 	// return result; // TODO: commented for testing
 	return [
-		{ id: "ABC", name: "rashid" },
-		{ id: "ABD", name: "Basily" },
+		{ id: 1, name: "rashid" },
+		{ id: 2, name: "Basily" },
 	];
 }
