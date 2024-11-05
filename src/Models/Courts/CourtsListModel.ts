@@ -1,6 +1,6 @@
 import Court from "@/types/Court";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
-import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
+import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 
 export interface CourtsListModel {
 	courtsData: Court[];

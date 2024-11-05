@@ -1,4 +1,4 @@
-import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPagePM";
+import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
 
 import "./SuperAdminStyle.css";
 

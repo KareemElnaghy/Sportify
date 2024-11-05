@@ -5,11 +5,11 @@ import { useMemo } from "react";
 import {
 	default_PMAdminLogin,
 	PMAdminLogin,
-} from "@/PMs/Admins/AdminLogin/AdminLoginPagePM";
+} from "@/PMs/Admins/AdminLogin/AdminLoginPM";
 import { getAdminLoginModel } from "@/Models/Admins/AdminLoginModel";
 import AdminLoginView from "@/Views/Admins/AdminLogin/AdminLoginView";
 
-export default function CourtsList() {
+export default function AdminLoginPage() {
 	const pm = useStateObject<PMAdminLogin>(default_PMAdminLogin);
 	const model = useMemo(() => {
 		const model = getAdminLoginModel(pm);

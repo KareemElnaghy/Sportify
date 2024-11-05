@@ -1,13 +1,13 @@
 import Student from "@/types/Student";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
-import { PMStudentList } from "@/PMs/Students/StudentsListPagePM";
+import { PMStudentList } from "@/PMs/Students/StudentsListPM";
 
 export interface StudentsListModel {
 	studentsData: Student[];
 	setup: () => Promise<void>;
 }
 
-export function getModel(pm: PMStudentList): StudentsListModel {
+export function getStudentListModel(pm: PMStudentList): StudentsListModel {
 	const model: StudentsListModel = {
 		studentsData: [],
 		setup: async () => {

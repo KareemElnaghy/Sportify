@@ -1,5 +1,5 @@
 import CourtsListItem from "@/Views/Courts/Components/CourtsListItem";
-import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
+import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import Court from "@/types/Court";
 
 import "./CourtsListStyle.css";

@@ -1,4 +1,4 @@
-import { PMAdminLogin } from "@/PMs/Admins/AdminLogin/AdminLoginPagePM";
+import { PMAdminLogin } from "@/PMs/Admins/AdminLogin/AdminLoginPM";
 
 import "./AdminLoginStyle.css";
 

@@ -1,10 +1,5 @@
 const baseURL = "http://localhost:3000";
 
-export interface APIResponseObj {
-	status: "OK" | "ERROR";
-}
-export type APIResponse = Promise<APIResponseObj>;
-
 type fetchParameters = {
 	[key: string]: string;
 };

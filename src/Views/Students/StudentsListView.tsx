@@ -1,7 +1,6 @@
-import { PMStudentList } from "@/PMs/Students/StudentsListPagePM";
-import Student from "@/types/Student";
+import { PMStudentList } from "@/PMs/Students/StudentsListPM";
 
-import "./CourtsListStyle.css";
+import "./StudentsListStyle.css";
 
 interface propsType {
 	pm: PMStudentList;
