@@ -13,7 +13,9 @@ export default function AdminLoginView({ pm }: propsType) {
       <div className="logo">
         <img src="/dumble.png" alt="logo" />
       </div>
-      <form className="login-form">
+      <form className="login-form" onSubmit={(e) => {
+        e.preventDefault();
+      }} >
         <input
           type="email"
           placeholder="AUC Email"
