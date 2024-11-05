@@ -10,16 +10,16 @@ interface propsType {
 export default function SuperAdminView({ pm }: propsType) {
   return (
     <div className="container">
-      <Sidebar />
+      <Sidebar/>
 
       <div className="main-content">
         <header>
-          <h2>Admin's List</h2>
-          <button className="add-admin-btn">ADD NEW ADMIN</button>
+          <h2>Admins' List</h2>
+		  <input type="text" placeholder="Search..." className="search-bar" />
         </header>
 
         <div className="top-bar">
-          <input type="text" placeholder="Search..." className="search-bar" />
+		  <button className="add-admin-btn">ADD NEW ADMIN</button>
           <div className="pagination">
             <button>&lt;</button>
             <span>1</span>
@@ -29,6 +29,7 @@ export default function SuperAdminView({ pm }: propsType) {
             <button>&gt;</button>
           </div>
         </div>
+		
 
         <table>
           <thead>

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import "./SidebarStyle.css";
+
 
 export default function Sidebar() {
   return (
