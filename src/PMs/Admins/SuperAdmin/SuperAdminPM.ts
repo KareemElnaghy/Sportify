@@ -1,9 +1,12 @@
 export interface PMSuperAdmin {
-    onAddAdmin: (Admin) => void;
-    AdminList: Admin[];
-    SelectedAdmin: Admin[];
-    onDeleteAll: () => void;
-    onDeleteAdmin: (Admin) => void;
+  Search: string;
+  onSearchChange: () => void;
+  onAddAdmin: () => void;
+  // pages
 }
 
-export const default_PMSuperAdmin: PMSuperAdmin = {};
+export const default_PMSuperAdmin: PMSuperAdmin = {
+  Search: "",
+  onSearchChange: () => {},
+  onAddAdmin: () => {},
+};
