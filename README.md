@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Create Pages steps
+
+1. Define PM
+2. Create a page under app/path/page.tsx, where path is the same as the one in the link (path in lower case)
+3. Copy in that page the example page from CourtsList and adjust the names as needed
+4. Create View under Views/folder/smthView.tsx, where folder is the umbrela topic and smthView.tsx would be the file where the view exists
+5. Copy the example of CourtsList and change what's needed

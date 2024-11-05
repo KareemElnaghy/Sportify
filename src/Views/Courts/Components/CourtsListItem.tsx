@@ -1,4 +1,4 @@
-import { Court } from "@/types/Court";
+import Court from "@/types/Court";
 
 interface CourtsListItemProps {
 	court: Court;

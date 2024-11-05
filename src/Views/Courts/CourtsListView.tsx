@@ -1,6 +1,8 @@
 import CourtsListItem from "@/Views/Courts/Components/CourtsListItem";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
-import { Court } from "@/types/Court";
+import Court from "@/types/Court";
+
+import "./CourtsListStyle.css";
 
 interface propsType {
 	pm: PMCourtsList;
@@ -13,7 +15,7 @@ export default function CourtsListView({ pm }: propsType) {
 			{pm.courtsList.map((c: Court, index: number) => (
 				<CourtsListItem key={c.id} court={c} />
 			))}
-			<button onClick={pm.filterCourts.bind(pm, pm)}>click me</button>
+			<button onClick={pm.filterCourts}>click me</button>
 		</div>
 	);
 }

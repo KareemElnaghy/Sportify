@@ -1,4 +1,4 @@
-import { Court } from "@/types/Court";
+import Court from "@/types/Court";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPagePM";
 
@@ -8,7 +8,7 @@ export interface CourtsListModel {
 	onFilterCourts: () => void;
 }
 
-export function getModel(pm: PMCourtsList): CourtsListModel {
+export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 	const model: CourtsListModel = {
 		courtsData: [],
 		setup: async () => {
