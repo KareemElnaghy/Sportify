@@ -6,5 +6,5 @@ export default class Student {
 	isTrainer: boolean = false;
 	phoneNumber: string = "";
 	passHash: string = ""
-	// TODO: finish the attributes
+	isBanned: boolean = false;
 }

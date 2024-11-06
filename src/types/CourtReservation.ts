@@ -4,7 +4,4 @@ export default class CourtReservation {
 	userEmail: string = "";
 	startTime: Date = new Date('2024-11-05T00:00:00Z');
 	endTime: Date = new Date('2024-11-05T00:00:00Z');
-	
-
-	// TODO: finish the attributes
 }
