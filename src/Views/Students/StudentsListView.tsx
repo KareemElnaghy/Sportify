@@ -83,12 +83,7 @@ export default function StudentsListView({ pm }: propsType)
 							</td>
 							<td>Seif Ashraf</td>
 							<td>seif.ashraf@aucegypt.edu</td>
-							<td>
-								<select>
-									<option>Active</option>
-									<option>Banned</option>
-								</select>
-							</td>
+							<td className = "banned">Banned</td>
 							<td>
 								<button className="ban-btn">BAN</button>
 								<button className="unban-btn">UNBAN</button>
@@ -100,12 +95,7 @@ export default function StudentsListView({ pm }: propsType)
 							</td>
 							<td>Ahmed Farouk</td>
 							<td>ahmed.farouk@aucegypt.edu</td>
-							<td>
-								<select>
-									<option>Active</option>
-									<option>Banned</option>
-								</select>
-							</td>
+							<td className = "active">Active</td>
 							<td>
 								<button className="ban-btn">BAN</button>
 								<button className="unban-btn">UNBAN</button>
@@ -117,12 +107,7 @@ export default function StudentsListView({ pm }: propsType)
 							</td>
 							<td>Arwa Abdelkarim</td>
 							<td>arwaabdelkarim@aucegypt.edu</td>
-							<td>
-								<select>
-									<option>Active</option>
-									<option>Banned</option>
-								</select>
-							</td>
+							<td className = "active">Active</td>
 							<td>
 								<button className="ban-btn">BAN</button>
 								<button className="unban-btn">UNBAN</button>
@@ -134,12 +119,7 @@ export default function StudentsListView({ pm }: propsType)
 							</td>
 							<td>Farida Bey</td>
 							<td>Farida.bey@aucegypt.edu</td>
-							<td>
-								<select>
-									<option>Active</option>
-									<option>Banned</option>
-								</select>
-							</td>
+							<td className = "banned">Banned</td>
 							<td>
 								<button className="ban-btn">BAN</button>
 								<button className="unban-btn">UNBAN</button>

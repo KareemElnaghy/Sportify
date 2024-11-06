@@ -2,6 +2,7 @@ import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
 import "./SuperAdminStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
 import AdminList from "@/Views/Components/Adminlist";
+import AddAdmin from "@/Views/Components/AddAdmin";
 import { useState } from "react";
 
 interface propsType {

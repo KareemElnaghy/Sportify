@@ -151,3 +151,12 @@ h2{
     color: black;
     font-size: 25px;
 } 
+
+.active{ 
+    color: green;
+    font-weight: bold;
+}
+.banned{
+    color: red;
+    font-weight: bold;
+}
