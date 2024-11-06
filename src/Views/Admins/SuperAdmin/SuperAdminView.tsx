@@ -1,25 +1,79 @@
 import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
-
 import "./SuperAdminStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
+import AdminList from "@/Views/Components/Adminlist";
+import AddAdmin from "@/Views/Components/AddAdmin";
+import { useState } from "react";
 
 interface propsType {
   pm: PMSuperAdmin;
 }
 
 export default function SuperAdminView({ pm }: propsType) {
+  const [admins, setAdmins] = useState([
+    {
+      id: "1",
+      name: "Seif Ashraf",
+      email: "seif.ashraf@aucegypt.edu",
+      selected: false,
+    },
+    {
+      id: "2",
+      name: "Ahmed Farouk",
+      email: "ahmed.farouk@aucegypt.edu",
+      selected: false,
+    },
+  ]);
+
+  // Handlers for AdminList
+  const handleSelectAll = (checked: boolean) => {
+    setAdmins(admins.map((admin) => ({ ...admin, selected: checked })));
+    pm.onSelectAll();
+  };
+
+  const handleSelectOne = (id: string, checked: boolean) => {
+    setAdmins(
+      admins.map((admin) =>
+        admin.id === id ? { ...admin, selected: checked } : admin
+      )
+    );
+    pm.onSelectOne();
+  };
+
+  const handleEditAdmin = (id: string) => {};
+
+  const handleDeleteAdmin = (id: string) => {};
+
+  const menuItems = [
+    { name: "Dashboard", href: "#" },
+    { name: "Admins", href: "#" },
+    { name: "Email", href: "#" },
+    { name: "Profile", href: "#" },
+    { name: "Settings", href: "#" },
+  ];
+
   return (
     <div className="container">
-      <Sidebar />
-
+      <Sidebar menuItems={menuItems} activeItem="Admins" />
       <div className="main-content">
         <header>
-          <h2>Admin's List</h2>
-          <button className="add-admin-btn">ADD NEW ADMIN</button>
+          <h2>Admins' List</h2>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="search-bar"
+            value={pm.Search}
+            onChange={(e) => {
+              pm.Search = e.target.value;
+              pm.onSearchChange();
+            }}
+          />
         </header>
 
         <div className="top-bar">
-          <input type="text" placeholder="Search..." className="search-bar" />
+          <button className="add-admin-btn" onClick={pm.onAddAdmin}>
+            ADD NEW ADMIN +{" "}
+          </button>
           <div className="pagination">
             <button>&lt;</button>
             <span>1</span>
@@ -30,42 +84,14 @@ export default function SuperAdminView({ pm }: propsType) {
           </div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" />
-              </th>
-              <th>Full Name</th>
-              <th>AUC Email</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>Seif Ashraf</td>
-              <td>seif.ashraf@aucegypt.edu</td>
-              <td>
-                <button className="edit-btn">✏️</button>
-                <button className="delete-btn">🗑️</button>
-              </td>
-            </tr>
-            <tr>
-			<td>
-                <input type="checkbox" />
-              </td>
-			  <td>Ahmed Farouk</td>
-              <td>ahmed.farouk@aucegypt.edu</td>
-              <td>
-                <button className="edit-btn">✏️</button>
-                <button className="delete-btn">🗑️</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <AdminList
+          admins={admins}
+          selectAll={pm.selectAll}
+          onSelectAll={handleSelectAll}
+          onSelectOne={handleSelectOne}
+          onEditAdmin={handleEditAdmin}
+          onDeleteAdmin={handleDeleteAdmin}
+        />
       </div>
     </div>
   );
