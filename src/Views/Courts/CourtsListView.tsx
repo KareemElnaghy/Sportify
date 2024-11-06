@@ -13,7 +13,7 @@ const menuItems = [
     { name: "Dashboard", href: "#" },
     { name: "Students List", href: "#" },
     { name: "Courts List", href: "#" },
-    { name: "Party Post Lost", href: "#" },
+    { name: "Party Post List", href: "#" },
 	{ name: "Reservations List", href: "#" },
 	{ name: "Email", href: "#" },
     { name: "Settings", href: "#" },
