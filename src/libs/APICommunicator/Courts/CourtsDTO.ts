@@ -1,17 +1,14 @@
+import APIResponse from "@/types/APIResponse";
 import Court from "@/types/Court";
 
-export interface CourtDTO {
-	Name: string;
-	id: string;
-}
-export type CourtsListDTO = CourtDTO[];
+type CourtDTO = Court;
 
-export const CourtsListDTOExtractor = (api_response: any): CourtsListDTO => {
-	return [];
+export const CourtsListDTOExtractor = (
+	api_response: APIResponse<any>
+): Court[] => {
+	return api_response.result as Court[];
 };
 
-export const CourtsListDTOTransformer = (
-	dto_object: CourtsListDTO
-): Court[] => {
-	return [];
+export const CourtsListDTOTransformer = (dto_object: CourtDTO[]): Court[] => {
+	return dto_object;
 };

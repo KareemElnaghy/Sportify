@@ -1,3 +1,5 @@
+import APIResponse from "@/types/APIResponse";
+
 const baseURL = "http://localhost:3000";
 
 type fetchParameters = {
@@ -24,7 +26,7 @@ export const APIConnector = {
 		parameters?: fetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	) {
+	): Promise<APIResponse<any>> {
 		const url = constructURL(path, parameters);
 		let ReqHeaders;
 		if (headers === undefined) {
@@ -49,7 +51,7 @@ export const APIConnector = {
 		path: string,
 		parameters?: fetchParameters,
 		headers?: HeadersInit | null
-	): Promise<any> {
+	): Promise<APIResponse<any>> {
 		return await APIConnector.call("GET", path, parameters, headers, undefined);
 	},
 
@@ -58,7 +60,7 @@ export const APIConnector = {
 		parameters?: fetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	): Promise<any> {
+	): Promise<APIResponse<any>> {
 		return await APIConnector.call("POST", path, parameters, headers, body);
 	},
 
@@ -67,7 +69,7 @@ export const APIConnector = {
 		parameters?: fetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	): Promise<any> {
+	): Promise<APIResponse<any>> {
 		return await APIConnector.call("PUT", path, parameters, headers, body);
 	},
 
@@ -76,7 +78,7 @@ export const APIConnector = {
 		parameters?: fetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	): Promise<any> {
+	): Promise<APIResponse<any>> {
 		return await APIConnector.call("DELETE", path, parameters, headers, body);
 	},
 };
