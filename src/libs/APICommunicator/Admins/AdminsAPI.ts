@@ -1,6 +1,6 @@
 import AdminLogin from "@/types/Admin";
 import { APIConnector } from "../APIConnector";
-import { AdminDTO, AdminDTOExtractor } from "./AdminsDTO";
+import { AdminDTOExtractor, AdminDTOTransformer } from "./AdminsDTO";
 
 interface getAdminData {
     page: number;
