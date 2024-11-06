@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import "./CourtsListStyle.css";
 
 interface Court {
-  id: string;
+  id: number;
   name: string;
   details: string;
-  status: string;
   selected: boolean;
 }
 
@@ -45,7 +44,6 @@ const CourtsList: React.FC<CourtsListProps> = ({
           <th>Court Name</th>
           <th>Court Details</th>
           <th>Edit Court</th>
-          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -53,11 +51,6 @@ const CourtsList: React.FC<CourtsListProps> = ({
         {courts.map((court) => (
           <tr key={court.id}>
             <td>
-              <input
-                type="checkbox"
-                checked={court.selected}
-                onChange={(e) => handleSelectCourt(court.id, e)}
-              />
             </td>
             <td>{court.name}</td>
             <td>
@@ -66,16 +59,8 @@ const CourtsList: React.FC<CourtsListProps> = ({
             <td>
               <button className="edit-btn">Edit</button>
             </td>
-            <td className={court.status}>
-              {court.status === "available" ? "Available" : "Unavailable"}
-            </td>
             <td>
               <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={court.status === "available"}
-                  onChange={() => onToggleCourtStatus(court.id)}
-                />
                 <span className="slider round"></span>
               </label>
             </td>

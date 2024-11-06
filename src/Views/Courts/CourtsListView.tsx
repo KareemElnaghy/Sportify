@@ -1,6 +1,6 @@
 import CourtsListItem from "@/Views/Courts/Components/CourtsListItem";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./CourtsListStyle.css";
 import Sidebar from "../Components/Sidebar";
@@ -20,36 +20,10 @@ export default function CourtsListView({ pm }: propsType) {
 		{ name: "Email", href: "#" },
 		{ name: "Settings", href: "#" },
 	];
-	const [courts, setCourts] = useState([
-		{
-			id: "1",
-			name: "Artoc Court",
-			details: "View",
-			status: "Available",
-			selected: false,
-		},
-		{
-			id: "2",
-			name: "Rashidi Court",
-			details: "View",
-			status: "Unavailable",
-			selected: false,
-		},
-		{
-			id: "3",
-			name: "Squash Court 1",
-			details: "View",
-			status: "Available",
-			selected: false,
-		},
-		{
-			id: "4",
-			name: "Squash Court 2",
-			details: "View",
-			status: "Unavailable",
-			selected: false,
-		},
-	]);
+	const [courts, setCourts] = useState([]);
+	useEffect(() => {
+		setCourts(pm.getCourts())
+	}, [pm.courtsList]);
 
 	// State to manage selection and pagination
 	const [selectAll, setSelectAll] = useState(false);
