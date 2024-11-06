@@ -3,8 +3,8 @@ import AdminLogin from "@/types/Admin";
 
 export interface PMSuperAdmin {
   Search: string;
-  onSearchChange: (search: string) => void;
-  onAddAdmin: (admin: AdminLogin) => void;
+  onSearchChange: () => void;
+  onAddAdmin: () => void;
   selectAll: boolean;
   selectOne: boolean;
   onSelectAll: () => void;
@@ -16,8 +16,8 @@ export interface PMSuperAdmin {
 
 export const default_PMSuperAdmin: PMSuperAdmin = {
   Search: "",
-  onSearchChange: (search: string) => {},
-  onAddAdmin: (admin: AdminLogin) => {},
+  onSearchChange: () => {},
+  onAddAdmin: () => {},
   selectAll: false,
   selectOne: false,
   onSelectAll: () => {},
