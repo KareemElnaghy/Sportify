@@ -12,12 +12,12 @@
     margin-bottom: 20px; 
 }
 
-.active{
+.available{
     color: green;
     font-weight: bold;
 }
 
-.banned{
+.unavailable{
     color: red;
     font-weight: bold;
 }
@@ -25,50 +25,6 @@
 .container {
     display: flex;
 }
-
-.sidebar {
-    width: 250px;
-    background-color: #384c7c;
-    color: black;
-    padding: 20px;
-    height: 100vh;
-}
-
-.select-label {
-    font-size: 16px;
-    color: black;
-}
-  
-.select-page {
-    padding: 5px;
-    font-size: 16px;
-    color: black;
-    border: 1px solid #ccc; /* Adds border around the dropdown */
-    border-radius: 5px; /* Rounds the corners */
-    background-color: white;
-}   
-
-.sidebar .logo {
-    text-align: center;
-    margin: 0 47px;
-}
-
-.sidebar ul {
-    list-style: none;
-}
-
-.sidebar ul li {
-    margin: 20px 0;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-.sidebar ul li a.active{
-    font-weight: bold;
-} 
 
 .main-content {
     flex: 1;
@@ -91,7 +47,19 @@ header {
     cursor: pointer;
 
 }
-
+.select-label {
+    font-size: 16px;
+    color: black;
+}
+  
+.select-page {
+    padding: 5px;
+    font-size: 16px;
+    color: black;
+    border: 1px solid #ccc; /* Adds border around the dropdown */
+    border-radius: 5px; /* Rounds the corners */
+    background-color: white;
+}   
 .search-bar {
     padding: 4px;
     width: 400px;
@@ -127,36 +95,9 @@ td {
     color: black;
 }
 
-.ban-btn, .unban-btn {
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 25px;
-    margin: 7px;
-    font-size: 12px;
-}
-
-.ban-btn {
-    background-color: red;
-    padding: 3px 6px;
-    
-}
-
-.unban-btn {
-    background-color: green;
-    padding: 2px 6px
-}
 
 h2{
     color: black;
     font-size: 25px;
 } 
 
-.active{ 
-    color: green;
-    font-weight: bold;
-}
-.banned{
-    color: red;
-    font-weight: bold;
-}

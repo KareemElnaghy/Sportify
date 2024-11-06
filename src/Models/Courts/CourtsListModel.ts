@@ -15,7 +15,7 @@ export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 			pm.username = "smth";
 			pm.filterCourts = model.onFilterCourts;
 
-			let courtsList: Court[] = await getCourts({ page: 5 });
+			let courtsList: Court[] = await getCourts({ page: 1 });
 			model.courtsData = courtsList;
 			setTimeout(() => {
 				// set the useState

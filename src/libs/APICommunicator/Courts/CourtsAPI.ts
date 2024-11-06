@@ -6,13 +6,10 @@ interface getCourtsData {
 	page: number;
 }
 export async function getCourts(data: getCourtsData): Promise<Court[]> {
-	// const response = await APIConnector.get("/courts", { page: `${data.page}` });
-	const response = null;
+	const response = await APIConnector.get("/api/courts/list", {
+		page: `${data.page}`,
+	});
 	const responseDTO = CourtsListDTOExtractor(response);
 	const result = CourtsListDTOTransformer(responseDTO);
-	// return result; // TODO: commented for testing
-	return [
-		{ id: 1, name: "rashid" },
-		{ id: 2, name: "Basily" },
-	];
+	return result;
 }
