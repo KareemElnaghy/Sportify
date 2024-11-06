@@ -4,7 +4,7 @@ import "./AdminlistStyle.css";
 import { MdDelete } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 
-interface Admin {
+export interface Admin {
   id: string;
   name: string;
   email: string;
