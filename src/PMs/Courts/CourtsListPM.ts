@@ -1,5 +1,12 @@
 import Court from "@/types/Court";
 
+interface courts {
+  id: number;
+  name: string;
+  details: string;
+  selected: boolean;
+}
+
 export interface PMCourtsList {
   username: string;
   courtsList: Court[];
@@ -12,6 +19,7 @@ export interface PMCourtsList {
   onSelectOne: () => void;
   records: number;
   onRecordsChange: () => void;
+  getCourts: () => courts[];
 }
 
 export const default_PMCourtsList: PMCourtsList = {
@@ -26,4 +34,5 @@ export const default_PMCourtsList: PMCourtsList = {
   onSelectOne: () => {},
   records: 25,
   onRecordsChange: () => {},
+  getCourts: () => [],
 };
