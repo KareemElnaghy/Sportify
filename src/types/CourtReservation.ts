@@ -1,7 +1,10 @@
 export default class CourtReservation {
-	email: string = "";
-	firstName: string = "";
-	lastName: string = "";
+	id: number = 0;
+	courtID: number = 0;
+	userEmail: string = "";
+	startTime: Date = new Date('2024-11-05T00:00:00Z');
+	endTime: Date = new Date('2024-11-05T00:00:00Z');
+	
 
 	// TODO: finish the attributes
 }
