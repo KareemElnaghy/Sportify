@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import "./CourtsListStyle.css";
 import Sidebar from "../Components/Sidebar";
 import Courtslist from "../Components/Courtslist";
+import Court from "@/types/Court";
 
 interface propsType {
 	pm: PMCourtsList;
@@ -20,9 +21,9 @@ export default function CourtsListView({ pm }: propsType) {
 		{ name: "Email", href: "#" },
 		{ name: "Settings", href: "#" },
 	];
-	const [courts, setCourts] = useState([]);
+	const [courts, setCourts] = useState<Court[]>([]);
 	useEffect(() => {
-		setCourts(pm.getCourts())
+		setCourts(pm.getCourts());
 	}, [pm.courtsList]);
 
 	// State to manage selection and pagination
@@ -33,7 +34,7 @@ export default function CourtsListView({ pm }: propsType) {
 		pm.onSelectAll();
 	};
 
-	const handleSelectOne = (id: string, checked: boolean) => {
+	const handleSelectOne = (id: number, checked: boolean) => {
 		setCourts(
 			courts.map((court) =>
 				court.id === id ? { ...court, selected: checked } : court
@@ -42,7 +43,7 @@ export default function CourtsListView({ pm }: propsType) {
 		pm.onSelectOne();
 	};
 
-	const handleToggleStatus = (id: string) => {
+	const handleToggleStatus = (id: number) => {
 		setCourts(
 			courts.map((court) =>
 				court.id === id

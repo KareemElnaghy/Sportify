@@ -7,7 +7,7 @@ interface courts {
 	name: string;
 	details: string;
 	selected: boolean;
-  }
+}
 
 export interface CourtsListModel {
 	courtsData: Court[];
@@ -20,8 +20,6 @@ export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 	const model: CourtsListModel = {
 		courtsData: [],
 		setup: async () => {
-			pm.username = "smth";
-			pm.filterCourts = model.onFilterCourts;
 			pm.getCourts = model.getCourts;
 
 			let courtsList: Court[] = await getCourts({ page: 1 });
@@ -42,7 +40,7 @@ export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 				details: court.description,
 				selected: false,
 			}));
-		}
+		},
 	};
 
 	return model;
