@@ -2,25 +2,25 @@ import Court from "@/types/Court";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 
-interface courts {
-	id: number;
-	name: string;
-	details: string;
-	selected: boolean;
-}
-
 export interface CourtsListModel {
 	courtsData: Court[];
 	setup: () => Promise<void>;
-	onFilterCourts: () => void;
-	getCourts: () => courts[];
 }
 
 export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 	const model: CourtsListModel = {
 		courtsData: [],
 		setup: async () => {
-			pm.getCourts = model.getCourts;
+			pm.pmSidebar.linkNames = [
+				"Dashboard",
+				"Students List",
+				"Courts List",
+				"Party Posts List",
+				"Reservations List",
+				"Email",
+				"Settings",
+			];
+			pm.pmSidebar.currentActive = 2;
 
 			let courtsList: Court[] = await getCourts({ page: 1 });
 			model.courtsData = courtsList;
@@ -29,18 +29,14 @@ export function getCourtsListModel(pm: PMCourtsList): CourtsListModel {
 				pm.courtsList = model.courtsData;
 			}, 1000);
 		},
-		onFilterCourts: () => {
-			let filteredList = [model.courtsData[0]];
-			pm.courtsList = filteredList;
-		},
-		getCourts: () => {
-			return model.courtsData.map((court) => ({
-				id: court.id,
-				name: court.name,
-				details: court.description,
-				selected: false,
-			}));
-		},
+		// getCourts: () => {
+		// 	return model.courtsData.map((court) => ({
+		// 		id: court.id,
+		// 		name: court.name,
+		// 		details: court.description,
+		// 		selected: false,
+		// 	}));
+		// },
 	};
 
 	return model;

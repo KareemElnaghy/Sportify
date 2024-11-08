@@ -1,38 +1,20 @@
 import Court from "@/types/Court";
-
-interface courts {
-	id: number;
-	name: string;
-	details: string;
-	selected: boolean;
-}
+import { default_PMSidebar, PMSidebar } from "../Components/SidebarPM";
 
 export interface PMCourtsList {
+	pmSidebar: PMSidebar;
+
 	courtsList: Court[];
 
-	Search: string;
-	onSearchChange: () => void;
-	selectAll: boolean;
-	selectOne: boolean;
-	onSelectAll: () => void;
-	onSelectOne: () => void;
-	records: number;
-	onRecordsChange: () => void;
-
-	getCourts: () => courts[];
+	currentSelection: boolean[];
+	onSelectionChanged: () => void;
 }
 
 export const default_PMCourtsList: PMCourtsList = {
+	pmSidebar: default_PMSidebar,
+
 	courtsList: [],
 
-	Search: "",
-	onSearchChange: () => {},
-	selectAll: false,
-	selectOne: false,
-	onSelectAll: () => {},
-	onSelectOne: () => {},
-	records: 25,
-	onRecordsChange: () => {},
-
-	getCourts: () => [],
+	currentSelection: [],
+	onSelectionChanged: () => {},
 };

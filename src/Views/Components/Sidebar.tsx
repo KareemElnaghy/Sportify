@@ -1,29 +1,30 @@
 import Image from "next/image";
 import "./SidebarStyle.css";
+import { PMSidebar } from "@/PMs/Components/SidebarPM";
 
 interface SidebarProps {
-  menuItems: { name: string; href: string }[]; // Array of menu items
-  activeItem: string; // Name of the currently active item
+	pm: PMSidebar;
 }
 
-export default function Sidebar({ menuItems, activeItem }: SidebarProps) {
-  return (
-    <nav className="sidebar">
-      <div className="logo">
-        <Image src="/Sportify.png" alt="Logo" width={100} height={100} />
-      </div>
-      <ul>
-        {menuItems.map((item) => (
-          <li key={item.name}>
-            <a
-              href={item.href}
-              className={item.name === activeItem ? "active" : ""}
-            >
-              {item.name}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
+export default function Sidebar({ pm }: SidebarProps) {
+	return (
+		<nav className="sidebar">
+			<div className="logo">
+				<Image src="/Sportify.png" alt="Logo" width={100} height={100} />
+			</div>
+			<ul>
+				{pm.linkNames.map((linkName, index) => (
+					<li
+						key={linkName}
+						className={index == pm.currentActive ? "active" : ""}
+						onClick={(e) => {
+							pm.onLinkFollowed(index);
+						}}
+					>
+						{linkName}
+					</li>
+				))}
+			</ul>
+		</nav>
+	);
 }
