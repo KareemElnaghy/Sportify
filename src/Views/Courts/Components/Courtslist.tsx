@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CourtsListStyle.css";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import Court from "@/types/Court";
+import CourtsListItem from "./CourtsListItem";
 
 interface CourtsListProps {
 	pm: PMCourtsList;
@@ -9,8 +10,6 @@ interface CourtsListProps {
 
 export default function CourtsList({ pm }: CourtsListProps) {
 	const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
-
-	console.log(pm.currentSelection);
 
 	useEffect(() => {
 		const isAllSelected =
@@ -29,7 +28,7 @@ export default function CourtsList({ pm }: CourtsListProps) {
 		setSelectAllCheckbox(e.target.checked);
 	};
 
-	const handleSelectionChange = (newVal: boolean, index: number) => {
+	const handleSelectionChange = (index: number, newVal: boolean) => {
 		let newCurrentSelection = [...pm.currentSelection];
 		newCurrentSelection[index] = newVal;
 		pm.currentSelection = newCurrentSelection;
@@ -56,32 +55,14 @@ export default function CourtsList({ pm }: CourtsListProps) {
 			</thead>
 			<tbody>
 				{pm.courtsList.map((court: Court, index: number) => (
-					<tr key={court.id}>
-						<td>
-							<input
-								type="checkbox"
-								defaultChecked={pm.currentSelection[index]}
-								// checked={
-								// 	isSelectionsPrepared ? pm.currentSelection[index] : false
-								// }
-								onChange={(e) => {
-									handleSelectionChange(e.target.checked, index);
-								}}
-							/>
-						</td>
-						<td>{court.name}</td>
-						<td>
-							<button className="view-btn">View</button>
-						</td>
-						<td>
-							<button className="edit-btn">Edit</button>
-						</td>
-						<td>
-							<label className="switch">
-								<span className="slider round"></span>
-							</label>
-						</td>
-					</tr>
+					<CourtsListItem
+						key={court.id}
+						court={court}
+						selectionValue={pm.currentSelection[index]}
+						onSelectionChange={(newVal) => {
+							handleSelectionChange(index, newVal);
+						}}
+					/>
 				))}
 			</tbody>
 		</table>
