@@ -1,32 +1,41 @@
-// src/Views/Components/StudentList.tsx
-import React from "react";
-import "./StudentslistStyle.css";
-import { MdDelete } from "react-icons/md";
-import { BiEdit } from "react-icons/bi";
-
-interface Student {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  selected: boolean;
-}
+import React, { useEffect, useState } from "react";
+import "./studentlistStyle.css";
+import { PMStudentList } from "@/PMs/Students/StudentsListPM";
+import Student from "@/types/Student";
+import StudentListItem from "./StudentListItem";
 
 interface StudentListProps {
-  students: Student[];
-  selectAll: boolean;
-  onSelectAll: (checked: boolean) => void;
-  onSelectOne: (id: string, checked: boolean) => void;
-  onToggleStatus: (id: string) => void;
+  pm: PMStudentList;
 }
 
-export default function StudentList({
-  students,
-  selectAll,
-  onSelectAll,
-  onSelectOne,
-  onToggleStatus,
-}: StudentListProps) {
+// export default function StudentList({
+export default function StudentList({ pm }: StudentListProps) {
+  const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
+
+  useEffect(() => {
+    const isAllSelected =
+      pm.currentSelection.filter(Boolean).length == pm.studentsList.length;
+
+    setSelectAllCheckbox(isAllSelected);
+  }, [pm.currentSelection]);
+
+  const handleSelectAll = (e: any) => {
+    if (selectAllCheckbox) {
+      pm.currentSelection = Array(pm.studentsList.length).fill(false);
+    } else {
+      pm.currentSelection = Array(pm.studentsList.length).fill(true);
+    }
+
+    setSelectAllCheckbox(e.target.checked);
+  };
+
+  const handleSelectionChange = (index: number, newVal: boolean) => {
+    let newCurrentSelection = [...pm.currentSelection];
+    newCurrentSelection[index] = newVal;
+    pm.currentSelection = newCurrentSelection;
+
+    pm.onSelectionChanged();
+  };
   return (
     <table>
       <thead>
@@ -34,8 +43,8 @@ export default function StudentList({
           <th>
             <input
               type="checkbox"
-              checked={selectAll}
-              onChange={(e) => onSelectAll(e.target.checked)}
+              checked={selectAllCheckbox}
+              onChange={handleSelectAll}
             />
           </th>
           <th>Full Name</th>
@@ -45,44 +54,15 @@ export default function StudentList({
         </tr>
       </thead>
       <tbody>
-        {students.map((student) => (
-          <tr key={student.id}>
-            <td>
-              <input
-                type="checkbox"
-                checked={student.selected}
-                onChange={(e) => onSelectOne(student.id, e.target.checked)}
-              />
-            </td>
-            <td>{student.name}</td>
-            <td>{student.email}</td>
-            <td>{student.status}</td>
-            <td>
-              {/* Display both BAN and UNBAN buttons for each student */}
-              <button
-                className={`ban-btn ${
-                  student.status === "Active" ? "" : "disabled"
-                }`}
-                onClick={() =>
-                  student.status === "Active" && onToggleStatus("Banned")
-                }
-                disabled={student.status !== "Active"} // Disable BAN button when the student is already banned
-              >
-                BAN
-              </button>
-              <button
-                className={`unban-btn ${
-                  student.status === "Banned" ? "" : "disabled"
-                }`}
-                onClick={() =>
-                  student.status === "Banned" && onToggleStatus("Active")
-                }
-                disabled={student.status !== "Banned"} // Disable UNBAN button when the student is not banned
-              >
-                UNBAN
-              </button>
-            </td>
-          </tr>
+        {pm.studentsList.map((student: Student, index: number) => (
+          <StudentListItem
+            key={student.email}
+            student={student}
+            selectionValue={pm.currentSelection[index]}
+            onSelectionChange={(newVal) => {
+              handleSelectionChange(index, newVal);
+            }}
+          />
         ))}
       </tbody>
     </table>

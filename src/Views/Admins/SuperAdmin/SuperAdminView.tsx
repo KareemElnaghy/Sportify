@@ -19,7 +19,7 @@ export default function SuperAdminView({ pm }: propsType) {
       <Sidebar pm={pm.pmSidebar} />
       <div className="main-content">
         <header>
-          <h2 className="title">Courts List</h2>
+          <h2 className="title">Admins List</h2>
           <input
             type="text"
             placeholder="Search..."
@@ -32,6 +32,9 @@ export default function SuperAdminView({ pm }: propsType) {
           />
         </header>
         <div className="top-bar">
+          <button className="add-admin-btn" onClick={pm.onAddAdmin}>
+            ADD NEW ADMIN +{" "}
+          </button>
           <label className="select-label">
             Number of Records &nbsp;
             <select

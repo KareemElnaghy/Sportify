@@ -22,6 +22,27 @@ export function getSuperAdminModel(pm: PMSuperAdmin): SuperAdminModel {
         "Settings",
       ];
       pm.pmSidebar.currentActive = 1;
+      //test
+      const dummyData = [
+        {
+          email: "alice.johnson@example.com",
+          firstName: "Alice",
+          lastName: "Johnson",
+          passHash: "hashed_password_1",
+          isSuper: false,
+        },
+        {
+          email: "john.smith@example.com",
+          firstName: "John",
+          lastName: "Smith",
+          passHash: "has12345tfds",
+          isSuper: true,
+        },
+      ];
+
+      // Set studentsData to the dummy data
+      model.admins = dummyData;
+      pm.adminslist = model.admins;
 
       model.admins = []; //API
       pm.onSearchChange = model.onSearchChange;
