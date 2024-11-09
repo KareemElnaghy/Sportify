@@ -13,6 +13,8 @@ export interface PMSuperAdmin {
   //selection
   currentSelection: boolean[];
   onSelectionChanged: () => void;
+  //delete
+  ondeleteadmin: () => void;
 }
 
 export const default_PMSuperAdmin: PMSuperAdmin = {
@@ -27,4 +29,6 @@ export const default_PMSuperAdmin: PMSuperAdmin = {
   //selection
   currentSelection: [],
   onSelectionChanged: () => {},
+  //delete
+  ondeleteadmin: () => {},
 };

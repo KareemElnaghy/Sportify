@@ -7,12 +7,14 @@ interface AdminListItemProps {
   admin: Admin;
   selectionValue: boolean;
   onSelectionChange: (val: boolean) => void;
+  onDeleteChange: () => void;
 }
 
 export default function AdminListItem({
   admin,
   selectionValue,
   onSelectionChange,
+  onDeleteChange,
 }: AdminListItemProps) {
   return (
     <tr key={admin.email}>
@@ -31,7 +33,7 @@ export default function AdminListItem({
         <button className="edit-btn">
           <BiEdit />
         </button>
-        <button className="delete-btn">
+        <button className="delete-btn" onClick={onDeleteChange}>
           <MdDelete />
         </button>
       </td>

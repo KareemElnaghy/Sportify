@@ -33,6 +33,9 @@ export default function AdminList({ pm }: AdminListProps) {
 
     pm.onSelectionChanged();
   };
+  const handleDelete = (index: number) => {
+    pm.ondeleteadmin();
+  };
   return (
     <table>
       <thead>
@@ -58,10 +61,10 @@ export default function AdminList({ pm }: AdminListProps) {
             onSelectionChange={(newVal) => {
               handleSelectionChange(index, newVal);
             }}
+            onDeleteChange={() => handleDelete(index)}
           />
         ))}
       </tbody>
     </table>
   );
 }
-
