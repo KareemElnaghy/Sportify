@@ -34,6 +34,8 @@ export default function AdminList({ pm }: AdminListProps) {
     pm.onSelectionChanged();
   };
   const handleDelete = (index: number) => {
+    pm.adminslist.splice(index, 1); // Remove the item at the specified index
+    pm.setAdminsList([...pm.adminslist]); // Trigger re-render by setting the same list
     pm.ondeleteadmin();
   };
   return (

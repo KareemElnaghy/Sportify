@@ -3,6 +3,7 @@ import { default_PMSidebar, PMSidebar } from "@/PMs/Components/SidebarPM";
 
 export interface PMSuperAdmin {
   adminslist: Admin[];
+  setAdminsList: (newAdminsList: Admin[]) => void;
   //sidebar
   pmSidebar: PMSidebar;
   //search
@@ -19,6 +20,7 @@ export interface PMSuperAdmin {
 
 export const default_PMSuperAdmin: PMSuperAdmin = {
   adminslist: [],
+  setAdminsList: ([]) => {},
   //sidebar
   pmSidebar: default_PMSidebar,
   //search
