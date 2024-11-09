@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CourtsListStyle.css";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import Court from "@/types/Court";
@@ -9,6 +9,15 @@ interface CourtsListProps {
 
 export default function CourtsList({ pm }: CourtsListProps) {
 	const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
+
+	console.log(pm.currentSelection);
+
+	useEffect(() => {
+		const isAllSelected =
+			pm.currentSelection.filter(Boolean).length == pm.courtsList.length;
+
+		setSelectAllCheckbox(isAllSelected);
+	}, [pm.currentSelection]);
 
 	const handleSelectAll = (e: any) => {
 		if (selectAllCheckbox) {
@@ -25,10 +34,6 @@ export default function CourtsList({ pm }: CourtsListProps) {
 		newCurrentSelection[index] = newVal;
 		pm.currentSelection = newCurrentSelection;
 
-		const isAllSelected =
-			newCurrentSelection.filter(Boolean).length == pm.courtsList.length;
-
-		setSelectAllCheckbox(isAllSelected);
 		pm.onSelectionChanged();
 	};
 
@@ -55,7 +60,10 @@ export default function CourtsList({ pm }: CourtsListProps) {
 						<td>
 							<input
 								type="checkbox"
-								checked={pm.currentSelection[index]}
+								defaultChecked={pm.currentSelection[index]}
+								// checked={
+								// 	isSelectionsPrepared ? pm.currentSelection[index] : false
+								// }
 								onChange={(e) => {
 									handleSelectionChange(e.target.checked, index);
 								}}
