@@ -10,7 +10,14 @@ export default function Sidebar({ pm }: SidebarProps) {
 	return (
 		<nav className="sidebar">
 			<div className="logo">
-				<Image src="/Sportify.png" alt="Logo" width={100} height={100} />
+				<Image
+					src="/Sportify.png"
+					alt="Logo"
+					width={100}
+					height={100}
+					priority
+					style={{ width: "auto", height: "auto" }}
+				/>
 			</div>
 			<ul>
 				{pm.linkNames.map((linkName, index) => (
