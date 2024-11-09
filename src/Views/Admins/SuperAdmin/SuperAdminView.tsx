@@ -1,78 +1,50 @@
 import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
+import { useEffect } from "react";
+
 import "./SuperAdminStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
-import AdminList from "@/Views/Components/Adminlist";
-import { useState } from "react";
+import AdminList from "../Components/Adminlist";
 
 interface propsType {
   pm: PMSuperAdmin;
 }
 
 export default function SuperAdminView({ pm }: propsType) {
-  const [admins, setAdmins] = useState([
-    {
-      id: "1",
-      name: "Seif Ashraf",
-      email: "seif.ashraf@aucegypt.edu",
-      selected: false,
-    },
-    {
-      id: "2",
-      name: "Ahmed Farouk",
-      email: "ahmed.farouk@aucegypt.edu",
-      selected: false,
-    },
-  ]);
-
-  // Handlers for AdminList
-  const handleSelectAll = (checked: boolean) => {
-    setAdmins(admins.map((admin) => ({ ...admin, selected: checked })));
-    pm.onSelectAll();
-  };
-
-  const handleSelectOne = (id: string, checked: boolean) => {
-    setAdmins(
-      admins.map((admin) =>
-        admin.id === id ? { ...admin, selected: checked } : admin
-      )
-    );
-    pm.onSelectOne();
-  };
-
-  const handleEditAdmin = (id: string) => {};
-
-  const handleDeleteAdmin = (id: string) => {};
-
-  const menuItems = [
-    { name: "Dashboard", href: "#" },
-    { name: "Admins", href: "#" },
-    { name: "Email", href: "#" },
-    { name: "Profile", href: "#" },
-    { name: "Settings", href: "#" },
-  ];
+  useEffect(() => {
+    pm.currentSelection = Array(pm.adminslist.length).fill(false);
+  }, [pm.adminslist]);
 
   return (
     <div className="container">
-      <Sidebar menuItems={menuItems} activeItem="Admins" />
+      <Sidebar pm={pm.pmSidebar} />
       <div className="main-content">
         <header>
-          <h2>Admins' List</h2>
+          <h2 className="title">Courts List</h2>
           <input
             type="text"
             placeholder="Search..."
             className="search-bar"
-            value={pm.Search}
-            onChange={(e) => {
-              pm.Search = e.target.value;
-              pm.onSearchChange();
-            }}
+            // value={pm.Search}
+            // onChange={(e) => {
+            // 	pm.Search = e.target.value;
+            // 	pm.onSearchChange();
+            // }}
           />
         </header>
-
         <div className="top-bar">
-          <button className="add-admin-btn" onClick={pm.onAddAdmin}>
-            ADD NEW ADMIN +{" "}
-          </button>
+          <label className="select-label">
+            Number of Records &nbsp;
+            <select
+              className="select-page"
+              // value={pm.records}
+              // onChange={pm.onRecordsChange}
+            >
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </label>
           <div className="pagination">
             <button>&lt;</button>
             <span>1</span>
@@ -82,15 +54,7 @@ export default function SuperAdminView({ pm }: propsType) {
             <button>&gt;</button>
           </div>
         </div>
-
-        <AdminList
-          admins={admins}
-          selectAll={pm.selectAll}
-          onSelectAll={handleSelectAll}
-          onSelectOne={handleSelectOne}
-          onEditAdmin={handleEditAdmin}
-          onDeleteAdmin={handleDeleteAdmin}
-        />
+        <AdminList pm={pm} />
       </div>
     </div>
   );

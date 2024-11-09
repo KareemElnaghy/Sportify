@@ -1,33 +1,38 @@
-// src/Views/Components/AdminList.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminlistStyle.css";
-import { MdDelete } from "react-icons/md";
-import { BiEdit } from "react-icons/bi";
-
-export interface Admin {
-  id: string;
-  name: string;
-  email: string;
-  selected: boolean;
-}
+import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
+import Admin from "@/types/Admin";
+import AdminListItem from "./AdminListItem";
 
 interface AdminListProps {
-  admins: Admin[];
-  selectAll: boolean;
-  onSelectAll: (checked: boolean) => void;
-  onSelectOne: (id: string, checked: boolean) => void;
-  onEditAdmin: (id: string) => void;
-  onDeleteAdmin: (id: string) => void;
+  pm: PMSuperAdmin;
 }
+export default function AdminList({ pm }: AdminListProps) {
+  const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
 
-export default function AdminList({
-  admins,
-  selectAll,
-  onSelectAll,
-  onSelectOne,
-  onEditAdmin,
-  onDeleteAdmin,
-}: AdminListProps) {
+  useEffect(() => {
+    const isAllSelected =
+      pm.currentSelection.filter(Boolean).length == pm.adminslist.length;
+
+    setSelectAllCheckbox(isAllSelected);
+  }, [pm.currentSelection]);
+
+  const handleSelectAll = (e: any) => {
+    if (selectAllCheckbox) {
+      pm.currentSelection = Array(pm.adminslist.length).fill(false);
+    } else {
+      pm.currentSelection = Array(pm.adminslist.length).fill(true);
+    }
+
+    setSelectAllCheckbox(e.target.checked);
+  };
+  const handleSelectionChange = (index: number, newVal: boolean) => {
+    let newCurrentSelection = [...pm.currentSelection];
+    newCurrentSelection[index] = newVal;
+    pm.currentSelection = newCurrentSelection;
+
+    pm.onSelectionChanged();
+  };
   return (
     <table>
       <thead>
@@ -35,8 +40,8 @@ export default function AdminList({
           <th>
             <input
               type="checkbox"
-              checked={selectAll}
-              onChange={(e) => onSelectAll(e.target.checked)}
+              checked={selectAllCheckbox}
+              onChange={handleSelectAll}
             />
           </th>
           <th>Full Name</th>
@@ -45,32 +50,15 @@ export default function AdminList({
         </tr>
       </thead>
       <tbody>
-        {admins.map((admin) => (
-          <tr key={admin.id}>
-            <td>
-              <input
-                type="checkbox"
-                checked={admin.selected}
-                onChange={(e) => onSelectOne(admin.id, e.target.checked)}
-              />
-            </td>
-            <td>{admin.name}</td>
-            <td>{admin.email}</td>
-            <td>
-              <button
-                className="edit-btn"
-                onClick={() => onEditAdmin(admin.id)}
-              >
-                <BiEdit />
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => onDeleteAdmin(admin.id)}
-              >
-                <MdDelete />
-              </button>
-            </td>
-          </tr>
+        {pm.adminslist.map((admin: Admin, index: number) => (
+          <AdminListItem
+            key={admin.email}
+            admin={admin}
+            selectionValue={pm.currentSelection[index]}
+            onSelectionChange={(newVal) => {
+              handleSelectionChange(index, newVal);
+            }}
+          />
         ))}
       </tbody>
     </table>
