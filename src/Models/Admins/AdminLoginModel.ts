@@ -1,4 +1,5 @@
 import { PMAdminLogin } from "@/PMs/Admins/AdminLogin/AdminLoginPM";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export interface AdminLoginModel {
 	setup: () => Promise<void>;
@@ -7,7 +8,7 @@ export interface AdminLoginModel {
 
 export function getAdminLoginModel(
 	pm: PMAdminLogin,
-	router: any
+	router: AppRouterInstance
 ): AdminLoginModel {
 	const model: AdminLoginModel = {
 		setup: async () => {
