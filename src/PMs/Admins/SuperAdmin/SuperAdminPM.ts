@@ -1,26 +1,36 @@
-import { Admin } from "@/Views/Components/Adminlist";
-import AdminLogin from "@/types/Admin";
+import Admin from "@/types/Admin";
+import { default_PMSidebar, PMSidebar } from "@/PMs/Components/SidebarPM";
 
 export interface PMSuperAdmin {
+  adminslist: Admin[];
+  setAdminsList: (newAdminsList: Admin[]) => void;
+  //sidebar
+  pmSidebar: PMSidebar;
+  //search
   Search: string;
   onSearchChange: () => void;
+  //add admin
   onAddAdmin: () => void;
-  selectAll: boolean;
-  selectOne: boolean;
-  onSelectAll: () => void;
-  onSelectOne: () => void;
-  admins: Admin[];
-  // sidebar
-  // pages
+  //selection
+  currentSelection: boolean[];
+  onSelectionChanged: () => void;
+  //delete
+  ondeleteadmin: () => void;
 }
 
 export const default_PMSuperAdmin: PMSuperAdmin = {
+  adminslist: [],
+  setAdminsList: ([]) => {},
+  //sidebar
+  pmSidebar: default_PMSidebar,
+  //search
   Search: "",
   onSearchChange: () => {},
+  //add admin
   onAddAdmin: () => {},
-  selectAll: false,
-  selectOne: false,
-  onSelectAll: () => {},
-  onSelectOne: () => {},
-  admins: [],
+  //selection
+  currentSelection: [],
+  onSelectionChanged: () => {},
+  //delete
+  ondeleteadmin: () => {},
 };

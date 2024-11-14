@@ -1,27 +1,26 @@
 import Student from "@/types/Student";
+import { default_PMSidebar, PMSidebar } from "../Components/SidebarPM";
 
 export interface PMStudentList {
   studentsList: Student[];
+  //sidebar
+  pmSidebar: PMSidebar;
+  //search
   Search: string;
   onSearchChange: () => void;
-  selectAll: boolean;
-  selectOne: boolean;
-  onSelectAll: () => void;
-  onSelectOne: () => void;
-  records: number;
-  onRecordsChange: () => void;
-  //sidebar
-  //pages
+  //selection
+  currentSelection: boolean[];
+  onSelectionChanged: () => void;
 }
 
 export const default_PMStudentList: PMStudentList = {
   studentsList: [],
+  //sidebar
+  pmSidebar: default_PMSidebar,
+  //search
   Search: "",
   onSearchChange: () => {},
-  selectAll: false,
-  selectOne: false,
-  onSelectAll: () => {},
-  onSelectOne: () => {},
-  records: 25,
-  onRecordsChange: () => {},
+  //selection
+  currentSelection: [],
+  onSelectionChanged: () => {},
 };
