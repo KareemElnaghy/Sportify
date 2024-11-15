@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import "./StudentsListStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
 import StudentList from "@/Views/Students/Components/StudentList";
+import { getSidebarPM } from "@/PMs/Components/SidebarPM";
 
 interface propsType {
 	pm: PMStudentList;
@@ -16,7 +17,7 @@ export default function StudentsListView({ pm }: propsType) {
 
 	return (
 		<div className="container">
-			<Sidebar pm={pm.pmSidebar} />
+			<Sidebar pm={getSidebarPM(pm)} />
 			<div className="main-content">
 				<header>
 					<h2 className="title">Students List</h2>

@@ -2,6 +2,7 @@ import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
 import Admin from "@/types/Admin";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
+import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 export interface SuperAdminModel {
 	sidebarModel: SidebarModel | null;
@@ -12,7 +13,7 @@ export interface SuperAdminModel {
 	onSearchChange: () => void;
 	onAddAdmin: () => void;
 
-	onPageChange: (newPage: number) => void;
+	onPageChange: () => void;
 }
 
 export function getSuperAdminModel(
@@ -76,7 +77,7 @@ export function getSuperAdminModel(
 			//pm.admins = model.admins;
 		},
 
-		onPageChange: (newPage: number) => {},
+		onPageChange: () => {},
 	};
 
 	return model;

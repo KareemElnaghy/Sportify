@@ -6,6 +6,7 @@ import {
 	SidebarModel,
 } from "@/Models/Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
+import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 export interface CourtsListModel {
 	sidebarModel: SidebarModel | null;
@@ -14,7 +15,7 @@ export interface CourtsListModel {
 	courtsData: Court[];
 	setup: () => Promise<void>;
 
-	onPageChange: (newPage: number) => void;
+	onPageChange: () => void;
 }
 
 export function getCourtsListModel(
@@ -39,16 +40,16 @@ export function getCourtsListModel(
 			pm.courtsList = model.courtsData;
 			// adjust pages in headerModel
 			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount();
-			// if (model.headerModel) model.headerModel.setCurrentPage();
+			// if (model.headerModel) model.headerModel.setPagesCount(x);
+			// if (model.headerModel) model.headerModel.setCurrentPage(x);
 		},
 
-		onPageChange: (newPage: number) => {
+		onPageChange: () => {
 			// TODO:
 			// logic to request new page
 			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount();
-			// if (model.headerModel) model.headerModel.setCurrentPage();
+			// if (model.headerModel) model.headerModel.setPagesCount(x);
+			// if (model.headerModel) model.headerModel.setCurrentPage(x);
 		},
 	};
 

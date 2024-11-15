@@ -22,3 +22,16 @@ export function useStateObject<S extends object>(
 		[state, setState]
 	);
 }
+
+export function getProxyOnAttribute<S extends Object, T extends Object>(
+	parent: S,
+	child: T,
+	attributeName: string
+): T {
+	return new Proxy(child, {
+		set: (target: T, prop: string | symbol, value: any) => {
+			parent[attributeName as keyof S] = { ...target, [prop]: value } as any;
+			return true;
+		},
+	});
+}

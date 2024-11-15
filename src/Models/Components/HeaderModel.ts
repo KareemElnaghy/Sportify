@@ -6,15 +6,15 @@ interface PageWithHeader {
 
 export interface HeaderModel {
 	setup: () => Promise<void>;
-	onPageChange: (newPage: number) => void;
+	onPageChange: () => void;
 
 	setPagesCount: (newPagesCount: number) => void;
 	setCurrentPage: (newCurrentPage: number) => void;
 }
 
 export function getHeaderModel<T extends PageWithHeader>(
-	pagePM: T,
-	parentOnPageChange: (newPage: number) => void
+	pagePM: PageWithHeader,
+	parentOnPageChange: () => void
 ): HeaderModel {
 	const model: HeaderModel = {
 		setup: async () => {
@@ -24,16 +24,16 @@ export function getHeaderModel<T extends PageWithHeader>(
 			newHeaderPM.onPageChange = model.onPageChange;
 			pagePM.pmHeader = newHeaderPM;
 		},
-		onPageChange: (newPage: number) => {
-			parentOnPageChange(newPage);
+		onPageChange: () => {
+			parentOnPageChange();
 		},
 
 		setPagesCount: (newPagesCount: number) => {
-			pagePM.pmHeader.pagesCount = newPagesCount;
+			pagePM.pmHeader = { ...pagePM.pmHeader, pagesCount: newPagesCount };
 			// possibly clear the currentPage to 1
 		},
 		setCurrentPage: (newCurrentPage: number) => {
-			pagePM.pmHeader.currentPage = newCurrentPage;
+			pagePM.pmHeader = { ...pagePM.pmHeader, currentPage: newCurrentPage };
 		},
 	};
 

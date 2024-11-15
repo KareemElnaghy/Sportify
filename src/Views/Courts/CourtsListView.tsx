@@ -5,6 +5,8 @@ import "./CourtsListStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
 import Header from "@/Views/Components/Header";
 import Courtslist from "@/Views/Courts/Components/Courtslist";
+import { getHeaderPM } from "@/PMs/Components/HeaderPM";
+import { getSidebarPM } from "@/PMs/Components/SidebarPM";
 
 interface propsType {
 	pm: PMCourtsList;
@@ -17,9 +19,9 @@ export default function CourtsListView({ pm }: propsType) {
 
 	return (
 		<div className="container">
-			<Sidebar pm={pm.pmSidebar} />
+			<Sidebar pm={getSidebarPM(pm)} />
 			<div className="main-content">
-				<Header pm={pm.pmHeader} pageTitle={"Courts List"} />
+				<Header pm={getHeaderPM(pm)} pageTitle={"Courts List"} />
 				<Courtslist pm={pm} />
 			</div>
 		</div>

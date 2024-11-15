@@ -1,12 +1,18 @@
+import { getProxyOnAttribute } from "@/hooks/useStateObject";
+
 export interface PMHeader {
 	pagesCount: number;
 	currentPage: number;
 
-	onPageChange: (newPage: number) => void;
+	onPageChange: () => void;
 }
 
 export const default_PMHeader: PMHeader = {
 	pagesCount: 1,
 	currentPage: 1,
-	onPageChange: (newPage: number) => {},
+	onPageChange: () => {},
 };
+
+export function getHeaderPM<T extends { pmHeader: PMHeader }>(pm: T): PMHeader {
+	return getProxyOnAttribute(pm, pm.pmHeader, "pmHeader");
+}

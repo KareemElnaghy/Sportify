@@ -51,7 +51,8 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 	}, [pm]);
 
 	const handlePageClick = (newPage: number) => {
-		pm.onPageChange(newPage);
+		pm.currentPage = newPage;
+		pm.onPageChange();
 	};
 
 	return (
@@ -85,16 +86,14 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 				</label>
 				<div className="pagination">
 					{pm.currentPage != 1 && (
-						<button
-							onClick={handlePageClick.bind(pm.currentPage - 1) as () => void}
-						>
+						<button onClick={handlePageClick.bind(null, pm.currentPage - 1)}>
 							&lt;
 						</button>
 					)}
 					{pagesList.first.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
-							onClick={handlePageClick.bind(v) as () => void}
+							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
 						</button>
@@ -105,7 +104,7 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 					{pagesList.middle.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
-							onClick={handlePageClick.bind(v) as () => void}
+							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
 						</button>
@@ -115,15 +114,13 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 					{pagesList.last.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
-							onClick={handlePageClick.bind(v) as () => void}
+							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
 						</button>
 					))}
 					{pm.currentPage != pm.pagesCount && (
-						<button
-							onClick={handlePageClick.bind(pm.currentPage + 1) as () => void}
-						>
+						<button onClick={handlePageClick.bind(null, pm.currentPage + 1)}>
 							&gt;
 						</button>
 					)}

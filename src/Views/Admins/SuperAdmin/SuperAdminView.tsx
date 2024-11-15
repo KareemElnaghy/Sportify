@@ -8,6 +8,7 @@ import AddAdminForm, {
 	newAdminData,
 } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
 import Header from "@/Views/Components/Header";
+import { getSidebarPM } from "@/PMs/Components/SidebarPM";
 
 interface propsType {
 	pm: PMSuperAdmin;
@@ -21,7 +22,7 @@ export default function SuperAdminView({ pm }: propsType) {
 
 	return (
 		<div className="container">
-			<Sidebar pm={pm.pmSidebar} />
+			<Sidebar pm={getSidebarPM(pm)} />
 			{isAddAdminPopupOpen && (
 				<AddAdminForm
 					onClose={() => {
