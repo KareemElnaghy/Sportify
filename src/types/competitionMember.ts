@@ -1,4 +1,4 @@
-export default class CompetitionMember{
-    competitionID: number = 0;
-    userEmail: string = "";
+export default interface CompetitionMember {
+	competitionID: number;
+	userEmail: string;
 }

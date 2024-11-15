@@ -1,6 +1,5 @@
-export default class CourtConfig{
-    id: number = 0;
-    startTime: Date = new Date('2024-11-05T00:00:00Z');
-    endTime: Date = new Date('2024-11-05T00:00:00Z');
-
+export default interface CourtConfig {
+	id: number;
+	startTime: Date;
+	endTime: Date;
 }

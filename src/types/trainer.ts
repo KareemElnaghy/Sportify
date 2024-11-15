@@ -1,5 +1,5 @@
-export default class Trainer{
-    email: string = "";
-    description: string = "";
-    rating: number = 0;
+export default interface Trainer {
+	email: string;
+	description: string;
+	rating: number;
 }

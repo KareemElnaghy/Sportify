@@ -1,9 +1,9 @@
 import { PMStudentList } from "@/PMs/Students/StudentsListPM";
 import { useEffect } from "react";
 
-import "@/Views/Students/StudentsListStyle.css";
+import "./StudentsListStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
-import StudentList from "@/Views/Components/Studentlist";
+import StudentList from "@/Views/Students/Components/StudentList";
 
 interface propsType {
 	pm: PMStudentList;

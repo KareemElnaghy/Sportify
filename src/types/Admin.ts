@@ -1,7 +1,5 @@
-export default class AdminLogin{
-    email: string = "";
-    firstName: string = "";
-	lastName: string = "";
-    passHash: string = "";
-    isSuper: boolean = false;
+export default interface Admin {
+	email: string;
+	firstName: string;
+	lastName: string;
 }

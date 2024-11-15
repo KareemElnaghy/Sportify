@@ -1,15 +1,19 @@
 import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import "./SuperAdminStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
-import AdminList from "@/Views/Components/Adminlist";
+import AdminList from "@/Views/Admins/SuperAdmin/Components/AdminList";
+import AddAdminForm, {
+	newAdminData,
+} from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
 
 interface propsType {
 	pm: PMSuperAdmin;
 }
 
 export default function SuperAdminView({ pm }: propsType) {
+	const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
 	useEffect(() => {
 		pm.currentSelection = Array(pm.adminslist.length).fill(false);
 	}, [pm.adminslist]);
@@ -17,6 +21,16 @@ export default function SuperAdminView({ pm }: propsType) {
 	return (
 		<div className="container">
 			<Sidebar pm={pm.pmSidebar} />
+			{isAddAdminPopupOpen && (
+				<AddAdminForm
+					onClose={() => {
+						setIsAddAdminPopupOpen(false);
+					}}
+					onSubmit={async (adminData: newAdminData) => {
+						// pm.onAddAdmin();
+					}}
+				/>
+			)}
 			<div className="main-content">
 				<header>
 					<h2 className="title">Admins List</h2>
@@ -32,7 +46,12 @@ export default function SuperAdminView({ pm }: propsType) {
 					/>
 				</header>
 				<div className="top-bar">
-					<button className="add-admin-btn" onClick={pm.onAddAdmin}>
+					<button
+						className="add-admin-btn"
+						onClick={() => {
+							setIsAddAdminPopupOpen(true);
+						}}
+					>
 						ADD NEW ADMIN +{" "}
 					</button>
 					<label className="select-label">

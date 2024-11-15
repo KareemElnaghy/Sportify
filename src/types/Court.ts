@@ -1,7 +1,7 @@
-export default class Court {
-	name: string = "";
-	id: number = 0;
-	sport: string = "";
-	location: string = "";
-	description: string = "";
+export default interface Court {
+	name: string;
+	id: number;
+	sport: string;
+	location: string;
+	description: string;
 }
