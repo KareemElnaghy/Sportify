@@ -1,3 +1,4 @@
+import { default_PMHeader, PMHeader } from "@/PMs/Components/HeaderPM";
 import { default_PMSidebar, PMSidebar } from "@/PMs/Components/SidebarPM";
 import Admin from "@/types/Admin";
 
@@ -6,6 +7,8 @@ export interface PMSuperAdmin {
 	setAdminsList: (newAdminsList: Admin[]) => void;
 	//sidebar
 	pmSidebar: PMSidebar;
+	//header
+	pmHeader: PMHeader;
 	//search
 	Search: string;
 	onSearchChange: () => void;
@@ -23,6 +26,8 @@ export const default_PMSuperAdmin: PMSuperAdmin = {
 	setAdminsList: ([]) => {},
 	//sidebar
 	pmSidebar: default_PMSidebar,
+	//header
+	pmHeader: default_PMHeader,
 	//search
 	Search: "",
 	onSearchChange: () => {},

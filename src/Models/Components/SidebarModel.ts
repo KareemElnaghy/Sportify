@@ -1,6 +1,3 @@
-import Court from "@/types/Court";
-import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
-import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import { PMSidebar } from "@/PMs/Components/SidebarPM";
 
 interface PageWithSidebar {
@@ -9,23 +6,20 @@ interface PageWithSidebar {
 
 export interface SidebarModel {
 	linkNames: string[];
-	setup: <T extends PageWithSidebar>(pm: T) => Promise<void>;
-	getPM: () => PMSidebar;
+	setup: () => Promise<void>;
 	onLinkFollowed: (index: number) => void;
 }
 
-export function getSidebarModel(
-	pm: PMSidebar,
+export function getSidebarModel<T extends PageWithSidebar>(
+	pagePM: T,
 	router: any,
 	currentActive: number
 ): SidebarModel {
 	const model: SidebarModel = {
 		linkNames: [],
-		setup: async (pm) => {
-			pm.pmSidebar = model.getPM();
-		},
-		getPM: () => ({
-			linkNames: [
+		setup: async () => {
+			const newSidebarPM: PMSidebar = pagePM.pmSidebar;
+			newSidebarPM.linkNames = [
 				"Dashboard",
 				"Students List",
 				"Courts List",
@@ -33,12 +27,11 @@ export function getSidebarModel(
 				"Reservations List",
 				"Email",
 				"Settings",
-			],
-
-			currentActive: currentActive,
-
-			onLinkFollowed: model.onLinkFollowed,
-		}),
+			];
+			newSidebarPM.currentActive = currentActive;
+			newSidebarPM.onLinkFollowed = model.onLinkFollowed;
+			pagePM.pmSidebar = newSidebarPM;
+		},
 		onLinkFollowed: (index: number) => {
 			// fill the routing
 		},
