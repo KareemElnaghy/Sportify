@@ -12,6 +12,10 @@ interface propsType {
 
 export default function StudentsListView({ pm }: propsType) {
 	useEffect(() => {
+		document.title = "Students List";
+	});
+
+	useEffect(() => {
 		pm.currentSelection = Array(pm.studentsList.length).fill(false);
 	}, [pm.studentsList]);
 

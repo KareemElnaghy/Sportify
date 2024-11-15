@@ -4,10 +4,58 @@
 }
 
 header {
+	position: relative;
 	display: flex;
-	justify-content: space-between;
+	flex-direction: row;
+	justify-content: center;
 	align-items: center;
 	margin-bottom: 20px;
+}
+header h2 {
+	position: absolute;
+	left: 0;
+}
+
+header .search-bar {
+	padding: 0.3rem;
+	width: 35rem;
+	height: 2.8rem;
+	color: black;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 0.2rem;
+
+	background-color: #ccc;
+	border-radius: 5px;
+
+	transition: all 100ms ease-in-out;
+}
+.search-bar:focus,
+.search-bar:focus-within {
+	box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+		0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+header .search-bar .search-input {
+	padding: 0 0.3rem;
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+
+	flex: 1;
+
+	outline: none;
+	/* border: solid black 2px; */
+}
+header .search-icon {
+	background: white;
+	height: 100%;
+	aspect-ratio: 1;
+	border-radius: 5px;
+
+	cursor: pointer;
 }
 
 .top-bar {
@@ -40,4 +88,25 @@ header {
 }
 .pagination button {
 	cursor: pointer;
+	padding: 0 0.2rem;
+
+	width: 1.5rem;
+
+	background-color: #ccc;
+
+	border-radius: 5px;
+
+	user-select: none;
+}
+.pagination .invis-btn {
+	visibility: hidden;
+}
+
+.pagination .selected-page {
+	font-weight: bold;
+	background: #384c7c;
+
+	color: white;
+
+	border-radius: 5px;
 }

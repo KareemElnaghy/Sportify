@@ -14,6 +14,10 @@ interface propsType {
 
 export default function CourtsListView({ pm }: propsType) {
 	useEffect(() => {
+		document.title = "Courts List";
+	});
+
+	useEffect(() => {
 		pm.currentSelection = Array(pm.courtsList.length).fill(false);
 	}, [pm.courtsList]);
 

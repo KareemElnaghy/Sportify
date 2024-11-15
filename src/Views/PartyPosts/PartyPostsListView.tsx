@@ -12,6 +12,10 @@ interface propsType {
 
 export default function PartyPostsListView({ pm }: propsType) {
 	useEffect(() => {
+		document.title = "Party Posts List";
+	});
+
+	useEffect(() => {
 		pm.currentSelection = Array(pm.partyPostsList.length).fill(false);
 	}, [pm.partyPostsList]);
 

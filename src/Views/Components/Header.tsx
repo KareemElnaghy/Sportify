@@ -1,5 +1,5 @@
 import { PMHeader } from "@/PMs/Components/HeaderPM";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import "./HeaderStyle.css";
 
 interface HeaderProps {
@@ -55,28 +55,51 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 		pm.onPageChange();
 	};
 
+	const handleSearch = () => {
+		pm.currentSearchQuery = searchTerm;
+		pm.onSearchQueryChange();
+	};
+
+	const [searchTerm, setSearchTerm] = useState("");
+
 	return (
 		<>
 			<header>
 				<h2 className="page-title">{pageTitle}</h2>
-				<input
-					type="text"
-					placeholder="Search..."
+				<form
 					className="search-bar"
-					// value={pm.Search}
-					// onChange={(e) => {
-					// 	pm.Search = e.target.value;
-					// 	pm.onSearchChange();
-					// }}
-				/>
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleSearch();
+					}}
+				>
+					<input
+						className="search-input"
+						type="text"
+						placeholder="Search..."
+						value={searchTerm}
+						onChange={(e) => {
+							setSearchTerm(e.target.value);
+						}}
+					/>
+					<input
+						type="image"
+						name="submit"
+						src="/search.svg"
+						className="search-icon"
+					/>
+				</form>
 			</header>
 			<div className="top-bar">
 				<label className="select-label">
 					Number of Records &nbsp;
 					<select
 						className="select-page"
-						// value={pm.records}
-						// onChange={pm.onRecordsChange}
+						value={pm.currentRecordsPerPage}
+						onChange={(e) => {
+							pm.currentRecordsPerPage = parseInt(e.target.value);
+							pm.onRecordsPerPageChange();
+						}}
 					>
 						<option>10</option>
 						<option>25</option>
@@ -93,6 +116,7 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 					{pagesList.first.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
+							className={pm.currentPage == v ? "selected-page" : ""}
 							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
@@ -104,6 +128,7 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 					{pagesList.middle.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
+							className={pm.currentPage == v ? "selected-page" : ""}
 							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
@@ -114,16 +139,18 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 					{pagesList.last.map((v) => (
 						<button
 							key={`pagination-page-${v}`}
+							className={pm.currentPage == v ? "selected-page" : ""}
 							onClick={handlePageClick.bind(null, v)}
 						>
 							{v}
 						</button>
 					))}
-					{pm.currentPage != pm.pagesCount && (
-						<button onClick={handlePageClick.bind(null, pm.currentPage + 1)}>
-							&gt;
-						</button>
-					)}
+					<button
+						className={pm.currentPage != pm.pagesCount ? "" : "invis-btn"}
+						onClick={handlePageClick.bind(null, pm.currentPage + 1)}
+					>
+						&gt;
+					</button>
 				</div>
 			</div>
 		</>

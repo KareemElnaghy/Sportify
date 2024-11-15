@@ -15,6 +15,10 @@ interface propsType {
 }
 
 export default function SuperAdminView({ pm }: propsType) {
+	useEffect(() => {
+		document.title = "Admins List";
+	});
+
 	const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
 	useEffect(() => {
 		pm.currentSelection = Array(pm.adminslist.length).fill(false);

@@ -6,7 +6,6 @@ import {
 	SidebarModel,
 } from "@/Models/Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
-import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 export interface CourtsListModel {
 	sidebarModel: SidebarModel | null;
@@ -16,6 +15,10 @@ export interface CourtsListModel {
 	setup: () => Promise<void>;
 
 	onPageChange: () => void;
+
+	onRecordsPerPageChange: () => void;
+
+	onSearch: () => void;
 }
 
 export function getCourtsListModel(
@@ -31,8 +34,7 @@ export function getCourtsListModel(
 				model.sidebarModel = getSidebarModel(pm, router, 2);
 			model.sidebarModel.setup();
 
-			if (!model.headerModel)
-				model.headerModel = getHeaderModel(pm, model.onPageChange);
+			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
 
 			let courtsList: Court[] = await getCourts({ page: 1 });
@@ -47,6 +49,22 @@ export function getCourtsListModel(
 		onPageChange: () => {
 			// TODO:
 			// logic to request new page
+			// update pages by
+			// if (model.headerModel) model.headerModel.setPagesCount(x);
+			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+		},
+
+		onRecordsPerPageChange: () => {
+			// TODO:
+			// logic to request new page with correct records amount
+			// update pages by
+			// if (model.headerModel) model.headerModel.setPagesCount(x);
+			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+		},
+
+		onSearch: () => {
+			// TODO:
+			// logic to request from backend new page with correct searched data
 			// update pages by
 			// if (model.headerModel) model.headerModel.setPagesCount(x);
 			// if (model.headerModel) model.headerModel.setCurrentPage(x);

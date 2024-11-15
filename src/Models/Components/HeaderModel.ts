@@ -4,29 +4,40 @@ interface PageWithHeader {
 	pmHeader: PMHeader;
 }
 
+interface ParentModel {
+	onPageChange: () => void;
+	onRecordsPerPageChange: () => void;
+	onSearch: () => void;
+}
+
 export interface HeaderModel {
 	setup: () => Promise<void>;
 	onPageChange: () => void;
+	onRecordsPerPageChange: () => void;
+	onSearch: () => void;
 
 	setPagesCount: (newPagesCount: number) => void;
 	setCurrentPage: (newCurrentPage: number) => void;
 }
 
-export function getHeaderModel<T extends PageWithHeader>(
+export function getHeaderModel<T extends PageWithHeader, S extends ParentModel>(
 	pagePM: PageWithHeader,
-	parentOnPageChange: () => void
+	parentModel: S
 ): HeaderModel {
 	const model: HeaderModel = {
 		setup: async () => {
 			const newHeaderPM: PMHeader = pagePM.pmHeader;
-			newHeaderPM.pagesCount = 1;
-			newHeaderPM.currentPage = 1;
 			newHeaderPM.onPageChange = model.onPageChange;
+			newHeaderPM.onRecordsPerPageChange = model.onRecordsPerPageChange;
 			pagePM.pmHeader = newHeaderPM;
 		},
 		onPageChange: () => {
-			parentOnPageChange();
+			parentModel.onPageChange();
 		},
+		onRecordsPerPageChange: () => {
+			parentModel.onRecordsPerPageChange();
+		},
+		onSearch: () => {},
 
 		setPagesCount: (newPagesCount: number) => {
 			pagePM.pmHeader = { ...pagePM.pmHeader, pagesCount: newPagesCount };

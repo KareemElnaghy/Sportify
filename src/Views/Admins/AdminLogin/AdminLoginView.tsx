@@ -1,12 +1,17 @@
 import { PMAdminLogin } from "@/PMs/Admins/AdminLogin/AdminLoginPM";
 
 import "./AdminLoginStyle.css";
+import { useEffect } from "react";
 
 interface propsType {
 	pm: PMAdminLogin;
 }
 
 export default function AdminLoginView({ pm }: propsType) {
+	useEffect(() => {
+		document.title = "Login";
+	});
+
 	return (
 		<div className="login-container">
 			<div className="logo">

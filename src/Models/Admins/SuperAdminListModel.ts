@@ -2,7 +2,6 @@ import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
 import Admin from "@/types/Admin";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
-import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 export interface SuperAdminModel {
 	sidebarModel: SidebarModel | null;
@@ -10,10 +9,11 @@ export interface SuperAdminModel {
 
 	admins: Admin[];
 	setup: () => Promise<void>;
-	onSearchChange: () => void;
 	onAddAdmin: () => void;
 
 	onPageChange: () => void;
+	onRecordsPerPageChange: () => void;
+	onSearch: () => void;
 }
 
 export function getSuperAdminModel(
@@ -39,8 +39,7 @@ export function getSuperAdminModel(
 			// ];
 			// pm.pmSidebar.currentActive = 1;
 
-			if (!model.headerModel)
-				model.headerModel = getHeaderModel(pm, model.onPageChange);
+			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
 
 			//test
@@ -61,15 +60,7 @@ export function getSuperAdminModel(
 			model.admins = dummyData;
 			pm.adminslist = model.admins;
 
-			pm.onSearchChange = model.onSearchChange;
 			pm.onAddAdmin = model.onAddAdmin;
-		},
-		onSearchChange: () => {
-			// if (pm.Search !== "" && pm.Search !== null) {
-			// 	pm.admins = model.admins.filter((admin) =>
-			// 		admin.name.toLowerCase().includes(pm.Search.toLowerCase())
-			// 	);
-			// } else pm.admins = model.admins;
 		},
 		onAddAdmin: () => {
 			//query to add Admin to DB
@@ -78,6 +69,8 @@ export function getSuperAdminModel(
 		},
 
 		onPageChange: () => {},
+		onRecordsPerPageChange: () => {},
+		onSearch: () => {},
 	};
 
 	return model;
