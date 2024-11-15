@@ -17,12 +17,11 @@ export function getCourtsListModel(
 		courtsData: [],
 		sidebarModel: getSidebarModel(pm.pmSidebar, router, 2),
 		setup: async () => {
+			if (model.sidebarModel) model.sidebarModel.setup(pm);
+
 			let courtsList: Court[] = await getCourts({ page: 1 });
 			model.courtsData = courtsList;
-			setTimeout(() => {
-				// set the useState
-				pm.courtsList = model.courtsData;
-			}, 1000);
+			pm.courtsList = model.courtsData;
 		},
 	};
 

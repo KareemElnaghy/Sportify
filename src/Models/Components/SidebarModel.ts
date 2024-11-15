@@ -3,10 +3,14 @@ import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import { PMSidebar } from "@/PMs/Components/SidebarPM";
 
+interface PageWithSidebar {
+	pmSidebar: PMSidebar;
+}
+
 export interface SidebarModel {
 	linkNames: string[];
-	setup: () => Promise<void>;
-
+	setup: <T extends PageWithSidebar>(pm: T) => Promise<void>;
+	getPM: () => PMSidebar;
 	onLinkFollowed: (index: number) => void;
 }
 
@@ -17,8 +21,11 @@ export function getSidebarModel(
 ): SidebarModel {
 	const model: SidebarModel = {
 		linkNames: [],
-		setup: async () => {
-			pm.linkNames = [
+		setup: async (pm) => {
+			pm.pmSidebar = model.getPM();
+		},
+		getPM: () => ({
+			linkNames: [
 				"Dashboard",
 				"Students List",
 				"Courts List",
@@ -26,10 +33,12 @@ export function getSidebarModel(
 				"Reservations List",
 				"Email",
 				"Settings",
-			];
-			pm.currentActive = currentActive;
-			pm.onLinkFollowed = model.onLinkFollowed;
-		},
+			],
+
+			currentActive: currentActive,
+
+			onLinkFollowed: model.onLinkFollowed,
+		}),
 		onLinkFollowed: (index: number) => {
 			// fill the routing
 		},
