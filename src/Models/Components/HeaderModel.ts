@@ -29,6 +29,7 @@ export function getHeaderModel<T extends PageWithHeader, S extends ParentModel>(
 			const newHeaderPM: PMHeader = pagePM().pmHeader;
 			newHeaderPM.onPageChange = model.onPageChange;
 			newHeaderPM.onRecordsPerPageChange = model.onRecordsPerPageChange;
+			newHeaderPM.onSearchQueryChange = model.onSearch;
 			pagePM().pmHeader = newHeaderPM;
 		},
 		onPageChange: () => {

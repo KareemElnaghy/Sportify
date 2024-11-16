@@ -15,9 +15,12 @@ export async function GET(req: NextRequest): NextAPIRes<CourtsListAPIResponse> {
 	const r: string | null = req.nextUrl.searchParams.get("recordsPerPage");
 	const recordsPerPage: number = r ? Number(r) : 10;
 
+	const s: string | null = req.nextUrl.searchParams.get("searchQuery");
+
 	const res: Court[] = await db_getCourts({
 		page: page,
 		recordsPerPage: recordsPerPage,
+		searchQuery: s,
 	});
 
 	return NextResponse.json(

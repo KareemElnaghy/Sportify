@@ -3,6 +3,7 @@ import "./CourtsListStyle.css";
 import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import Court from "@/types/Court";
 import CourtsListItem from "./CourtsListItem";
+import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 
 interface CourtsListProps {
 	pm: PMCourtsList;
@@ -35,6 +36,10 @@ export default function CourtsList({ pm }: CourtsListProps) {
 
 		pm.onSelectionChanged();
 	};
+
+	useUpdateEffect(() => {
+		pm.onSelectionChanged();
+	}, [pm.currentSelection]);
 
 	return (
 		<table>

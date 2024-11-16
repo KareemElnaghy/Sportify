@@ -1,6 +1,7 @@
 import { PMHeader } from "@/PMs/Components/HeaderPM";
 import { useMemo, useState } from "react";
 import "./HeaderStyle.css";
+import { useUpdateEffect } from "@/hooks/useUpdateEffect";
 
 interface HeaderProps {
 	pm: PMHeader;
@@ -52,15 +53,31 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 
 	const handlePageClick = (newPage: number) => {
 		pm.currentPage = newPage;
-		pm.onPageChange();
 	};
 
 	const handleSearch = () => {
 		pm.currentSearchQuery = searchTerm;
-		pm.onSearchQueryChange();
 	};
 
 	const [searchTerm, setSearchTerm] = useState("");
+
+	useUpdateEffect(() => {
+		queueMicrotask(() => {
+			pm.onPageChange();
+		});
+	}, [pm.currentPage]);
+
+	useUpdateEffect(() => {
+		queueMicrotask(() => {
+			pm.onRecordsPerPageChange();
+		});
+	}, [pm.currentRecordsPerPage]);
+
+	useUpdateEffect(() => {
+		queueMicrotask(() => {
+			pm.onSearchQueryChange();
+		});
+	}, [pm.currentSearchQuery]);
 
 	return (
 		<>
@@ -98,7 +115,6 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 						value={pm.currentRecordsPerPage}
 						onChange={(e) => {
 							pm.currentRecordsPerPage = Number(e.target.value);
-							pm.onRecordsPerPageChange();
 						}}
 					>
 						<option>10</option>

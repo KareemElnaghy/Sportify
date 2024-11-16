@@ -1,6 +1,9 @@
 import APIResponse from "@/types/APIResponse";
+import { hashObject } from "../Utils/Hasher";
+import { delay } from "../Utils/Delay";
 
 const baseURL = "http://localhost:3000";
+const requestDelay = 100;
 
 type fetchParameters = {
 	[key: string]: string;
@@ -17,8 +20,66 @@ function constructURL(path: string, parameters?: fetchParameters): string {
 	return url;
 }
 
-export const APIConnector = {
+interface APIConnectorType {
+	headers: HeadersInit | undefined;
+	activeRequests: {
+		[hashedRequest: string]: [string, Promise<any>];
+	};
+
+	handleMultiRequests: (
+		hashedRequest: string,
+		requestId: string,
+		res: Promise<any>
+	) => void;
+
+	call: (
+		method: string,
+		path: string,
+		parameters?: fetchParameters,
+		headers?: HeadersInit | null,
+		body?: any
+	) => Promise<APIResponse<any>>;
+
+	get: (
+		path: string,
+		parameters?: fetchParameters,
+		headers?: HeadersInit | null
+	) => Promise<APIResponse<any>>;
+
+	post: (
+		path: string,
+		parameters?: fetchParameters,
+		headers?: HeadersInit | null,
+		body?: any
+	) => Promise<APIResponse<any>>;
+
+	put: (
+		path: string,
+		parameters?: fetchParameters,
+		headers?: HeadersInit | null,
+		body?: any
+	) => Promise<APIResponse<any>>;
+
+	delete: (
+		path: string,
+		parameters?: fetchParameters,
+		headers?: HeadersInit | null,
+		body?: any
+	) => Promise<APIResponse<any>>;
+}
+
+export const APIConnector: APIConnectorType = {
 	headers: {},
+
+	activeRequests: {},
+
+	handleMultiRequests: (
+		hashedRequest: string,
+		requestId: string,
+		res: Promise<any>
+	) => {
+		APIConnector.activeRequests[hashedRequest] = [requestId, res];
+	},
 
 	async call(
 		method: string,
@@ -27,8 +88,18 @@ export const APIConnector = {
 		headers?: HeadersInit | null,
 		body?: any
 	): Promise<APIResponse<any>> {
+		const reqObj = {
+			method: method,
+			path: path,
+			parameters: parameters,
+			headers: headers,
+			body: body,
+		};
+		const hashedRequest = hashObject(reqObj);
+		const hashedId = hashObject(new Date());
+
 		const url = constructURL(path, parameters);
-		let ReqHeaders;
+		let ReqHeaders: HeadersInit | undefined;
 		if (headers === undefined) {
 			ReqHeaders = APIConnector.headers;
 		} else if (headers === null) {
@@ -41,10 +112,27 @@ export const APIConnector = {
 			headers: ReqHeaders,
 			body: body ? JSON.stringify(body) : undefined,
 		};
-		const res = await fetch(url, options);
-		const resBody = await res.json();
 
-		return resBody;
+		const response: Promise<APIResponse<any>> = new Promise(
+			async (resolve, reject) => {
+				await delay(requestDelay);
+
+				if (APIConnector.activeRequests[hashedRequest][0] != hashedId) {
+					const res = await APIConnector.activeRequests[hashedRequest][1];
+					resolve(res);
+					return;
+				} else {
+					const res = await fetch(url, options);
+					const resBody = await res.json();
+
+					resolve(resBody);
+					return;
+				}
+			}
+		);
+		APIConnector.handleMultiRequests(hashedRequest, hashedId, response);
+
+		return response;
 	},
 
 	async get(
