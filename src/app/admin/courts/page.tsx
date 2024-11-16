@@ -3,7 +3,7 @@
 import { default_PMCourtsList, PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import { useStateObject } from "@/hooks/useStateObject";
 import CourtsListView from "@/Views/Courts/CourtsListView";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { getCourtsListModel } from "@/Models/Courts/CourtsListModel";
 import { useRouter } from "next/navigation";
 

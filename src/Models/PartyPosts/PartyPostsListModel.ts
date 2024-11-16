@@ -1,50 +1,126 @@
 import { PMPartyPostsList } from "@/PMs/PartyPosts/PartyPostsListPM";
+import {
+	getSidebarModel,
+	SidebarModel,
+} from "@/Models/Components/SidebarModel";
+import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
+import PartyPost from "@/types/PartyPost";
+import { getPartyPosts } from "@/libs/APICommunicator/PartyPosts/PartyPostsAPI";
+import { PartyPostsListData } from "@/libs/APICommunicator/PartyPosts/PartyPostsDTO";
 
 export interface PartyPostsListModel {
+	sidebarModel: SidebarModel | null;
+	headerModel: HeaderModel | null;
+
+	fetchedParams: {
+		page: number;
+		records: number;
+		searchQuery: string;
+	};
+
+	partyPostssData: PartyPost[];
 	setup: () => Promise<void>;
+
+	fetchData: (isForceUpdate?: boolean) => Promise<void>;
+
+	onPageChange: () => void;
+
+	onRecordsPerPageChange: () => void;
+
+	onSearch: () => void;
 }
 
 export function getPartyPostsListModel(
-	pm: () => PMPartyPostsList
+	pm: () => PMPartyPostsList,
+	router: any
 ): PartyPostsListModel {
 	const model: PartyPostsListModel = {
+		partyPostssData: [],
+		sidebarModel: null,
+		headerModel: null,
+		fetchedParams: {
+			page: 0,
+			records: 0,
+			searchQuery: "",
+		},
 		setup: async () => {
-			pm().pmSidebar.linkNames = [
-				"Dashboard",
-				"Students List",
-				"Courts List",
-				"Party Posts List",
-				"Reservations List",
-				"Email",
-				"Settings",
-			];
-			pm().pmSidebar.currentActive = 3;
-			setTimeout(() => {
-				pm().partyPostsList = [
-					{
-						id: 0,
-						ownerEmail: "1",
-						member: "another person",
-						eventName: "Wow",
-						sport: "Football",
-						location: "Basily",
-						description: "another thing",
-						startTime: new Date("2024-11-05T00:00:00Z"),
-						endTime: new Date("2024-11-05T00:00:00Z"),
-					},
-					{
-						id: 1,
-						ownerEmail: "2",
-						member: "7",
-						eventName: "Hello",
-						sport: "BasketBall",
-						location: "Artoc",
-						description: "smth",
-						startTime: new Date("2024-11-05T00:00:00Z"),
-						endTime: new Date("2024-11-05T00:00:00Z"),
-					},
-				];
-			}, 1000);
+			if (!model.sidebarModel)
+				model.sidebarModel = getSidebarModel(pm, router, 3);
+			model.sidebarModel.setup();
+
+			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
+			model.headerModel.setup();
+
+			model.fetchData();
+
+			// setTimeout(() => {
+			// 	pm().partyPostsList = [
+			// 		{
+			// 			id: 0,
+			// 			ownerEmail: "1",
+			// 			member: "another person",
+			// 			eventName: "Wow",
+			// 			sport: "Football",
+			// 			location: "Basily",
+			// 			description: "another thing",
+			// 			startTime: new Date("2024-11-05T00:00:00Z"),
+			// 			endTime: new Date("2024-11-05T00:00:00Z"),
+			// 		},
+			// 		{
+			// 			id: 1,
+			// 			ownerEmail: "2",
+			// 			member: "7",
+			// 			eventName: "Hello",
+			// 			sport: "BasketBall",
+			// 			location: "Artoc",
+			// 			description: "smth",
+			// 			startTime: new Date("2024-11-05T00:00:00Z"),
+			// 			endTime: new Date("2024-11-05T00:00:00Z"),
+			// 		},
+			// 	];
+			// }, 1000);
+		},
+		fetchData: async function (isForceUpdate?: boolean): Promise<void> {
+			const page = pm().pmHeader.currentPage;
+			const recordsPerPage = pm().pmHeader.currentRecordsPerPage;
+			const searchQuery = pm().pmHeader.currentSearchQuery;
+
+			if (
+				!isForceUpdate &&
+				page == model.fetchedParams.page &&
+				recordsPerPage == model.fetchedParams.records &&
+				searchQuery == model.fetchedParams.searchQuery
+			)
+				return;
+
+			const { partyPostsCount, partyPostsList }: PartyPostsListData =
+				await getPartyPosts({
+					page: page,
+					recordsPerPage: recordsPerPage,
+					searchQuery: searchQuery,
+				});
+			model.partyPostssData = partyPostsList;
+			pm().partyPostsList = model.partyPostssData;
+
+			model.fetchedParams = {
+				page: page,
+				records: recordsPerPage,
+				searchQuery: searchQuery,
+			};
+
+			const pagesCount =
+				partyPostsCount > 0 ? Math.ceil(partyPostsCount / recordsPerPage) : 1;
+			if (model.headerModel) model.headerModel.setPagesCount(pagesCount);
+			if (model.headerModel) model.headerModel.setCurrentPage(page);
+		},
+		onPageChange: function (): void {
+			model.fetchData();
+		},
+		onRecordsPerPageChange: function (): void {
+			model.fetchData();
+		},
+		onSearch: function (): void {
+			model.fetchData();
 		},
 	};
 

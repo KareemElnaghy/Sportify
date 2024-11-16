@@ -23,9 +23,9 @@ export async function db_getCourts(data: getCourtsData): Promise<Court[]> {
 		where: {
 			OR: [
 				{ name: { contains: data.searchQuery, mode: "insensitive" } },
-				{ description: { contains: data.searchQuery, mode: "insensitive" } },
-				{ sport: { contains: data.searchQuery, mode: "insensitive" } },
-				{ location: { contains: data.searchQuery, mode: "insensitive" } },
+				// { description: { contains: data.searchQuery, mode: "insensitive" } },
+				// { sport: { contains: data.searchQuery, mode: "insensitive" } },
+				// { location: { contains: data.searchQuery, mode: "insensitive" } },
 			],
 		},
 		orderBy: {

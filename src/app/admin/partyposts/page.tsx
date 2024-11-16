@@ -8,13 +8,15 @@ import {
 	PMPartyPostsList,
 } from "@/PMs/PartyPosts/PartyPostsListPM";
 import { getPartyPostsListModel } from "@/Models/PartyPosts/PartyPostsListModel";
+import { useRouter } from "next/navigation";
 
 export default function PartyPostsListPage() {
+	const router = useRouter();
 	const { obj: pm, ref: pmRef } = useStateObject<PMPartyPostsList>(
 		default_PMPartyPostsList
 	);
 	const model = useMemo(() => {
-		const model = getPartyPostsListModel(pmRef);
+		const model = getPartyPostsListModel(pmRef, router);
 		model.setup();
 		return model;
 	}, []);

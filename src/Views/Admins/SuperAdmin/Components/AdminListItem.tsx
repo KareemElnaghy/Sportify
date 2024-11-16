@@ -26,8 +26,8 @@ export default function AdminListItem({
 					}}
 				/>
 			</td>
-			<td>{admin.firstName}</td>
-			<td>{admin.lastName}</td>
+			<td>{`${admin.firstName} ${admin.lastName}`}</td>
+			<td>{admin.email}</td>
 			<td>
 				<button className="edit-btn">
 					<BiEdit />

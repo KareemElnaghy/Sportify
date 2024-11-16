@@ -1,19 +1,17 @@
 import {
-	db_getStudents,
-	db_getStudentsSize,
-} from "@/libs/DBCommunicator/Students/StudentsDB";
+	db_getAdmins,
+	db_getAdminsSize,
+} from "@/libs/DBCommunicator/Admins/AdminsDB";
+import Admin from "@/types/Admin";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
-import Student from "@/types/Student";
 import { NextRequest, NextResponse } from "next/server";
 
-interface StudentsListAPIResponse {
-	studentsCount: number;
-	studentsList: Student[];
+interface AdminsListAPIResponse {
+	adminsCount: number;
+	adminsList: Admin[];
 }
 
-export async function GET(
-	req: NextRequest
-): NextAPIRes<StudentsListAPIResponse> {
+export async function GET(req: NextRequest): NextAPIRes<AdminsListAPIResponse> {
 	const p: string | null = req.nextUrl.searchParams.get("page");
 	const page: number = p ? Number(p) : 1;
 
@@ -22,18 +20,18 @@ export async function GET(
 
 	const s: string | null = req.nextUrl.searchParams.get("searchQuery");
 
-	const res: Student[] = await db_getStudents({
+	const res: Admin[] = await db_getAdmins({
 		page: page,
 		recordsPerPage: recordsPerPage,
 		searchQuery: s,
 	});
 
-	const count: number = await db_getStudentsSize();
+	const count: number = await db_getAdminsSize();
 
 	return NextResponse.json(
-		getOkResponse<StudentsListAPIResponse>({
-			studentsCount: count,
-			studentsList: res,
+		getOkResponse<AdminsListAPIResponse>({
+			adminsCount: count,
+			adminsList: res,
 		})
 	);
 }

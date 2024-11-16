@@ -1,26 +1,25 @@
 import Student from "@/types/Student";
 import { default_PMSidebar, PMSidebar } from "../Components/SidebarPM";
+import { default_PMHeader, PMHeader } from "../Components/HeaderPM";
 
 export interface PMStudentList {
-  studentsList: Student[];
-  //sidebar
-  pmSidebar: PMSidebar;
-  //search
-  Search: string;
-  onSearchChange: () => void;
-  //selection
-  currentSelection: boolean[];
-  onSelectionChanged: () => void;
+	studentsList: Student[];
+	//sidebar
+	pmSidebar: PMSidebar;
+	// header
+	pmHeader: PMHeader;
+	//selection
+	currentSelection: boolean[];
+	onSelectionChanged: () => void;
 }
 
 export const default_PMStudentList: PMStudentList = {
-  studentsList: [],
-  //sidebar
-  pmSidebar: default_PMSidebar,
-  //search
-  Search: "",
-  onSearchChange: () => {},
-  //selection
-  currentSelection: [],
-  onSelectionChanged: () => {},
+	studentsList: [],
+	//sidebar
+	pmSidebar: default_PMSidebar,
+	// header
+	pmHeader: default_PMHeader,
+	//selection
+	currentSelection: [],
+	onSelectionChanged: () => {},
 };

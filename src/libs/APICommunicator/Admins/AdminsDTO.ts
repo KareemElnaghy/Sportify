@@ -1,14 +1,24 @@
 import APIResponse from "@/types/APIResponse";
-import AdminLogin from "@/types/AdminLogin";
+import Admin from "@/types/Admin";
 
-type AdminDTO = AdminLogin;
+interface AdminsListDTO {
+	adminsCount: number;
+	adminsList: Admin[];
+}
+
+export interface AdminsListData {
+	adminsCount: number;
+	adminsList: Admin[];
+}
 
 export const AdminDTOExtractor = (
 	api_response: APIResponse<any>
-): AdminLogin[] => {
-	return api_response.result as AdminLogin[];
+): AdminsListDTO => {
+	return api_response.result as AdminsListDTO;
 };
 
-export const AdminDTOTransformer = (dto_object: AdminDTO[]): AdminLogin[] => {
+export const AdminDTOTransformer = (
+	dto_object: AdminsListDTO
+): AdminsListData => {
 	return dto_object;
 };

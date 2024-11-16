@@ -2,13 +2,24 @@ import { PMSuperAdmin } from "@/PMs/Admins/SuperAdmin/SuperAdminPM";
 import Admin from "@/types/Admin";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
+import { AdminsListData } from "@/libs/APICommunicator/Admins/AdminsDTO";
+import { getAdmins } from "@/libs/APICommunicator/Admins/AdminsAPI";
 
 export interface SuperAdminModel {
 	sidebarModel: SidebarModel | null;
 	headerModel: HeaderModel | null;
 
-	admins: Admin[];
+	fetchedParams: {
+		page: number;
+		records: number;
+		searchQuery: string;
+	};
+
+	adminsData: Admin[];
 	setup: () => Promise<void>;
+
+	fetchData: (isForceUpdate?: boolean) => Promise<void>;
+
 	onAddAdmin: () => void;
 
 	onPageChange: () => void;
@@ -24,7 +35,13 @@ export function getSuperAdminModel(
 		sidebarModel: null,
 		headerModel: null,
 
-		admins: [], // write API to get admins but get only certain data,
+		fetchedParams: {
+			page: 0,
+			records: 0,
+			searchQuery: "",
+		},
+
+		adminsData: [], // write API to get admins but get only certain data,
 		setup: async () => {
 			if (!model.sidebarModel)
 				model.sidebarModel = getSidebarModel(pm, router, 0);
@@ -42,29 +59,58 @@ export function getSuperAdminModel(
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
 
-			//test
-			const dummyData: Admin[] = [
-				{
-					email: "alice.johnson@example.com",
-					firstName: "Alice",
-					lastName: "Johnson",
-				},
-				{
-					email: "john.smith@example.com",
-					firstName: "John",
-					lastName: "Smith",
-				},
-			];
-
-			// Set studentsData to the dummy data
-			model.admins = dummyData;
-			pm().adminslist = model.admins;
-
-			pm().onAddAdmin = model.onAddAdmin;
+			model.fetchData();
 		},
+
+		fetchData: async function (isForceUpdate?: boolean): Promise<void> {
+			const page = pm().pmHeader.currentPage;
+			const recordsPerPage = pm().pmHeader.currentRecordsPerPage;
+			const searchQuery = pm().pmHeader.currentSearchQuery;
+
+			if (
+				!isForceUpdate &&
+				page == model.fetchedParams.page &&
+				recordsPerPage == model.fetchedParams.records &&
+				searchQuery == model.fetchedParams.searchQuery
+			)
+				return;
+
+			const { adminsCount, adminsList }: AdminsListData = await getAdmins({
+				page: page,
+				recordsPerPage: recordsPerPage,
+				searchQuery: searchQuery,
+			});
+			model.adminsData = adminsList;
+			pm().adminslist = model.adminsData;
+
+			model.fetchedParams = {
+				page: page,
+				records: recordsPerPage,
+				searchQuery: searchQuery,
+			};
+
+			const pagesCount =
+				adminsCount > 0 ? Math.ceil(adminsCount / recordsPerPage) : 1;
+			if (model.headerModel) model.headerModel.setPagesCount(pagesCount);
+			if (model.headerModel) model.headerModel.setCurrentPage(page);
+
+			// const dummyData: Admin[] = [
+			// 	{
+			// 		email: "alice.johnson@example.com",
+			// 		firstName: "Alice",
+			// 		lastName: "Johnson",
+			// 	},
+			// 	{
+			// 		email: "john.smith@example.com",
+			// 		firstName: "John",
+			// 		lastName: "Smith",
+			// 	},
+			// ];
+		},
+
 		onAddAdmin: () => {
 			//query to add Admin to DB
-			//query to pull new admins or just add data
+			//query to pull new admins
 			//pm.admins = model.admins;
 		},
 

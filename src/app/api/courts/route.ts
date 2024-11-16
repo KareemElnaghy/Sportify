@@ -11,36 +11,55 @@ export async function GET(req: NextRequest): NextAPIRes<Court[]> {
 
 interface CourtCreationParams {
 	name: string;
+	description?: string;
+	location?: string;
 	sport: string;
 }
 
+type NewCourt = Omit<Court, "id">;
+
 export async function POST(req: NextRequest): NextAPIRes<Court> {
 	const body: CourtCreationParams = await req.json();
-	let res: Court; // fetch res
-	// let res: Court = {
-	//     id: 0, auto
-	//     name: body.name,
-	//     sport: body.sport,
-	//     location: body.location || "",
-	//     description: body.description || ""
-	// };
+	const courtReq: NewCourt = {
+		name: body.name,
+		description: body.description || "",
+		location: body.location || "",
+		sport: body.sport,
+	};
+	// TODO: call db and create  object
+	const res: Court = { ...courtReq, id: 0 };
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
 interface CourtUpdateParams {
 	name?: string;
-	sport?: string;
-	location?: string;
 	description?: string;
+	location?: string;
+	sport?: string;
 }
+type UpdateCourt = Partial<Court> & { id: Court["id"] };
 export async function PUT(req: NextRequest): NextAPIRes<Court> {
-	req.body;
 	const body: CourtUpdateParams = await req.json();
-	let res: Court; // fetch res
+	let updateReq: UpdateCourt = {
+		id: 0,
+		...(body.name && { name: body.name }),
+		...(body.description && { description: body.description }),
+		...(body.location && { location: body.location }),
+		...(body.sport && { sport: body.sport }),
+	};
+	// perform update and get updated data
+	const res: Court = {
+		id: 0,
+		name: "",
+		sport: "",
+		location: "",
+		description: "",
+	};
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
-	const body: number[] = await req.json();
+	const body: Court["id"][] = await req.json();
+	// delete ids
 	return NextResponse.json(getOkResponse("SUCCESS"));
 }

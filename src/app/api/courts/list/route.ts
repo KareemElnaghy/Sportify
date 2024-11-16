@@ -1,4 +1,7 @@
-import { db_getCourts } from "@/libs/DBCommunicator/Courts/CourtsDB";
+import {
+	db_getCourts,
+	db_getCourtsSize,
+} from "@/libs/DBCommunicator/Courts/CourtsDB";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
 import Court from "@/types/Court";
 import { NextRequest, NextResponse } from "next/server";
@@ -23,9 +26,11 @@ export async function GET(req: NextRequest): NextAPIRes<CourtsListAPIResponse> {
 		searchQuery: s,
 	});
 
+	const count: number = await db_getCourtsSize();
+
 	return NextResponse.json(
 		getOkResponse<CourtsListAPIResponse>({
-			courtsCount: 0,
+			courtsCount: count,
 			courtsList: res,
 		})
 	);

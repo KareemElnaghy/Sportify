@@ -24,12 +24,8 @@ export interface CourtsListModel {
 	fetchData: (isForceUpdate?: boolean) => Promise<void>;
 
 	onPageChange: () => void;
-
 	onRecordsPerPageChange: () => void;
-
 	onSearch: () => void;
-
-	onSelectionChanged: () => void;
 }
 
 export function getCourtsListModel(
@@ -54,8 +50,6 @@ export function getCourtsListModel(
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
-
-			pm().onSelectionChanged = model.onSelectionChanged;
 
 			model.fetchData();
 		},
@@ -102,10 +96,6 @@ export function getCourtsListModel(
 		},
 
 		onSearch: () => {
-			model.fetchData();
-		},
-
-		onSelectionChanged: () => {
 			model.fetchData();
 		},
 	};
