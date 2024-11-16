@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
 	const router = useRouter();
-	const pm = useStateObject<PMAdminLogin>(default_PMAdminLogin);
+	const { obj: pm, ref: pmRef } =
+		useStateObject<PMAdminLogin>(default_PMAdminLogin);
 	const model = useMemo(() => {
-		const model = getAdminLoginModel(pm, router);
+		const model = getAdminLoginModel(pmRef, router);
 		model.setup();
 		return model;
 	}, []);

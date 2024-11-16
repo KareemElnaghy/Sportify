@@ -21,7 +21,9 @@ export default function SuperAdminView({ pm }: propsType) {
 
 	const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
 	useEffect(() => {
-		pm.currentSelection = Array(pm.adminslist.length).fill(false);
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.adminslist.length).fill(false);
+		});
 	}, [pm.adminslist]);
 
 	return (

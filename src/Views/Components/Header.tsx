@@ -97,7 +97,7 @@ export default function Header({ pm, pageTitle }: HeaderProps) {
 						className="select-page"
 						value={pm.currentRecordsPerPage}
 						onChange={(e) => {
-							pm.currentRecordsPerPage = parseInt(e.target.value);
+							pm.currentRecordsPerPage = Number(e.target.value);
 							pm.onRecordsPerPageChange();
 						}}
 					>

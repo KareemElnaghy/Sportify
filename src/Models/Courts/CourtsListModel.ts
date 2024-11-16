@@ -1,11 +1,13 @@
 import Court from "@/types/Court";
 import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
-import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
+import { default_PMCourtsList, PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import {
 	getSidebarModel,
 	SidebarModel,
 } from "@/Models/Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
+import { CourtsListData } from "@/libs/APICommunicator/Courts/CourtsDTO";
+import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 export interface CourtsListModel {
 	sidebarModel: SidebarModel | null;
@@ -14,21 +16,26 @@ export interface CourtsListModel {
 	courtsData: Court[];
 	setup: () => Promise<void>;
 
+	fetchData: () => Promise<void>;
+
 	onPageChange: () => void;
 
 	onRecordsPerPageChange: () => void;
 
 	onSearch: () => void;
+
+	onSelectionChanged: () => void;
 }
 
 export function getCourtsListModel(
-	pm: PMCourtsList,
+	pm: () => PMCourtsList,
 	router: any
 ): CourtsListModel {
 	const model: CourtsListModel = {
 		courtsData: [],
 		sidebarModel: null,
 		headerModel: null,
+
 		setup: async () => {
 			if (!model.sidebarModel)
 				model.sidebarModel = getSidebarModel(pm, router, 2);
@@ -37,37 +44,42 @@ export function getCourtsListModel(
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
 
-			let courtsList: Court[] = await getCourts({ page: 1 });
+			pm().onSelectionChanged = model.onSelectionChanged;
+
+			model.fetchData();
+		},
+
+		fetchData: async () => {
+			const page = pm().pmHeader.currentPage;
+			const recordsPerPage = pm().pmHeader.currentRecordsPerPage;
+
+			const { courtsCount, courtsList }: CourtsListData = await getCourts({
+				page: page,
+				recordsPerPage: recordsPerPage,
+			});
 			model.courtsData = courtsList;
-			pm.courtsList = model.courtsData;
-			// adjust pages in headerModel
-			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount(x);
-			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+			pm().courtsList = model.courtsData;
+
+			const pagesCount =
+				courtsCount > 0 ? Math.ceil(courtsCount / recordsPerPage) : 1;
+			if (model.headerModel) model.headerModel.setPagesCount(pagesCount);
+			if (model.headerModel) model.headerModel.setCurrentPage(page);
 		},
 
 		onPageChange: () => {
-			// TODO:
-			// logic to request new page
-			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount(x);
-			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+			model.fetchData();
 		},
 
 		onRecordsPerPageChange: () => {
-			// TODO:
-			// logic to request new page with correct records amount
-			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount(x);
-			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+			model.fetchData();
 		},
 
 		onSearch: () => {
-			// TODO:
-			// logic to request from backend new page with correct searched data
-			// update pages by
-			// if (model.headerModel) model.headerModel.setPagesCount(x);
-			// if (model.headerModel) model.headerModel.setCurrentPage(x);
+			// model.fetchData();
+		},
+
+		onSelectionChanged: () => {
+			// console.log("selection", pm().currentSelection);
 		},
 	};
 

@@ -1,13 +1,18 @@
-import Court from "@/types/Court";
 import { APIConnector } from "../APIConnector";
-import { CourtsListDTOExtractor, CourtsListDTOTransformer } from "./CourtsDTO";
+import {
+	CourtsListData,
+	CourtsListDTOExtractor,
+	CourtsListDTOTransformer,
+} from "./CourtsDTO";
 
 interface getCourtsData {
 	page: number;
+	recordsPerPage: number;
 }
-export async function getCourts(data: getCourtsData): Promise<Court[]> {
+export async function getCourts(data: getCourtsData): Promise<CourtsListData> {
 	const response = await APIConnector.get("/api/courts/list", {
 		page: `${data.page}`,
+		recordsPerPage: `${data.recordsPerPage}`,
 	});
 	const responseDTO = CourtsListDTOExtractor(response);
 	const result = CourtsListDTOTransformer(responseDTO);

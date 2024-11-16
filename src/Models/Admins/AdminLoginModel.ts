@@ -7,12 +7,12 @@ export interface AdminLoginModel {
 }
 
 export function getAdminLoginModel(
-	pm: PMAdminLogin,
+	pm: () => PMAdminLogin,
 	router: AppRouterInstance
 ): AdminLoginModel {
 	const model: AdminLoginModel = {
 		setup: async () => {
-			pm.onLOGIN = model.onLogin;
+			pm().onLOGIN = model.onLogin;
 		},
 		onLogin: () => {
 			router.push("/admin/superadmin");

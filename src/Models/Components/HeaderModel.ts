@@ -21,15 +21,15 @@ export interface HeaderModel {
 }
 
 export function getHeaderModel<T extends PageWithHeader, S extends ParentModel>(
-	pagePM: PageWithHeader,
+	pagePM: () => T,
 	parentModel: S
 ): HeaderModel {
 	const model: HeaderModel = {
 		setup: async () => {
-			const newHeaderPM: PMHeader = pagePM.pmHeader;
+			const newHeaderPM: PMHeader = pagePM().pmHeader;
 			newHeaderPM.onPageChange = model.onPageChange;
 			newHeaderPM.onRecordsPerPageChange = model.onRecordsPerPageChange;
-			pagePM.pmHeader = newHeaderPM;
+			pagePM().pmHeader = newHeaderPM;
 		},
 		onPageChange: () => {
 			parentModel.onPageChange();
@@ -37,14 +37,18 @@ export function getHeaderModel<T extends PageWithHeader, S extends ParentModel>(
 		onRecordsPerPageChange: () => {
 			parentModel.onRecordsPerPageChange();
 		},
-		onSearch: () => {},
+		onSearch: () => {
+			parentModel.onSearch();
+		},
 
 		setPagesCount: (newPagesCount: number) => {
-			pagePM.pmHeader = { ...pagePM.pmHeader, pagesCount: newPagesCount };
+			const newHeaderPM: PMHeader = pagePM().pmHeader;
+			newHeaderPM.pagesCount = newPagesCount;
+			pagePM().pmHeader = newHeaderPM;
 			// possibly clear the currentPage to 1
 		},
 		setCurrentPage: (newCurrentPage: number) => {
-			pagePM.pmHeader = { ...pagePM.pmHeader, currentPage: newCurrentPage };
+			pagePM().pmHeader = { ...pagePM().pmHeader, currentPage: newCurrentPage };
 		},
 	};
 

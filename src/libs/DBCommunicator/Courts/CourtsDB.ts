@@ -16,3 +16,8 @@ export async function db_getCourts(data: getCourtsData): Promise<Court[]> {
 	const result = CourtsListDTOTransformer(responseDTO);
 	return result;
 }
+
+export async function db_getCourtsSize(): Promise<number> {
+	const response = await prisma.court.count();
+	return response;
+}

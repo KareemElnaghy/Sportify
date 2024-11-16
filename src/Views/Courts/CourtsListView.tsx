@@ -18,7 +18,9 @@ export default function CourtsListView({ pm }: propsType) {
 	});
 
 	useEffect(() => {
-		pm.currentSelection = Array(pm.courtsList.length).fill(false);
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.courtsList.length).fill(false);
+		});
 	}, [pm.courtsList]);
 
 	return (

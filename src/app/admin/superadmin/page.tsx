@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 
 export default function SuperAdminPage() {
 	const router = useRouter();
-	const pm = useStateObject<PMSuperAdmin>(default_PMSuperAdmin);
+	const { obj: pm, ref: pmRef } =
+		useStateObject<PMSuperAdmin>(default_PMSuperAdmin);
 	const model = useMemo(() => {
-		const model = getSuperAdminModel(pm, router);
+		const model = getSuperAdminModel(pmRef, router);
 		model.setup();
 		return model;
 	}, []);

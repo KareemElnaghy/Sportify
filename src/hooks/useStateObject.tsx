@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, MutableRefObject, useEffect } from "react";
+import { flushSync } from "react-dom";
 
 // export type ShallowState<T> = {
 // 	[P in keyof T]: Readonly<T[P]>;
@@ -8,19 +9,31 @@ import { useState, useMemo } from "react";
 
 export function useStateObject<S extends object>(
 	initialState: S | (() => S)
-): S {
+): { obj: S; ref: () => S } {
 	const [state, setState] = useState(initialState);
-	return useMemo(
-		() =>
-			new Proxy<S>(state, {
-				set: (target: S, prop: string | symbol, value: any) => {
-					// Only really care about setting state, so do a partial set based on the key
+	const ObjRef = useRef(state);
+
+	useEffect(() => {
+		ObjRef.current = prox.obj;
+	}, [state]);
+
+	const prox = useMemo(() => {
+		const res = new Proxy<S>(state, {
+			set: (target: S, prop: string | symbol, value: any) => {
+				// Only really care about setting state, so do a partial set based on the key
+				flushSync(() => {
 					setState((prevState: S) => ({ ...prevState, [prop]: value }));
-					return true;
-				},
-			}),
-		[state, setState]
-	);
+				});
+				return true;
+			},
+			get: (target: S, p: string | symbol) => {
+				return state[p as keyof S];
+			},
+		});
+
+		return { obj: res, ref: () => ObjRef.current };
+	}, [state, setState]);
+	return prox;
 }
 
 export function getProxyOnAttribute<S extends Object, T extends Object>(
@@ -32,6 +45,9 @@ export function getProxyOnAttribute<S extends Object, T extends Object>(
 		set: (target: T, prop: string | symbol, value: any) => {
 			parent[attributeName as keyof S] = { ...target, [prop]: value } as any;
 			return true;
+		},
+		get: (target: T, p: string | symbol) => {
+			return (parent[attributeName as keyof S] as T)[p as keyof T];
 		},
 	});
 }

@@ -10,9 +10,11 @@ import { getStudentListModel } from "@/Models/Students/StudentsListModel";
 import StudentsListView from "@/Views/Students/StudentsListView";
 
 export default function StudentsPage() {
-	const pm = useStateObject<PMStudentList>(default_PMStudentList);
+	const { obj: pm, ref: pmRef } = useStateObject<PMStudentList>(
+		default_PMStudentList
+	);
 	const model = useMemo(() => {
-		const model = getStudentListModel(pm);
+		const model = getStudentListModel(pmRef);
 		model.setup();
 		return model;
 	}, []);

@@ -16,7 +16,9 @@ export default function PartyPostsListView({ pm }: propsType) {
 	});
 
 	useEffect(() => {
-		pm.currentSelection = Array(pm.partyPostsList.length).fill(false);
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.partyPostsList.length).fill(false);
+		});
 	}, [pm.partyPostsList]);
 
 	return (

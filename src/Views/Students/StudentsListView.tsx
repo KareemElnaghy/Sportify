@@ -16,7 +16,9 @@ export default function StudentsListView({ pm }: propsType) {
 	});
 
 	useEffect(() => {
-		pm.currentSelection = Array(pm.studentsList.length).fill(false);
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.studentsList.length).fill(false);
+		});
 	}, [pm.studentsList]);
 
 	return (

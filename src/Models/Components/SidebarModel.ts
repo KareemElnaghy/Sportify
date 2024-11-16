@@ -11,14 +11,14 @@ export interface SidebarModel {
 }
 
 export function getSidebarModel<T extends PageWithSidebar>(
-	pagePM: T,
+	pagePM: () => T,
 	router: any,
 	currentActive: number
 ): SidebarModel {
 	const model: SidebarModel = {
 		linkNames: [],
 		setup: async () => {
-			const newSidebarPM: PMSidebar = pagePM.pmSidebar;
+			const newSidebarPM: PMSidebar = pagePM().pmSidebar;
 			newSidebarPM.linkNames = [
 				"Dashboard",
 				"Students List",
@@ -30,7 +30,7 @@ export function getSidebarModel<T extends PageWithSidebar>(
 			];
 			newSidebarPM.currentActive = currentActive;
 			newSidebarPM.onLinkFollowed = model.onLinkFollowed;
-			pagePM.pmSidebar = newSidebarPM;
+			pagePM().pmSidebar = newSidebarPM;
 		},
 		onLinkFollowed: (index: number) => {
 			// fill the routing

@@ -17,7 +17,7 @@ export interface SuperAdminModel {
 }
 
 export function getSuperAdminModel(
-	pm: PMSuperAdmin,
+	pm: () => PMSuperAdmin,
 	router: any
 ): SuperAdminModel {
 	const model: SuperAdminModel = {
@@ -58,9 +58,9 @@ export function getSuperAdminModel(
 
 			// Set studentsData to the dummy data
 			model.admins = dummyData;
-			pm.adminslist = model.admins;
+			pm().adminslist = model.admins;
 
-			pm.onAddAdmin = model.onAddAdmin;
+			pm().onAddAdmin = model.onAddAdmin;
 		},
 		onAddAdmin: () => {
 			//query to add Admin to DB

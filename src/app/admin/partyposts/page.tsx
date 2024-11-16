@@ -3,14 +3,18 @@
 import { useStateObject } from "@/hooks/useStateObject";
 import { useMemo } from "react";
 import PartyPostsListView from "@/Views/PartyPosts/PartyPostsListView";
-import { default_PMPartyPostsList, 
-		PMPartyPostsList } from "@/PMs/PartyPosts/PartyPostsListPM";
+import {
+	default_PMPartyPostsList,
+	PMPartyPostsList,
+} from "@/PMs/PartyPosts/PartyPostsListPM";
 import { getPartyPostsListModel } from "@/Models/PartyPosts/PartyPostsListModel";
 
 export default function PartyPostsListPage() {
-	const pm = useStateObject<PMPartyPostsList>(default_PMPartyPostsList);
+	const { obj: pm, ref: pmRef } = useStateObject<PMPartyPostsList>(
+		default_PMPartyPostsList
+	);
 	const model = useMemo(() => {
-		const model = getPartyPostsListModel(pm);
+		const model = getPartyPostsListModel(pmRef);
 		model.setup();
 		return model;
 	}, []);
