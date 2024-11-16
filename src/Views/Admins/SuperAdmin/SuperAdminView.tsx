@@ -9,6 +9,7 @@ import AddAdminForm, {
 } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
 import Header from "@/Views/Components/Header";
 import { getSidebarPM } from "@/PMs/Components/SidebarPM";
+import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 interface propsType {
 	pm: PMSuperAdmin;
@@ -40,7 +41,7 @@ export default function SuperAdminView({ pm }: propsType) {
 				/>
 			)}
 			<div className="main-content">
-				<Header pm={pm.pmHeader} pageTitle={"Admins List"} />
+				<Header pm={getHeaderPM(pm)} pageTitle={"Admins List"} />
 				<button
 					className="add-admin-btn"
 					onClick={() => {

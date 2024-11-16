@@ -18,7 +18,6 @@ export async function getPartyPosts(
 		recordsPerPage: `${data.recordsPerPage}`,
 		...(data.searchQuery != "" && { searchQuery: data.searchQuery }), // optional param only added if not empty
 	});
-	console.log(response);
 	const responseDTO = PartyPostsListDTOExtractor(response);
 	const result = PartyPostsListDTOTransformer(responseDTO);
 	return result;

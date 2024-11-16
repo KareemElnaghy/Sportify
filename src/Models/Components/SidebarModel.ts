@@ -34,6 +34,20 @@ export function getSidebarModel<T extends PageWithSidebar>(
 		},
 		onLinkFollowed: (index: number) => {
 			// fill the routing
+			switch (index) {
+				case 0:
+					router.push("/admin/superadmin");
+					break;
+				case 1:
+					router.push("/admin/students");
+					break;
+				case 2:
+					router.push("/admin/courts");
+					break;
+				case 3:
+					router.push("/admin/partyposts");
+					break;
+			}
 		},
 	};
 
