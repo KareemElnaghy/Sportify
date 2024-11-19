@@ -23,8 +23,7 @@ export default function SuperAdminView({ pm }: propsType) {
     document.title = "Admins List";
   });
 
-  const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] =
-    useState(false);
+  const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] = useState(false);
   const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
 
   useEffect(() => {
@@ -72,6 +71,9 @@ export default function SuperAdminView({ pm }: propsType) {
         >
           ADD NEW ADMIN +{" "}
         </button>
+        <button className = "delete-selected-btn">
+					DELETE SELECTED
+				</button>
         <AdminList pm={pm} openEditPasswordPopup={openEditPasswordPopup} />
       </div>
     </div>

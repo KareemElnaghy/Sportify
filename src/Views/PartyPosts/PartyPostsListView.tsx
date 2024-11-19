@@ -9,6 +9,7 @@ import Header from "@/Views/Components/Header";
 import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 import EditPartyForm, { PostDetails } from "./Components/EditParty";
 import PartyPost from "@/types/PartyPost";
+import AddPartyForm, {newPartyData } from "./Components/AddParty";
 
 interface propsType {
   pm: PMPartyPostsList;
@@ -31,6 +32,7 @@ export default function PartyPostsListView({ pm }: propsType) {
   const openEditPopupWithPost = (post: PartyPost) => {
     setIsEditPartyPopupOpen(post);
   };
+  const [isAddPartyPopupOpen, setIsAddPartyPopupOpen] = useState(false);
 
   return (
     <div className="container">
@@ -46,8 +48,31 @@ export default function PartyPostsListView({ pm }: propsType) {
           }}
         />
       )}
+
+      {isAddPartyPopupOpen && (
+        <AddPartyForm
+          onClose={() => {
+            setIsAddPartyPopupOpen(false);
+          }}
+          onSubmit={async (partyData: newPartyData) => {
+            // pm.onAddAdmin();
+          }}
+        />
+      )}
+
       <div className="main-content">
         <Header pm={getHeaderPM(pm)} pageTitle="Party Posts List" />
+        <button
+					className="add-party-btn"
+					onClick={() => {
+						setIsAddPartyPopupOpen(true);
+					}}
+        >
+          ADD NEW PARTY +{" "}
+        </button>
+        <button className = "delete-selected-btn">
+					DELETE SELECTED
+				</button>
         <PartyPostsList pm={pm} openEditPopupWithPost={openEditPopupWithPost} />
       </div>
     </div>

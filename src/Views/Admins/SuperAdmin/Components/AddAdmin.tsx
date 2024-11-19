@@ -55,6 +55,7 @@ export default function AddAdminForm({ onClose, onSubmit }: Props) {
               required
             />
           </div>
+          
         </div>
         <div className="bottom-actions">
           <button type="submit" className="popup-btnAction">

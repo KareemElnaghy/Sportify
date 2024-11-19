@@ -72,3 +72,18 @@ h2 {
   color: black;
   font-size: 25px;
 }
+.delete-selected-btn {
+  background-color: #384c7c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+  float: right;
+  margin-bottom: 20px;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.delete-selected-btn:hover {
+  background-color: #b1c9eb;
+}
+

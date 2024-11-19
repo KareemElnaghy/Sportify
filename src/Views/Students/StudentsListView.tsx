@@ -28,6 +28,9 @@ export default function StudentsListView({ pm }: propsType) {
 			<Sidebar pm={getSidebarPM(pm)} />
 			<div className="main-content">
 				<Header pm={getHeaderPM(pm)} pageTitle="Students List" />
+				<button className = "delete-selected-btn">
+					DELETE SELECTED
+				</button>
 				<StudentList pm={pm} />
 			</div>
 		</div>
