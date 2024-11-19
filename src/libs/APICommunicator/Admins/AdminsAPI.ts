@@ -20,3 +20,5 @@ export async function getAdmins(data: getAdminData): Promise<AdminsListData> {
 	const result = AdminDTOTransformer(responseDTO);
 	return result;
 }
+
+
