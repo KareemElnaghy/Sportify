@@ -27,9 +27,9 @@ export default function CourtsListItem({
       <td>
         <button className="view-btn">VIEW</button>
       </td>
-      <td>
+      {/* <td>
         <button className="edit-btn"> EDIT </button>
-      </td>
+      </td> */}
       {/* <td>
         <label className="switch">
           <span className="slider round"></span>

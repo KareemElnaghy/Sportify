@@ -54,7 +54,6 @@ export default function CourtsList({ pm }: CourtsListProps) {
 					</th>
 					<th>Court Name</th>
 					<th>Court Details</th>
-					<th>Edit Court</th>
 					{/* <th>Action</th> */}
 				</tr>
 			</thead>

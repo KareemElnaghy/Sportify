@@ -6,9 +6,13 @@ import PartyPostsListItem from "./PartyPostsListitem";
 
 interface PartyPostsListProps {
   pm: PMPartyPostsList;
+  openEditPopupWithPost: (post: PartyPost) => void;
 }
 
-export default function PartyPostsList({ pm }: PartyPostsListProps) {
+export default function PartyPostsList({
+  pm,
+  openEditPopupWithPost,
+}: PartyPostsListProps) {
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
 
   useEffect(() => {
@@ -28,7 +32,7 @@ export default function PartyPostsList({ pm }: PartyPostsListProps) {
     setSelectAllCheckbox(e.target.checked);
   };
   const handleSelectionChange = (index: number, newVal: boolean) => {
-    let newCurrentSelection = [...pm.currentSelection];
+    const newCurrentSelection = [...pm.currentSelection];
     newCurrentSelection[index] = newVal;
     pm.currentSelection = newCurrentSelection;
 
@@ -57,6 +61,9 @@ export default function PartyPostsList({ pm }: PartyPostsListProps) {
           <PartyPostsListItem
             key={post.id}
             post={post}
+            openEditPopupWithPost={() => {
+              openEditPopupWithPost(post);
+            }}
             selectionValue={pm.currentSelection[index]}
             onSelectionChange={(newVal) => {
               handleSelectionChange(index, newVal);

@@ -29,26 +29,30 @@ input[type="checkbox"] {
 
 .view-btn {
   background-color: #374c7a;
-  border-radius: 5px;
-  padding: 5px 20px;
+  border-radius: 25px 30px;
+  padding: 1px 20px;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
 }
 .edit-btn {
   background-color: #374c7a;
-  border-radius: 5px;
-  padding: 5px 20px;
+  border-radius: 25px 30px;
+  padding: 1px 20px;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
 }
 .view-btn:hover {
   background-color: #b1c9eb;
-  border-radius: 5px;
+  border-radius: 25px 30px;
 }
 
 .edit-btn:hover {
   background-color: #b1c9eb;
-  border-radius: 5px;
+  border-radius: 25px 30px;
 }
 
 /* .switch input {

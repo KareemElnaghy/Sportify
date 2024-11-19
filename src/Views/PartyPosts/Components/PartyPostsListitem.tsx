@@ -1,16 +1,20 @@
 import PartyPost from "@/types/PartyPost";
 import { useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { BiEdit } from "react-icons/bi";
+import Image from "next/image";
+import EditPartyForm, {
+  PostDetails,
+} from "@/Views/PartyPosts/Components/EditParty";
 
 interface PartyPostsListItemProps {
   post: PartyPost;
+  openEditPopupWithPost: () => void;
   selectionValue: boolean;
   onSelectionChange: (val: boolean) => void;
 }
 
 export default function PartyPostsListItem({
   post,
+  openEditPopupWithPost,
   selectionValue,
   onSelectionChange,
 }: PartyPostsListItemProps) {
@@ -30,12 +34,16 @@ export default function PartyPostsListItem({
       <td>9</td>
       <td>{post.startTime.toString()}</td>
       <td>
-        {" "}
-        <button className="edit-btn">
-          <BiEdit />
+        <button
+          className="edit-btn"
+          onClick={() => {
+            openEditPopupWithPost();
+          }}
+        >
+          <Image src="/edit.svg" alt="edit" width={30} height={30} />
         </button>
         <button className="delete-btn">
-          <MdDelete />
+          <Image src="/delete.svg" alt="delete" width={30} height={30} />
         </button>
       </td>
     </tr>

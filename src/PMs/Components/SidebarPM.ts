@@ -1,6 +1,7 @@
 import { getProxyOnAttribute } from "@/hooks/useStateObject";
 
 export interface PMSidebar {
+	icons: any[];
 	linkNames: string[];
 	currentActive: number;
 	onLinkFollowed: (index: number) => void;
