@@ -13,3 +13,5 @@ export type NewCourt = RequirePartials<
   Omit<Court, "id">,
   requiredNewCourtAttributes
 >;
+
+export type NewCourtIncomplete = Partial<NewCourt>;

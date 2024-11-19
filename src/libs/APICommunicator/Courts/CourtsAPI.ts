@@ -1,4 +1,4 @@
-import Court, { NewCourt } from "@/types/Court";
+import Court, { NewCourt, NewCourtIncomplete } from "@/types/Court";
 import { APIConnector } from "../APIConnector";
 import {
   CourtsItemData,
@@ -34,7 +34,7 @@ interface getCourtsItemData {
   courtIds: Court["id"][];
 }
 
-export async function getItems(
+export async function getCourtItems(
   data: getCourtsItemData
 ): Promise<CourtsItemData> {
   const response = await APIConnector.get("/api/courts", {
@@ -61,4 +61,34 @@ export async function addCourt(data: addCourtData): Promise<NewCourtData> {
   const responseDTO = NewCourtDTOExtractor(response);
   const result = NewCourtDTOTransformer(responseDTO);
   return result;
+}
+
+interface addCourtDataIncomplete {
+  court: NewCourtIncomplete;
+}
+
+export async function addCourtIncomplete(
+  data: addCourtDataIncomplete
+): Promise<NewCourtData> {
+  const response = await APIConnector.put(
+    "api/courts",
+    {},
+    {},
+    {
+      court: data.court,
+    }
+  );
+  const responseDTO = NewCourtDTOExtractor(response);
+  const result = NewCourtDTOTransformer(responseDTO);
+  return result;
+}
+
+export async function removeCourt(data: getCourtsItemData): Promise<boolean> {
+  const response = await APIConnector.delete(
+    "api/courts",
+    {},
+    {},
+    { courtIds: data.courtIds.map((id) => `${id}`) }
+  );
+  return true;
 }

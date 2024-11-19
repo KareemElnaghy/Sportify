@@ -64,3 +64,19 @@ export const NewCourtDTOTransformer = (
 ): NewCourtData => {
   return dto_object;
 };
+
+type RemoveCourtDTO = "SUCCESS" | "FAIL";
+
+export type RemoveCourtData = boolean;
+
+export const CourtRemoveExtractor = (
+  api_response: APIResponse<any>
+): RemoveCourtDTO => {
+  return api_response.result as RemoveCourtDTO;
+};
+
+export const CourtRemoveDTOTransformer = (
+  dto_object: RemoveCourtDTO
+): RemoveCourtData => {
+  return dto_object == "SUCCESS";
+};
