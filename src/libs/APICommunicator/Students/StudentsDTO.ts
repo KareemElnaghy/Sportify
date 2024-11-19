@@ -2,23 +2,43 @@ import APIResponse from "@/types/APIResponse";
 import Student from "@/types/Student";
 
 interface StudentsListDTO {
-  studentsCount: number;
-  studentsList: Student[];
+	studentsCount: number;
+	studentsList: Student[];
 }
 
 export interface StudentsListData {
-  studentsCount: number;
-  studentsList: Student[];
+	studentsCount: number;
+	studentsList: Student[];
 }
 
 export const StudentsListDTOExtractor = (
-  api_response: APIResponse<any>
+	api_response: APIResponse<any>
 ): StudentsListDTO => {
-  return api_response.result as StudentsListDTO;
+	return api_response.result as StudentsListDTO;
 };
 
 export const StudentsListDTOTransformer = (
-  dto_object: StudentsListDTO
+	dto_object: StudentsListDTO
 ): StudentsListData => {
-  return dto_object;
+	return dto_object;
+};
+
+interface StudentsItemDTO {
+	studentsList: Student[];
+}
+
+export interface StudentsItemData {
+	studentsList: Student[];
+}
+
+export const StudentsItemDTOExtractor = (
+	api_response: APIResponse<any>
+): StudentsItemDTO => {
+	return api_response.result as StudentsItemDTO;
+};
+
+export const StudentsItemDTOTransformer = (
+	dto_object: StudentsItemDTO
+): StudentsItemData => {
+	return dto_object;
 };

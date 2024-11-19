@@ -3,3 +3,7 @@ export default interface Admin {
 	firstName: string;
 	lastName: string;
 }
+
+export type NewAdmin = Admin;
+
+export type NewAdminIncomplete = Admin;
