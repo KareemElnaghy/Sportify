@@ -155,7 +155,7 @@ export function getStudentListModel(
 				isBanned: isBanned,
 				studentEmails: emails,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onBanSelected: async (isBanned: boolean) => {
@@ -168,7 +168,7 @@ export function getStudentListModel(
 				isBanned: isBanned,
 				studentEmails: selectedEmails,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onPageChange: function (): void {

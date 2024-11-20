@@ -112,7 +112,7 @@ export async function removeCourt(
 		endpoints.default,
 		{},
 		{},
-		{ courtIds: data.courtIds.map((id) => `${id}`) }
+		{ courtIds: data.courtIds }
 	);
 	const responseDTO = RemovedCourtDTOExtractor(response);
 	const result = RemovedCourtDTOTransformer(responseDTO);

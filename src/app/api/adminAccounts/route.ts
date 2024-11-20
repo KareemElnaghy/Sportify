@@ -1,3 +1,9 @@
+import {
+	db_addAdmin,
+	db_deleteAdmin,
+	db_editAdmin,
+	db_getAdminItems,
+} from "@/libs/DBCommunicator/Admins/AdminsDB";
 import { extractListParams } from "@/libs/Utils/URLParameterization";
 import Admin from "@/types/Admin";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
@@ -6,7 +12,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest): NextAPIRes<Admin[]> {
 	let adminEmails: string[] = extractListParams(req, "adminEmails");
 	// fetch from db using courtIds and return res
-	const res: Admin[] = [];
+	const res: Admin[] = await db_getAdminItems({
+		adminEmails: adminEmails,
+	});
 	return NextResponse.json(getOkResponse<Admin[]>(res));
 }
 
@@ -25,8 +33,9 @@ export async function POST(req: NextRequest): NextAPIRes<Admin> {
 		firstName: body.firstName,
 		lastName: body.lastName,
 	};
-	// fetch res
-	const res: Admin = adminReq;
+	const res: Admin = await db_addAdmin({
+		admin: adminReq,
+	});
 	return NextResponse.json(getOkResponse<Admin>(res));
 }
 
@@ -44,11 +53,9 @@ export async function PUT(req: NextRequest): NextAPIRes<Admin> {
 		...(body.lastName && { lastName: body.lastName }),
 	};
 	// fetch res
-	const res: Admin = {
-		email: adminReq.email,
-		firstName: adminReq.firstName || "",
-		lastName: adminReq.lastName || "",
-	};
+	const res: Admin = await db_editAdmin({
+		admin: adminReq,
+	});
 	return NextResponse.json(getOkResponse<Admin>(res));
 }
 
@@ -59,6 +66,13 @@ interface AdminDeleteParams {
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
 	const body: AdminDeleteParams = await req.json();
 	const adminEmails = body.adminEmails;
-	console.log("here", adminEmails);
-	return NextResponse.json(getOkResponse("SUCCESS"));
+	const res = await db_deleteAdmin({
+		adminEmails: adminEmails,
+	});
+
+	if (res) {
+		return NextResponse.json(getOkResponse("SUCCESS"));
+	} else {
+		return NextResponse.json(getOkResponse("FAIL"));
+	}
 }

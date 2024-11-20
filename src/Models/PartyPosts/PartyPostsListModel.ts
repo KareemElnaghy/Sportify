@@ -143,13 +143,13 @@ export function getPartyPostsListModel(
 			const newParty = await addPartyPost({
 				party: partyData,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 		onEditParty: async (partyData: PostDetails) => {
 			const EditedParty = await updatePartyPost({
 				party: partyData,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 		onDelete: async (index: number) => {
 			const ids = [pm().partyPostsList[index].id];
@@ -157,7 +157,7 @@ export function getPartyPostsListModel(
 			const res = await removePartyPost({
 				partyIds: ids,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onDeleteSelected: async () => {
@@ -169,7 +169,7 @@ export function getPartyPostsListModel(
 			const res = await removePartyPost({
 				partyIds: selectedIds,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 	};
 

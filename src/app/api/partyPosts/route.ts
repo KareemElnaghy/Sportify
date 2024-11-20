@@ -1,4 +1,10 @@
 import {
+	db_addPartyPost,
+	db_deletePartyPost,
+	db_editPartyPost,
+	db_getPartyPostItems,
+} from "@/libs/DBCommunicator/PartyPosts/PartyPostsDB";
+import {
 	extractListParams,
 	typecaseParams,
 } from "@/libs/Utils/URLParameterization";
@@ -12,7 +18,9 @@ export async function GET(req: NextRequest): NextAPIRes<PartyPost[]> {
 		Number
 	);
 	// fetch from db using partyIds and return res
-	const res: PartyPost[] = [];
+	const res: PartyPost[] = await db_getPartyPostItems({
+		partyIds: partyIds,
+	});
 	return NextResponse.json(getOkResponse<PartyPost[]>(res));
 }
 
@@ -41,10 +49,9 @@ export async function POST(req: NextRequest): NextAPIRes<PartyPost> {
 		endTime: body.endTime || new Date(),
 	};
 	// fetch res
-	let res: PartyPost = {
-		...partyReq,
-		id: 0,
-	};
+	let res: PartyPost = await db_addPartyPost({
+		party: partyReq,
+	});
 	return NextResponse.json(getOkResponse<PartyPost>(res));
 }
 
@@ -75,17 +82,9 @@ export async function PUT(req: NextRequest): NextAPIRes<PartyPost> {
 		...(body.startTime && { startTime: body.startTime }),
 		...(body.endTime && { endTime: body.endTime }),
 	};
-	let res: PartyPost = {
-		id: 0,
-		ownerEmail: partyReq.ownerEmail || "",
-		member: "",
-		eventName: partyReq.eventName || "",
-		sport: partyReq.sport || "",
-		location: partyReq.location || "",
-		description: partyReq.description || "",
-		startTime: partyReq.startTime || new Date(),
-		endTime: partyReq.endTime || new Date(),
-	};
+	const res: PartyPost = await db_editPartyPost({
+		party: partyReq,
+	});
 	return NextResponse.json(getOkResponse<PartyPost>(res));
 }
 
@@ -95,5 +94,9 @@ interface PartyDeleteParams {
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
 	const body: PartyDeleteParams = await req.json();
 	const partyIds = body.partyIds;
-	return NextResponse.json(getOkResponse("SUCCESS"));
+	const res = await db_deletePartyPost({
+		partyIds: partyIds,
+	});
+	if (res) return NextResponse.json(getOkResponse("SUCCESS"));
+	else return NextResponse.json(getOkResponse("SUCCESS"));
 }

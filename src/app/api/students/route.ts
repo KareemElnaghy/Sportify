@@ -1,3 +1,4 @@
+import { db_banStudent } from "@/libs/DBCommunicator/Students/StudentsDB";
 import { extractListParams } from "@/libs/Utils/URLParameterization";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
 import Student from "@/types/Student";
@@ -57,5 +58,11 @@ export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
 	const studentEmails = body.studentEmails;
 	const isBanned = body.isBanned;
 	// ban students
-	return NextResponse.json(getOkResponse("SUCCESS"));
+	const res = await db_banStudent({
+		isBanned: isBanned,
+		studentEmails: studentEmails,
+	});
+
+	if (res) return NextResponse.json(getOkResponse("SUCCESS"));
+	else return NextResponse.json(getOkResponse("FAIL"));
 }

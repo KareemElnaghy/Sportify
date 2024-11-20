@@ -33,3 +33,43 @@ export const PartyPostsListDTOTransformer = (
 		endTime: c.end_time || new Date(),
 	}));
 };
+
+export const PartyPostsItemsDTOExtractor = (
+	api_response: any[]
+): PartyPostDTO[] => {
+	return api_response as PartyPostDTO[];
+};
+
+export const PartyPostsItemsDTOTransformer = (
+	dto_object: PartyPostDTO[]
+): PartyPost[] => {
+	return dto_object.map((p) => ({
+		id: p.id || 0,
+		ownerEmail: p.owner_email || "",
+		eventName: p.event_name || "",
+		sport: p.sport || "",
+		location: p.court || "",
+		description: "",
+		startTime: p.start_time || new Date(),
+		endTime: p.end_time || new Date(),
+	}));
+};
+
+export const PartyPostDTOExtractor = (api_response: any): PartyPostDTO => {
+	return api_response as PartyPostDTO;
+};
+
+export const PartyPostDTOTransformer = (
+	dto_object: PartyPostDTO
+): PartyPost => {
+	return {
+		id: dto_object.id || 0,
+		ownerEmail: dto_object.owner_email || "",
+		eventName: dto_object.event_name || "",
+		sport: dto_object.sport || "",
+		location: dto_object.court || "",
+		description: "",
+		startTime: dto_object.start_time || new Date(),
+		endTime: dto_object.end_time || new Date(),
+	};
+};

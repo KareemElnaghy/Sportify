@@ -139,7 +139,7 @@ export function getSuperAdminModel(
 			const res = await removeAdmin({
 				adminEmails: emails,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onDeleteSelected: async () => {
@@ -151,7 +151,7 @@ export function getSuperAdminModel(
 			const res = await removeAdmin({
 				adminEmails: selectedEmails,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onPageChange: () => {

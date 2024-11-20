@@ -124,7 +124,7 @@ export function getCourtsListModel(
 			const res = await removeCourt({
 				courtIds: ids,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 
 		onDeleteSelected: async () => {
@@ -136,7 +136,7 @@ export function getCourtsListModel(
 			const res = await removeCourt({
 				courtIds: selectedIds,
 			});
-			model.fetchData();
+			model.fetchData(true);
 		},
 	};
 

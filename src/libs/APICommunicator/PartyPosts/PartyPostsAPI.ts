@@ -122,7 +122,7 @@ export async function removePartyPost(
 		endpoints.default,
 		{},
 		{},
-		{ partyIds: data.partyIds.map((id) => `${id}`) }
+		{ partyIds: data.partyIds }
 	);
 	const responseDTO = RemovedPartyPostDTOExtractor(response);
 	const result = RemovedPartyPostDTOTransformer(responseDTO);

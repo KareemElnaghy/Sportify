@@ -47,7 +47,6 @@ export function getTestModel(pm: () => PMTest): TestModel {
 		},
 
 		onChange: () => {
-			console.log("change", pm().someModelVal, pm().someViewVal);
 			pm().someModelVal = "wow";
 		},
 	};

@@ -1,4 +1,10 @@
 import {
+	db_addCourt,
+	db_deleteCourt,
+	db_editCourt,
+	db_getCourtItems,
+} from "@/libs/DBCommunicator/Courts/CourtsDB";
+import {
 	extractListParams,
 	typecaseParams,
 } from "@/libs/Utils/URLParameterization";
@@ -12,7 +18,9 @@ export async function GET(req: NextRequest): NextAPIRes<Court[]> {
 		Number
 	);
 	// fetch from db using courtIds and return res
-	const res: Court[] = [];
+	const res: Court[] = await db_getCourtItems({
+		courtIds: courtIds,
+	});
 	return NextResponse.json(getOkResponse<Court[]>(res));
 }
 
@@ -33,17 +41,12 @@ export async function POST(req: NextRequest): NextAPIRes<Court> {
 		location: body.location || "",
 		sport: body.sport,
 	};
-	// TODO: call db and create  object
-	const res: Court = { ...courtReq, id: 0 };
+	const res: Court = await db_addCourt({
+		court: courtReq,
+	});
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
-// interface CourtUpdateParams {
-// 	name?: string;
-// 	description?: string;
-// 	location?: string;
-// 	sport?: string;
-// }
 type CourtUpdateParams = Partial<Court> & { id: Court["id"] };
 type UpdateCourt = Partial<Court> & { id: Court["id"] };
 export async function PUT(req: NextRequest): NextAPIRes<Court> {
@@ -56,13 +59,9 @@ export async function PUT(req: NextRequest): NextAPIRes<Court> {
 		...(body.sport && { sport: body.sport }),
 	};
 	// perform update and get updated data
-	const res: Court = {
-		id: 0,
-		name: "",
-		sport: "",
-		location: "",
-		description: "",
-	};
+	const res: Court = await db_editCourt({
+		court: updateReq,
+	});
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
@@ -73,5 +72,10 @@ export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
 	const body: CourtDeleteParams = await req.json();
 	const courtIds = body.courtIds;
 	// delete ids
-	return NextResponse.json(getOkResponse("SUCCESS"));
+	const res = await db_deleteCourt({
+		courtIds: courtIds,
+	});
+
+	if (res) return NextResponse.json(getOkResponse("SUCCESS"));
+	else return NextResponse.json(getOkResponse("FAIL"));
 }
