@@ -10,50 +10,55 @@ import { getSidebarPM } from "@/PMs/Components/SidebarPM";
 import AddCourtForm, { newCourtData } from "@/Views/Courts/Components/AddCourt";
 
 interface propsType {
-  pm: PMCourtsList;
+	pm: PMCourtsList;
 }
 
 export default function CourtsListView({ pm }: propsType) {
-  useEffect(() => {
-    document.title = "Courts List";
-  });
+	useEffect(() => {
+		document.title = "Courts List";
+	});
 
-  const [isAddCourtPopupOpen, setIsAddCourtPopupOpen] = useState(false);
-  useEffect(() => {
-    queueMicrotask(() => {
-      pm.currentSelection = Array(pm.courtsList.length).fill(false);
-    });
-  }, [pm.courtsList]);
+	const [isAddCourtPopupOpen, setIsAddCourtPopupOpen] = useState(false);
+	useEffect(() => {
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.courtsList.length).fill(false);
+		});
+	}, [pm.courtsList]);
 
-  return (
-    <div className="container">
-      <Sidebar pm={getSidebarPM(pm)} />
-      {isAddCourtPopupOpen && (
-        <AddCourtForm
-          onClose={() => {
-            setIsAddCourtPopupOpen(false);
-          }}
-          onSubmit={async (courtData: newCourtData) => {
-            // pm.onAddAdmin();
-          }}
-        />
-      )}
+	return (
+		<div className="container">
+			<Sidebar pm={getSidebarPM(pm)} />
+			{isAddCourtPopupOpen && (
+				<AddCourtForm
+					onClose={() => {
+						setIsAddCourtPopupOpen(false);
+					}}
+					onSubmit={async (courtData: newCourtData) => {
+						pm.onAddCourt(courtData);
+					}}
+				/>
+			)}
 
-      <div className="main-content">
-        <Header pm={getHeaderPM(pm)} pageTitle={"Courts List"} />
-        <button
-          className="add-court-btn"
-          onClick={() => {
-            setIsAddCourtPopupOpen(true);
-          }}
-        >
-          ADD NEW COURT +{" "}
-        </button>
-        <button className = "delete-selected-btn">
+			<div className="main-content">
+				<Header pm={getHeaderPM(pm)} pageTitle={"Courts List"} />
+				<button
+					className="add-court-btn"
+					onClick={() => {
+						setIsAddCourtPopupOpen(true);
+					}}
+				>
+					ADD NEW COURT +{" "}
+				</button>
+				<button
+					className="delete-selected-btn"
+					onClick={() => {
+						pm.onDeleteSelected();
+					}}
+				>
 					DELETE SELECTED
 				</button>
-        <Courtslist pm={pm} />
-      </div>
-    </div>
-  );
+				<Courtslist pm={pm} />
+			</div>
+		</div>
+	);
 }

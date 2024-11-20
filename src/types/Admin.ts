@@ -1,9 +1,16 @@
+import { RequirePartials } from "@/libs/Utils/Typing";
+
 export default interface Admin {
 	email: string;
 	firstName: string;
 	lastName: string;
 }
 
-export type NewAdmin = Admin;
+type requiredNewAdminAttributes = "email";
+export type NewAdmin = RequirePartials<Admin, requiredNewAdminAttributes>;
 
-export type NewAdminIncomplete = Admin;
+type requiredNewAdminIncompleteAttributes = "email";
+export type NewAdminIncomplete = RequirePartials<
+	Admin,
+	requiredNewAdminIncompleteAttributes
+>;

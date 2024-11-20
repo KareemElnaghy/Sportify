@@ -7,6 +7,8 @@ import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
 import PartyPost from "@/types/PartyPost";
 import { getPartyPosts } from "@/libs/APICommunicator/PartyPosts/PartyPostsAPI";
 import { PartyPostsListData } from "@/libs/APICommunicator/PartyPosts/PartyPostsDTO";
+import { newPartyData } from "@/Views/PartyPosts/Components/AddParty";
+import { PostDetails } from "@/Views/PartyPosts/Components/EditParty";
 
 export interface PartyPostsListModel {
 	sidebarModel: SidebarModel | null;
@@ -28,6 +30,11 @@ export interface PartyPostsListModel {
 	onRecordsPerPageChange: () => void;
 
 	onSearch: () => void;
+
+	onAddParty: (partyData: newPartyData) => Promise<void>;
+	onEditParty: (partyData: PostDetails) => Promise<void>;
+	onDelete: (index: number) => Promise<void>;
+	onDeleteSelected: () => Promise<void>;
 }
 
 export function getPartyPostsListModel(
@@ -120,6 +127,37 @@ export function getPartyPostsListModel(
 			model.fetchData();
 		},
 		onSearch: function (): void {
+			model.fetchData();
+		},
+		onAddParty: async (partyData: newPartyData) => {
+			const newParty = await AddParty({
+				party: partyData,
+			});
+			model.fetchData();
+		},
+		onEditParty: async (partyData: PostDetails) => {
+			const EditedParty = await EditParty({
+				party: partyData,
+			});
+		},
+		onDelete: async (index: number) => {
+			const ids = [pm().partyPostsList[index].id];
+
+			const res = await removeParty({
+				courtIds: ids,
+			});
+			model.fetchData();
+		},
+
+		onDeleteSelected: async () => {
+			const selectedPartys = pm().partyPostsList.filter(
+				(v, i) => pm().currentSelection[i]
+			);
+			const selectedIds: number[] = selectedPartys.map((v) => v.id);
+
+			const res = await removeParty({
+				partyIds: selectedIds,
+			});
 			model.fetchData();
 		},
 	};

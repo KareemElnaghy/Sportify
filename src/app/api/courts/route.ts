@@ -10,10 +10,12 @@ export async function GET(req: NextRequest): NextAPIRes<Court[]> {
 }
 
 interface CourtCreationParams {
-	name: string;
-	description?: string;
-	location?: string;
-	sport: string;
+	court: {
+		name: string;
+		description?: string;
+		location?: string;
+		sport: string;
+	};
 }
 
 type NewCourt = Omit<Court, "id">;
@@ -21,10 +23,10 @@ type NewCourt = Omit<Court, "id">;
 export async function POST(req: NextRequest): NextAPIRes<Court> {
 	const body: CourtCreationParams = await req.json();
 	const courtReq: NewCourt = {
-		name: body.name,
-		description: body.description || "",
-		location: body.location || "",
-		sport: body.sport,
+		name: body.court.name,
+		description: body.court.description || "",
+		location: body.court.location || "",
+		sport: body.court.sport,
 	};
 	// TODO: call db and create  object
 	const res: Court = { ...courtReq, id: 0 };

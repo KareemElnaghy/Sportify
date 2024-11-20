@@ -10,7 +10,9 @@ import { getAdminSettingsModel } from "@/Models/Admins/SettingsModel";
 import AdminSettingsView from "@/Views/Admins/AdminSettings/AdminSettingsView";
 
 export default function AdminSettingsPage() {
-	const pm = useStateObject<PMAdminSettings>(default_PMAdminSettings);
+	const { obj: pm, ref: pmRef } = useStateObject<PMAdminSettings>(
+		default_PMAdminSettings
+	);
 	const model = useMemo(() => {
 		const model = getAdminSettingsModel(pm);
 		model.setup();

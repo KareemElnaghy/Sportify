@@ -1,41 +1,41 @@
 import { default_PMHeader, PMHeader } from "@/PMs/Components/HeaderPM";
 import { default_PMSidebar, PMSidebar } from "@/PMs/Components/SidebarPM";
 import Admin from "@/types/Admin";
+import { newAdminData } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
+import { ChangePasswordDetails } from "@/Views/Admins/SuperAdmin/Components/ChangePassword";
 
 export interface PMSuperAdmin {
-  adminslist: Admin[];
-  setAdminsList: (newAdminsList: Admin[]) => void;
-  //sidebar
-  pmSidebar: PMSidebar;
-  //header
-  pmHeader: PMHeader;
-  //search
-  Search: string;
-  onSearchChange: () => void;
-  //add admin
-  onAddAdmin: () => void;
-  //selection
-  currentSelection: boolean[];
-  onSelectionChanged: () => void;
-  //delete
-  ondeleteadmin: (index: number) => void;
+	adminslist: Admin[];
+	//sidebar
+	pmSidebar: PMSidebar;
+	//header
+	pmHeader: PMHeader;
+	//selection
+	currentSelection: boolean[];
+	onSelectionChanged: () => void;
+	//add admin
+	onAddAdmin: (admin: newAdminData) => void;
+	//edit admin password
+	onAdminEdit: (passwordData: ChangePasswordDetails) => void;
+	//delete
+	onDeleteAdmin: (index: number) => void;
+	onDeleteSelected: () => void;
 }
 
 export const default_PMSuperAdmin: PMSuperAdmin = {
-  adminslist: [],
-  setAdminsList: ([]) => {},
-  //sidebar
-  pmSidebar: default_PMSidebar,
-  //header
-  pmHeader: default_PMHeader,
-  //search
-  Search: "",
-  onSearchChange: () => {},
-  //add admin
-  onAddAdmin: () => {},
-  //selection
-  currentSelection: [],
-  onSelectionChanged: () => {},
-  //delete
-  ondeleteadmin: (index: number) => {},
+	adminslist: [],
+	//sidebar
+	pmSidebar: default_PMSidebar,
+	//header
+	pmHeader: default_PMHeader,
+	//selection
+	currentSelection: [],
+	onSelectionChanged: () => {},
+	//add admin
+	onAddAdmin: (admin: newAdminData) => {},
+	//edit admin password
+	onAdminEdit: (passwordData: ChangePasswordDetails) => {},
+	//delete
+	onDeleteAdmin: (index: number) => {},
+	onDeleteSelected: () => {},
 };

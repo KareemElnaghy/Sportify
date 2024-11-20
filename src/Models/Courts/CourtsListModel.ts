@@ -1,12 +1,17 @@
 import Court from "@/types/Court";
-import { getCourts } from "@/libs/APICommunicator/Courts/CourtsAPI";
-import { default_PMCourtsList, PMCourtsList } from "@/PMs/Courts/CourtsListPM";
+import {
+	addCourt,
+	getCourts,
+	removeCourt,
+} from "@/libs/APICommunicator/Courts/CourtsAPI";
+import { PMCourtsList } from "@/PMs/Courts/CourtsListPM";
 import {
 	getSidebarModel,
 	SidebarModel,
 } from "@/Models/Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
 import { CourtsListData } from "@/libs/APICommunicator/Courts/CourtsDTO";
+import { newCourtData } from "@/Views/Courts/Components/AddCourt";
 
 export interface CourtsListModel {
 	sidebarModel: SidebarModel | null;
@@ -26,6 +31,11 @@ export interface CourtsListModel {
 	onPageChange: () => void;
 	onRecordsPerPageChange: () => void;
 	onSearch: () => void;
+
+	onAddCourt: (court: newCourtData) => void;
+
+	onDelete: (index: number) => Promise<void>;
+	onDeleteSelected: () => Promise<void>;
 }
 
 export function getCourtsListModel(
@@ -50,6 +60,10 @@ export function getCourtsListModel(
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
+
+			pm().onAddCourt = model.onAddCourt;
+			pm().onDelete = model.onDelete;
+			pm().onDeleteSelected = model.onDeleteSelected;
 
 			model.fetchData();
 		},
@@ -96,6 +110,32 @@ export function getCourtsListModel(
 		},
 
 		onSearch: () => {
+			model.fetchData();
+		},
+
+		onAddCourt: async (court: newCourtData) => {
+			const newCourt = await addCourt({ court: court });
+			model.fetchData(true);
+		},
+
+		onDelete: async (index: number) => {
+			const ids = [pm().courtsList[index].id];
+
+			const res = await removeCourt({
+				courtIds: ids,
+			});
+			model.fetchData();
+		},
+
+		onDeleteSelected: async () => {
+			const selectedCourts = pm().courtsList.filter(
+				(v, i) => pm().currentSelection[i]
+			);
+			const selectedIds: number[] = selectedCourts.map((v) => v.id);
+
+			const res = await removeCourt({
+				courtIds: selectedIds,
+			});
 			model.fetchData();
 		},
 	};

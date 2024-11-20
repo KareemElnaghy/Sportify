@@ -20,6 +20,8 @@ export interface StudentsListModel {
 
 	fetchData: (isForceUpdate?: boolean) => Promise<void>;
 
+	onDeleteSelected: () => Promise<void>;
+
 	onPageChange: () => void;
 
 	onRecordsPerPageChange: () => void;
@@ -138,6 +140,20 @@ export function getStudentListModel(
 			// 	},
 			// ];
 		},
+
+		onDeleteSelected: async () => {
+			// FIXME: Mass ban
+			const selectedStudents = pm().studentsList.filter(
+				(v, i) => pm().currentSelection[i]
+			);
+			const selectedEmails: string[] = selectedStudents.map((v) => v.email);
+
+			const res = await removeStudent({
+				studentEmails: selectedEmails,
+			});
+			model.fetchData();
+		},
+
 		onPageChange: function (): void {
 			model.fetchData();
 		},

@@ -1,6 +1,7 @@
-import Court from "@/types/Court";
+import Court, { NewCourt } from "@/types/Court";
 import { default_PMSidebar, PMSidebar } from "@/PMs/Components/SidebarPM";
 import { default_PMHeader, PMHeader } from "@/PMs/Components/HeaderPM";
+import { newCourtData } from "@/Views/Courts/Components/AddCourt";
 
 export interface PMCourtsList {
 	courtsList: Court[];
@@ -11,6 +12,12 @@ export interface PMCourtsList {
 	//selection
 	currentSelection: boolean[];
 	onSelectionChanged: () => void;
+
+	// add court
+	onAddCourt: (court: newCourtData) => void;
+
+	onDelete: (index: number) => void;
+	onDeleteSelected: () => void;
 }
 
 export const default_PMCourtsList: PMCourtsList = {
@@ -22,4 +29,11 @@ export const default_PMCourtsList: PMCourtsList = {
 	//selection
 	currentSelection: [],
 	onSelectionChanged: () => {},
+
+	// add court
+	onAddCourt: (court: newCourtData) => {},
+
+	// delete
+	onDelete: () => {},
+	onDeleteSelected: () => {},
 };

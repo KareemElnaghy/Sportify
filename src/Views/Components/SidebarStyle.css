@@ -19,10 +19,18 @@
 	margin: 20px;
 	color: white;
 
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	text-align: end;
+
 	padding: 0.5rem 1rem;
 
 	transition: all 100ms ease-in-out;
 }
+
 .sidebar ul li.active {
 	font-weight: bold;
 }

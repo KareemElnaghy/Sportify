@@ -11,6 +11,8 @@ export interface PMStudentList {
 	//selection
 	currentSelection: boolean[];
 	onSelectionChanged: () => void;
+
+	onDeleteSelected: () => void;
 }
 
 export const default_PMStudentList: PMStudentList = {
@@ -22,4 +24,5 @@ export const default_PMStudentList: PMStudentList = {
 	//selection
 	currentSelection: [],
 	onSelectionChanged: () => {},
+	onDeleteSelected: () => {},
 };

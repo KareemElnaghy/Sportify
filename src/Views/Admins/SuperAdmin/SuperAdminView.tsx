@@ -5,77 +5,87 @@ import "./SuperAdminStyle.css";
 import Sidebar from "@/Views/Components/Sidebar";
 import AdminList from "@/Views/Admins/SuperAdmin/Components/AdminList";
 import AddAdminForm, {
-  newAdminData,
+	newAdminData,
 } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
 import ChangePasswordForm, {
-  ChangePasswordDetails,
+	ChangePasswordDetails,
 } from "@/Views/Admins/SuperAdmin/Components/ChangePassword";
 import Header from "@/Views/Components/Header";
 import { getSidebarPM } from "@/PMs/Components/SidebarPM";
 import { getHeaderPM } from "@/PMs/Components/HeaderPM";
 
 interface propsType {
-  pm: PMSuperAdmin;
+	pm: PMSuperAdmin;
 }
 
 export default function SuperAdminView({ pm }: propsType) {
-  useEffect(() => {
-    document.title = "Admins List";
-  });
+	useEffect(() => {
+		document.title = "Admins List";
+	});
 
-  const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] = useState(false);
-  const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
+	const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] =
+		useState(false);
+	const [isAddAdminPopupOpen, setIsAddAdminPopupOpen] = useState(false);
 
-  useEffect(() => {
-    queueMicrotask(() => {
-      pm.currentSelection = Array(pm.adminslist.length).fill(false);
-    });
-  }, [pm.adminslist]);
+	useEffect(() => {
+		queueMicrotask(() => {
+			pm.currentSelection = Array(pm.adminslist.length).fill(false);
+		});
+	}, [pm.adminslist]);
 
-  const openEditPasswordPopup = () => {
-    setIsChangePasswordPopupOpen(true);
-  };
+	const openEditPasswordPopup = () => {
+		setIsChangePasswordPopupOpen(true);
+	};
 
-  return (
-    <div className="container">
-      <Sidebar pm={getSidebarPM(pm)} />
-      {isAddAdminPopupOpen && (
-        <AddAdminForm
-          onClose={() => {
-            setIsAddAdminPopupOpen(false);
-          }}
-          onSubmit={async (adminData: newAdminData) => {
-            // pm.onAddAdmin();
-          }}
-        />
-      )}
+	const handleDeleteSelected = () => {
+		pm.onDeleteSelected();
+	};
 
-      {isChangePasswordPopupOpen && (
-        <ChangePasswordForm
-          onClose={() => {
-            setIsChangePasswordPopupOpen(false);
-          }}
-          onSubmit={async (passwordData: ChangePasswordDetails) => {
-            // pm.onAddAdmin();
-          }}
-        />
-      )}
+	return (
+		<div className="container">
+			<Sidebar pm={getSidebarPM(pm)} />
+			{isAddAdminPopupOpen && (
+				<AddAdminForm
+					onClose={() => {
+						setIsAddAdminPopupOpen(false);
+					}}
+					onSubmit={async (adminData: newAdminData) => {
+						pm.onAddAdmin(adminData);
+					}}
+				/>
+			)}
 
-      <div className="main-content">
-        <Header pm={getHeaderPM(pm)} pageTitle={"Admins List"} />
-        <button
-          className="add-admin-btn"
-          onClick={() => {
-            setIsAddAdminPopupOpen(true);
-          }}
-        >
-          ADD NEW ADMIN +{" "}
-        </button>
-        <button className = "delete-selected-btn">
+			{isChangePasswordPopupOpen && (
+				<ChangePasswordForm
+					onClose={() => {
+						setIsChangePasswordPopupOpen(false);
+					}}
+					onSubmit={async (passwordData: ChangePasswordDetails) => {
+						// pm.onAddAdmin();
+					}}
+				/>
+			)}
+
+			<div className="main-content">
+				<Header pm={getHeaderPM(pm)} pageTitle={"Admins List"} />
+				<button
+					className="add-admin-btn"
+					onClick={() => {
+						setIsAddAdminPopupOpen(true);
+					}}
+				>
+					ADD NEW ADMIN +{" "}
+				</button>
+				<button
+					className="delete-selected-btn"
+					onClick={() => {
+						handleDeleteSelected();
+					}}
+				>
 					DELETE SELECTED
 				</button>
-        <AdminList pm={pm} openEditPasswordPopup={openEditPasswordPopup} />
-      </div>
-    </div>
-  );
+				<AdminList pm={pm} openEditPasswordPopup={openEditPasswordPopup} />
+			</div>
+		</div>
+	);
 }

@@ -3,7 +3,9 @@ import Admin from "@/types/Admin";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
 import { AdminsListData } from "@/libs/APICommunicator/Admins/AdminsDTO";
-import { getAdmins } from "@/libs/APICommunicator/Admins/AdminsAPI";
+import { addAdmin, getAdmins } from "@/libs/APICommunicator/Admins/AdminsAPI";
+import { newAdminData } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
+import { ChangePasswordDetails } from "@/Views/Admins/SuperAdmin/Components/ChangePassword";
 
 export interface SuperAdminModel {
 	sidebarModel: SidebarModel | null;
@@ -20,7 +22,10 @@ export interface SuperAdminModel {
 
 	fetchData: (isForceUpdate?: boolean) => Promise<void>;
 
-	onAddAdmin: () => void;
+	onAddAdmin: (admin: newAdminData) => Promise<void>;
+	onAdminEdit: (passwordData: ChangePasswordDetails) => Promise<void>;
+	onDelete: (index: number) => Promise<void>;
+	onDeleteSelected: () => Promise<void>;
 
 	onPageChange: () => void;
 	onRecordsPerPageChange: () => void;
@@ -58,6 +63,8 @@ export function getSuperAdminModel(
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
+
+			pm().onAddAdmin = model.onAddAdmin;
 
 			model.fetchData();
 		},
@@ -108,15 +115,47 @@ export function getSuperAdminModel(
 			// ];
 		},
 
-		onAddAdmin: () => {
+		onAddAdmin: async (admin: newAdminData) => {
 			//query to add Admin to DB
+			const newAdmin = await addAdmin({ admin: admin });
+
 			//query to pull new admins
-			//pm.admins = model.admins;
+			model.fetchData(true);
+		},
+		onAdminEdit: async (passwordData: ChangePasswordDetails) => {
+			// call api
 		},
 
-		onPageChange: () => {},
-		onRecordsPerPageChange: () => {},
-		onSearch: () => {},
+		onDelete: async (index: number) => {
+			const emails = [pm().adminslist[index].email];
+
+			const res = await removeAdmin({
+				adminEmails: emails,
+			});
+			model.fetchData();
+		},
+
+		onDeleteSelected: async () => {
+			const selectedAdmins = pm().adminslist.filter(
+				(v, i) => pm().currentSelection[i]
+			);
+			const selectedEmails: string[] = selectedAdmins.map((v) => v.email);
+
+			const res = await removeAdmin({
+				adminEmails: selectedEmails,
+			});
+			model.fetchData();
+		},
+
+		onPageChange: () => {
+			model.fetchData();
+		},
+		onRecordsPerPageChange: () => {
+			model.fetchData();
+		},
+		onSearch: () => {
+			model.fetchData();
+		},
 	};
 
 	return model;
