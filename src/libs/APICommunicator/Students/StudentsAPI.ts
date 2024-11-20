@@ -1,6 +1,7 @@
 import Student from "@/types/Student";
 import { APIConnector } from "../APIConnector";
 import {
+	RemoveStudentData,
 	StudentsItemData,
 	StudentsItemDTOExtractor,
 	StudentsItemDTOTransformer,
@@ -41,4 +42,21 @@ export async function getStudentItems(
 	const responseDTO = StudentsItemDTOExtractor(response);
 	const result = StudentsItemDTOTransformer(responseDTO);
 	return result;
+}
+
+interface deleteStudentsData {
+	isBanned: boolean;
+	studentEmails: Student["email"][];
+}
+
+export async function removeStudent(
+	data: deleteStudentsData
+): Promise<RemoveStudentData> {
+	const response = await APIConnector.delete(
+		"api/students",
+		{},
+		{},
+		{ isBanned: data.isBanned, studentEmails: data.studentEmails }
+	);
+	return true;
 }

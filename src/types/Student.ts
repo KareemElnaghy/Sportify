@@ -5,6 +5,5 @@ export default interface Student {
 	photoLink: string | null;
 	isTrainer: boolean;
 	phoneNumber: string;
-	passHash: string;
 	isBanned: boolean;
 }

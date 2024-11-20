@@ -43,7 +43,6 @@ export const StudentsListDTOTransformer = (
 		photoLink: s.photo_link || "",
 		isTrainer: s.is_trainer || false,
 		phoneNumber: s.phone_number || "",
-		passHash: s.pass_hash || "", // FIXME:
 		isBanned: s.is_banned || false,
 	}));
 };

@@ -12,7 +12,7 @@ export interface PMStudentList {
 	currentSelection: boolean[];
 	onSelectionChanged: () => void;
 
-	onDeleteSelected: () => void;
+	onBanSelected: (isBanned: boolean) => void;
 }
 
 export const default_PMStudentList: PMStudentList = {
@@ -24,5 +24,5 @@ export const default_PMStudentList: PMStudentList = {
 	//selection
 	currentSelection: [],
 	onSelectionChanged: () => {},
-	onDeleteSelected: () => {},
+	onBanSelected: (isBanned: boolean) => {},
 };

@@ -1,22 +1,26 @@
-import { extractListParams } from "@/libs/Utils/URLParameterization";
+import {
+	extractListParams,
+	typecaseParams,
+} from "@/libs/Utils/URLParameterization";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
 import Court from "@/types/Court";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): NextAPIRes<Court[]> {
-	let courtIds = extractListParams(req, "courtIds");
+	let courtIds: Court["id"][] = typecaseParams(
+		extractListParams(req, "courtIds"),
+		Number
+	);
 	// fetch from db using courtIds and return res
 	const res: Court[] = [];
 	return NextResponse.json(getOkResponse<Court[]>(res));
 }
 
 interface CourtCreationParams {
-	court: {
-		name: string;
-		description?: string;
-		location?: string;
-		sport: string;
-	};
+	name: string;
+	sport: string;
+	description?: string;
+	location?: string;
 }
 
 type NewCourt = Omit<Court, "id">;
@@ -24,22 +28,23 @@ type NewCourt = Omit<Court, "id">;
 export async function POST(req: NextRequest): NextAPIRes<Court> {
 	const body: CourtCreationParams = await req.json();
 	const courtReq: NewCourt = {
-		name: body.court.name,
-		description: body.court.description || "",
-		location: body.court.location || "",
-		sport: body.court.sport,
+		name: body.name,
+		description: body.description || "",
+		location: body.location || "",
+		sport: body.sport,
 	};
 	// TODO: call db and create  object
 	const res: Court = { ...courtReq, id: 0 };
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
-interface CourtUpdateParams {
-	name?: string;
-	description?: string;
-	location?: string;
-	sport?: string;
-}
+// interface CourtUpdateParams {
+// 	name?: string;
+// 	description?: string;
+// 	location?: string;
+// 	sport?: string;
+// }
+type CourtUpdateParams = Partial<Court> & { id: Court["id"] };
 type UpdateCourt = Partial<Court> & { id: Court["id"] };
 export async function PUT(req: NextRequest): NextAPIRes<Court> {
 	const body: CourtUpdateParams = await req.json();
@@ -61,8 +66,12 @@ export async function PUT(req: NextRequest): NextAPIRes<Court> {
 	return NextResponse.json(getOkResponse<Court>(res));
 }
 
+interface CourtDeleteParams {
+	courtIds: Court["id"][];
+}
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
-	const body: Court["id"][] = await req.json();
+	const body: CourtDeleteParams = await req.json();
+	const courtIds = body.courtIds;
 	// delete ids
 	return NextResponse.json(getOkResponse("SUCCESS"));
 }

@@ -55,7 +55,7 @@ export function getCourtsListModel(
 
 		setup: async () => {
 			if (!model.sidebarModel)
-				model.sidebarModel = getSidebarModel(pm, router, 2);
+				model.sidebarModel = getSidebarModel(pm, router, 3);
 			model.sidebarModel.setup();
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);

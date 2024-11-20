@@ -1,36 +1,61 @@
+import { extractListParams } from "@/libs/Utils/URLParameterization";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
 import Student from "@/types/Student";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): NextAPIRes<Student[]> {
-	let emailOrUsername: string[] =
-		req.nextUrl.searchParams.getAll("emailOrUsername");
-
-	let emails = emailOrUsername.map((item) =>
-		item.endsWith("@aucegypt.edu") ? item : `${item}@aucegypt.edu`
+	let studentEmails: string[] = extractListParams(req, "studentEmails");
+	studentEmails = studentEmails.map((mail) =>
+		mail.endsWith("@aucegypt.edu") ? mail : `${mail}@aucegypt.edu`
 	);
 	// fetch from db using email and return res
 	const res: Student[] = [];
 	return NextResponse.json(getOkResponse<Student[]>(res));
 }
 
-interface ProfileUpdateParams {
+interface studentUpdateParams {
+	email: string;
 	firstName?: string;
 	lastName?: string;
 	photoLink?: string | null;
 	isTrainer?: boolean;
 	phoneNumber?: string;
-	passHash?: string;
-	isBanned?: boolean;
 }
+type UpdateStudent = Partial<Student> & { email: Student["email"] };
 export async function PUT(req: NextRequest): NextAPIRes<Student> {
-	req.body;
-	const body: ProfileUpdateParams = await req.json();
-	let res: Student; // fetch res
+	const body: studentUpdateParams = await req.json();
+	const studentReq: UpdateStudent = {
+		email: body.email,
+		...(body.firstName && { firstName: body.firstName }),
+		...(body.lastName && { lastName: body.lastName }),
+
+		...(body.photoLink && { photoLink: body.photoLink }),
+		...(body.isTrainer && { isTrainer: body.isTrainer }),
+
+		...(body.phoneNumber && { phoneNumber: body.phoneNumber }),
+	};
+	// fetch res
+	const res: Student = {
+		email: studentReq.email,
+		firstName: studentReq.firstName || "",
+		lastName: studentReq.lastName || "",
+		photoLink: studentReq.photoLink || null,
+		isTrainer: studentReq.isTrainer || false,
+		phoneNumber: studentReq.phoneNumber || "",
+		isBanned: false,
+	};
 	return NextResponse.json(getOkResponse<Student>(res));
 }
 
+interface StudentDeleteParams {
+	studentEmails: Student["email"][];
+	isBanned: boolean;
+}
+
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
-	const body: string[] = await req.json();
+	const body: StudentDeleteParams = await req.json();
+	const studentEmails = body.studentEmails;
+	const isBanned = body.isBanned;
+	// ban students
 	return NextResponse.json(getOkResponse("SUCCESS"));
 }

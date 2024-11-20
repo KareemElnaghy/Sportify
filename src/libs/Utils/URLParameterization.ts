@@ -44,14 +44,22 @@ export function verboseParameter(param: string): string | string[] {
 	else return param;
 }
 
+export function typecaseParams<T>(
+	param: string[],
+	castfn: (v: string) => T
+): T[] {
+	// return param as T[];
+	return param.map((v) => castfn(v));
+}
+
 export function extractSingleParam(
 	req: NextRequest,
 	paramName: string
 ): string | null {
 	const res = extractParams(req, paramName);
 	if (res == null) return null;
-	else if (typeof res == "string") return res;
-	else return res[0];
+	if (typeof res == "string") return res;
+	return res[0];
 }
 
 export function extractListParams(
@@ -60,8 +68,8 @@ export function extractListParams(
 ): string[] {
 	const res = extractParams(req, paramName);
 	if (res == null) return [];
-	else if (typeof res == "string") return [res];
-	else return res;
+	if (typeof res == "string") return [res];
+	return res;
 }
 
 function extractParams(req: NextRequest, paramName: string) {
@@ -72,11 +80,7 @@ function extractParams(req: NextRequest, paramName: string) {
 		if (Array.isArray(tmp)) res = [...res, ...tmp];
 		else res.push(tmp);
 	}
-	if (res.length == 0) {
-		return null;
-	} else if (res.length == 1) {
-		return res[0];
-	} else {
-		return res;
-	}
+	if (res.length == 0) return null;
+	if (res.length == 1) return res[0];
+	return res;
 }

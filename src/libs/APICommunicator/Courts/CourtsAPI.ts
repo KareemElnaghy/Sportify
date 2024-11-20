@@ -11,9 +11,17 @@ import {
 	NewCourtDTOExtractor,
 	NewCourtDTOTransformer,
 	RemoveCourtData,
+	RemovedCourtDTOExtractor,
+	RemovedCourtDTOTransformer,
+	UpdatedCourtData,
 	UpdatedCourtDTOExtractor,
 	UpdatedCourtDTOTransformer,
 } from "./CourtsDTO";
+
+const endpoints = {
+	list: "/api/courts/list",
+	default: "/api/courts",
+};
 
 interface getCourtsListData {
 	page: number;
@@ -23,7 +31,7 @@ interface getCourtsListData {
 export async function getCourts(
 	data: getCourtsListData
 ): Promise<CourtsListData> {
-	const response = await APIConnector.get("/api/courts/list", {
+	const response = await APIConnector.get(endpoints.list, {
 		page: `${data.page}`,
 		recordsPerPage: `${data.recordsPerPage}`,
 		...(data.searchQuery != "" && { searchQuery: data.searchQuery }), // optional param only added if not empty
@@ -40,7 +48,7 @@ interface getCourtsItemData {
 export async function getCourtItems(
 	data: getCourtsItemData
 ): Promise<CourtsItemData> {
-	const response = await APIConnector.get("/api/courts", {
+	const response = await APIConnector.get(endpoints.default, {
 		courtIds: data.courtIds.map((id) => `${id}`),
 	});
 	const responseDTO = CourtsItemDTOExtractor(response);
@@ -54,11 +62,14 @@ interface addCourtData {
 
 export async function addCourt(data: addCourtData): Promise<NewCourtData> {
 	const response = await APIConnector.post(
-		"/api/courts",
+		endpoints.default,
 		{},
 		{},
 		{
-			court: data.court,
+			name: data.court.name,
+			sport: data.court.sport,
+			...(data.court.location && { location: data.court.location }),
+			...(data.court.description && { description: data.court.description }),
 		}
 	);
 	const responseDTO = NewCourtDTOExtractor(response);
@@ -72,13 +83,17 @@ interface updateCourtData {
 
 export async function updateCourt(
 	data: updateCourtData
-): Promise<NewCourtData> {
+): Promise<UpdatedCourtData> {
 	const response = await APIConnector.put(
-		"api/courts",
+		endpoints.default,
 		{},
 		{},
 		{
-			court: data.court,
+			id: data.court.id,
+			...(data.court.name && { name: data.court.name }),
+			...(data.court.sport && { sport: data.court.sport }),
+			...(data.court.location && { location: data.court.location }),
+			...(data.court.description && { description: data.court.description }),
 		}
 	);
 	const responseDTO = UpdatedCourtDTOExtractor(response);
@@ -94,10 +109,12 @@ export async function removeCourt(
 	data: deleteCourtsData
 ): Promise<RemoveCourtData> {
 	const response = await APIConnector.delete(
-		"api/courts",
+		endpoints.default,
 		{},
 		{},
 		{ courtIds: data.courtIds.map((id) => `${id}`) }
 	);
-	return true;
+	const responseDTO = RemovedCourtDTOExtractor(response);
+	const result = RemovedCourtDTOTransformer(responseDTO);
+	return result;
 }

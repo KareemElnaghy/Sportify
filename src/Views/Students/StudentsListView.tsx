@@ -31,10 +31,10 @@ export default function StudentsListView({ pm }: propsType) {
 				<button
 					className="delete-selected-btn"
 					onClick={() => {
-						pm.onDeleteSelected();
+						pm.onBanSelected(true); // FIXME: dynamic bool
 					}}
 				>
-					DELETE SELECTED
+					BAN SELECTED
 				</button>
 				<StudentList pm={pm} />
 			</div>

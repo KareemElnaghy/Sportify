@@ -3,7 +3,11 @@ import Admin from "@/types/Admin";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
 import { AdminsListData } from "@/libs/APICommunicator/Admins/AdminsDTO";
-import { addAdmin, getAdmins } from "@/libs/APICommunicator/Admins/AdminsAPI";
+import {
+	addAdmin,
+	getAdmins,
+	removeAdmin,
+} from "@/libs/APICommunicator/Admins/AdminsAPI";
 import { newAdminData } from "@/Views/Admins/SuperAdmin/Components/AddAdmin";
 import { ChangePasswordDetails } from "@/Views/Admins/SuperAdmin/Components/ChangePassword";
 
@@ -49,7 +53,7 @@ export function getSuperAdminModel(
 		adminsData: [], // write API to get admins but get only certain data,
 		setup: async () => {
 			if (!model.sidebarModel)
-				model.sidebarModel = getSidebarModel(pm, router, 0);
+				model.sidebarModel = getSidebarModel(pm, router, 1);
 			model.sidebarModel.setup();
 
 			// pm.pmSidebar.linkNames = [
@@ -65,6 +69,9 @@ export function getSuperAdminModel(
 			model.headerModel.setup();
 
 			pm().onAddAdmin = model.onAddAdmin;
+			pm().onAdminEdit = model.onAdminEdit;
+			pm().onDeleteAdmin = model.onDelete;
+			pm().onDeleteSelected = model.onDeleteSelected;
 
 			model.fetchData();
 		},
@@ -123,7 +130,7 @@ export function getSuperAdminModel(
 			model.fetchData(true);
 		},
 		onAdminEdit: async (passwordData: ChangePasswordDetails) => {
-			// call api
+			// TODO: call api
 		},
 
 		onDelete: async (index: number) => {

@@ -63,7 +63,7 @@ export default function AddAdminForm({ onClose, onSubmit }: Props) {
 						<input
 							type="text"
 							id="name"
-							value={formData.firstName}
+							value={formData.lastName}
 							onChange={(e) =>
 								setFormData((prev) => ({ ...prev, lastName: e.target.value }))
 							}

@@ -1,47 +1,64 @@
+import { extractListParams } from "@/libs/Utils/URLParameterization";
 import Admin from "@/types/Admin";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
-import Court from "@/types/Court";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): NextAPIRes<Admin[]> {
-	let courtIds: string[] = req.nextUrl.searchParams.getAll("courtIds");
+	let adminEmails: string[] = extractListParams(req, "adminEmails");
 	// fetch from db using courtIds and return res
 	const res: Admin[] = [];
 	return NextResponse.json(getOkResponse<Admin[]>(res));
 }
 
 interface AdminCreationParams {
-	name: string;
-	sport: string;
+	email: string;
+	firstName: string;
+	lastName: string;
 }
+
+type NewAdmin = Admin;
 
 export async function POST(req: NextRequest): NextAPIRes<Admin> {
 	const body: AdminCreationParams = await req.json();
-	let res: Admin; // fetch res
-	// let res: Court = {
-	//     id: 0, auto
-	//     name: body.name,
-	//     sport: body.sport,
-	//     location: body.location || "",
-	//     description: body.description || ""
-	// };
+	const adminReq: NewAdmin = {
+		email: body.email,
+		firstName: body.firstName,
+		lastName: body.lastName,
+	};
+	// fetch res
+	const res: Admin = adminReq;
 	return NextResponse.json(getOkResponse<Admin>(res));
 }
 
-interface CourtUpdateParams {
-	name?: string;
-	sport?: string;
-	location?: string;
-	description?: string;
+interface AdminUpdateParams {
+	email: string;
+	firstName?: string;
+	lastName?: string;
 }
-export async function PUT(req: NextRequest): NextAPIRes<Court> {
-	req.body;
-	const body: CourtUpdateParams = await req.json();
-	let res: Court; // fetch res
-	return NextResponse.json(getOkResponse<Court>(res));
+type UpdateAdmin = Partial<Admin> & { email: Admin["email"] };
+export async function PUT(req: NextRequest): NextAPIRes<Admin> {
+	const body: AdminUpdateParams = await req.json();
+	const adminReq: UpdateAdmin = {
+		email: body.email,
+		...(body.firstName && { firstName: body.firstName }),
+		...(body.lastName && { lastName: body.lastName }),
+	};
+	// fetch res
+	const res: Admin = {
+		email: adminReq.email,
+		firstName: adminReq.firstName || "",
+		lastName: adminReq.lastName || "",
+	};
+	return NextResponse.json(getOkResponse<Admin>(res));
+}
+
+interface AdminDeleteParams {
+	adminEmails: Admin["email"][];
 }
 
 export async function DELETE(req: NextRequest): NextAPIRes<"SUCCESS" | "FAIL"> {
-	const body: number[] = await req.json();
+	const body: AdminDeleteParams = await req.json();
+	const adminEmails = body.adminEmails;
+	console.log("here", adminEmails);
 	return NextResponse.json(getOkResponse("SUCCESS"));
 }

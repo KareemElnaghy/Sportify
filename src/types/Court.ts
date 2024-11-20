@@ -15,4 +15,4 @@ export type NewCourt = RequirePartials<
 >;
 
 // export type NewCourtIncomplete = Partial<NewCourt>;
-export type NewCourtIncomplete = Partial<Omit<Court, "id">>;
+export type NewCourtIncomplete = RequirePartials<Court, "id">;

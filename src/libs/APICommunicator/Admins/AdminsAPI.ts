@@ -37,7 +37,7 @@ interface getAdminsItemData {
 	adminEmails: Admin["email"][];
 }
 
-export async function getStudentItems(
+export async function getAdminItems(
 	data: getAdminsItemData
 ): Promise<AdminsItemData> {
 	const response = await APIConnector.get("/api/adminAccounts", {
@@ -58,7 +58,9 @@ export async function addAdmin(data: addAdminData): Promise<NewAdminData> {
 		{},
 		{},
 		{
-			admin: data.admin,
+			email: data.admin.email,
+			firstName: data.admin.firstName,
+			lastName: data.admin.lastName,
 		}
 	);
 	const responseDTO = NewAdminDTOExtractor(response);
@@ -87,17 +89,17 @@ export async function updateAdmin(
 }
 
 interface deleteAdminsData {
-	AdminEmails: Admin["email"][];
+	adminEmails: Admin["email"][];
 }
 
-export async function removeCourt(
+export async function removeAdmin(
 	data: deleteAdminsData
 ): Promise<RemoveAdminsData> {
 	const response = await APIConnector.delete(
 		"api/adminAccounts",
 		{},
 		{},
-		{ AdminEmails: data.AdminEmails }
+		{ adminEmails: data.adminEmails }
 	);
 	return true;
 }

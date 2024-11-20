@@ -2,7 +2,10 @@ import Student from "@/types/Student";
 import { PMStudentList } from "@/PMs/Students/StudentsListPM";
 import { getSidebarModel, SidebarModel } from "../Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "../Components/HeaderModel";
-import { getStudents } from "@/libs/APICommunicator/Students/StudentsAPI";
+import {
+	getStudents,
+	removeStudent,
+} from "@/libs/APICommunicator/Students/StudentsAPI";
 import { StudentsListData } from "@/libs/APICommunicator/Students/StudentsDTO";
 
 export interface StudentsListModel {
@@ -20,7 +23,9 @@ export interface StudentsListModel {
 
 	fetchData: (isForceUpdate?: boolean) => Promise<void>;
 
-	onDeleteSelected: () => Promise<void>;
+	onSetBan: (index: number, isBanner: boolean) => Promise<void>;
+
+	onBanSelected: (isBanned: boolean) => Promise<void>;
 
 	onPageChange: () => void;
 
@@ -45,11 +50,13 @@ export function getStudentListModel(
 		},
 		setup: async () => {
 			if (!model.sidebarModel)
-				model.sidebarModel = getSidebarModel(pm, router, 1);
+				model.sidebarModel = getSidebarModel(pm, router, 2);
 			model.sidebarModel.setup();
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
+
+			pm().onBanSelected = model.onBanSelected;
 
 			model.fetchData();
 		},
@@ -141,14 +148,24 @@ export function getStudentListModel(
 			// ];
 		},
 
-		onDeleteSelected: async () => {
-			// FIXME: Mass ban
+		onSetBan: async (index: number, isBanned: boolean) => {
+			const emails = [pm().studentsList[index].email];
+
+			const res = await removeStudent({
+				isBanned: isBanned,
+				studentEmails: emails,
+			});
+			model.fetchData();
+		},
+
+		onBanSelected: async (isBanned: boolean) => {
 			const selectedStudents = pm().studentsList.filter(
 				(v, i) => pm().currentSelection[i]
 			);
 			const selectedEmails: string[] = selectedStudents.map((v) => v.email);
 
 			const res = await removeStudent({
+				isBanned: isBanned,
 				studentEmails: selectedEmails,
 			});
 			model.fetchData();

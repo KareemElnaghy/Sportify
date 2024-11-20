@@ -42,3 +42,19 @@ export const StudentsItemDTOTransformer = (
 ): StudentsItemData => {
 	return dto_object;
 };
+
+type RemoveStudentDTO = "SUCCESS" | "FAIL";
+
+export type RemoveStudentData = boolean;
+
+export const RemovedStudentDTOExtractor = (
+	api_response: APIResponse<any>
+): RemoveStudentDTO => {
+	return api_response.result as RemoveStudentDTO;
+};
+
+export const RemovedCourtDTOTransformer = (
+	dto_object: RemoveStudentDTO
+): RemoveStudentData => {
+	return dto_object == "SUCCESS";
+};

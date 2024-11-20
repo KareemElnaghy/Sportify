@@ -7,6 +7,8 @@ import { useEffect } from "react";
 
 export default function Docs() {
 	useEffect(() => {
+		document.title = "Swagger";
+
 		const originalError = console.error;
 		console.error = (...args) => {
 			if (args[0].includes("UNSAFE_componentWillReceiveProps")) return;

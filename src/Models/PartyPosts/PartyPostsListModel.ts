@@ -5,7 +5,12 @@ import {
 } from "@/Models/Components/SidebarModel";
 import { getHeaderModel, HeaderModel } from "@/Models/Components/HeaderModel";
 import PartyPost from "@/types/PartyPost";
-import { getPartyPosts } from "@/libs/APICommunicator/PartyPosts/PartyPostsAPI";
+import {
+	addPartyPost,
+	getPartyPosts,
+	removePartyPost,
+	updatePartyPost,
+} from "@/libs/APICommunicator/PartyPosts/PartyPostsAPI";
 import { PartyPostsListData } from "@/libs/APICommunicator/PartyPosts/PartyPostsDTO";
 import { newPartyData } from "@/Views/PartyPosts/Components/AddParty";
 import { PostDetails } from "@/Views/PartyPosts/Components/EditParty";
@@ -52,11 +57,16 @@ export function getPartyPostsListModel(
 		},
 		setup: async () => {
 			if (!model.sidebarModel)
-				model.sidebarModel = getSidebarModel(pm, router, 3);
+				model.sidebarModel = getSidebarModel(pm, router, 4);
 			model.sidebarModel.setup();
 
 			if (!model.headerModel) model.headerModel = getHeaderModel(pm, model);
 			model.headerModel.setup();
+
+			pm().onAddParty = model.onAddParty;
+			pm().onEditParty = model.onEditParty;
+			pm().onDelete = model.onDelete;
+			pm().onDeleteSelected = model.onDeleteSelected;
 
 			model.fetchData();
 
@@ -130,13 +140,13 @@ export function getPartyPostsListModel(
 			model.fetchData();
 		},
 		onAddParty: async (partyData: newPartyData) => {
-			const newParty = await AddParty({
+			const newParty = await addPartyPost({
 				party: partyData,
 			});
 			model.fetchData();
 		},
 		onEditParty: async (partyData: PostDetails) => {
-			const EditedParty = await EditParty({
+			const EditedParty = await updatePartyPost({
 				party: partyData,
 			});
 			model.fetchData();
@@ -144,8 +154,8 @@ export function getPartyPostsListModel(
 		onDelete: async (index: number) => {
 			const ids = [pm().partyPostsList[index].id];
 
-			const res = await removeParty({
-				courtIds: ids,
+			const res = await removePartyPost({
+				partyIds: ids,
 			});
 			model.fetchData();
 		},
@@ -156,7 +166,7 @@ export function getPartyPostsListModel(
 			);
 			const selectedIds: number[] = selectedPartys.map((v) => v.id);
 
-			const res = await removeParty({
+			const res = await removePartyPost({
 				partyIds: selectedIds,
 			});
 			model.fetchData();
