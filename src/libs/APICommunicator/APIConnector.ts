@@ -1,23 +1,16 @@
 import APIResponse from "@/types/APIResponse";
 import { hashObject } from "../Utils/Hasher";
 import { delay } from "../Utils/Delay";
+import {
+	constructURLFromBase,
+	FetchParameters,
+} from "../Utils/URLParameterization";
 
 const baseURL = "http://localhost:3000";
 const requestDelay = 100;
 
-type fetchParameters = {
-	[key: string]: string | string[];
-};
-
-function constructURL(path: string, parameters?: fetchParameters): string {
-	if (!path.startsWith("/")) {
-		path = "/" + path;
-	}
-	let url = baseURL + path;
-	if (parameters) {
-		url = url + "?" + new URLSearchParams(parameters).toString();
-	}
-	return url;
+function constructURL(path: string, parameters?: FetchParameters): string {
+	return constructURLFromBase(baseURL, path, parameters);
 }
 
 interface APIConnectorType {
@@ -35,34 +28,34 @@ interface APIConnectorType {
 	call: (
 		method: string,
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	) => Promise<APIResponse<any>>;
 
 	get: (
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null
 	) => Promise<APIResponse<any>>;
 
 	post: (
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	) => Promise<APIResponse<any>>;
 
 	put: (
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	) => Promise<APIResponse<any>>;
 
 	delete: (
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	) => Promise<APIResponse<any>>;
@@ -84,7 +77,7 @@ export const APIConnector: APIConnectorType = {
 	async call(
 		method: string,
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	): Promise<APIResponse<any>> {
@@ -137,7 +130,7 @@ export const APIConnector: APIConnectorType = {
 
 	async get(
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null
 	): Promise<APIResponse<any>> {
 		return await APIConnector.call("GET", path, parameters, headers, undefined);
@@ -145,7 +138,7 @@ export const APIConnector: APIConnectorType = {
 
 	async post(
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	): Promise<APIResponse<any>> {
@@ -154,7 +147,7 @@ export const APIConnector: APIConnectorType = {
 
 	async put(
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	): Promise<APIResponse<any>> {
@@ -163,7 +156,7 @@ export const APIConnector: APIConnectorType = {
 
 	async delete(
 		path: string,
-		parameters?: fetchParameters,
+		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
 	): Promise<APIResponse<any>> {

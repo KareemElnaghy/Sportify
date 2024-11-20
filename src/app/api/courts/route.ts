@@ -1,9 +1,10 @@
+import { extractListParams } from "@/libs/Utils/URLParameterization";
 import { getOkResponse, NextAPIRes } from "@/types/APIResponse";
 import Court from "@/types/Court";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): NextAPIRes<Court[]> {
-	let courtIds: string[] = req.nextUrl.searchParams.getAll("courtIds");
+	let courtIds = extractListParams(req, "courtIds");
 	// fetch from db using courtIds and return res
 	const res: Court[] = [];
 	return NextResponse.json(getOkResponse<Court[]>(res));

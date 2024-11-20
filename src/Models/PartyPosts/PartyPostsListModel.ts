@@ -139,6 +139,7 @@ export function getPartyPostsListModel(
 			const EditedParty = await EditParty({
 				party: partyData,
 			});
+			model.fetchData();
 		},
 		onDelete: async (index: number) => {
 			const ids = [pm().partyPostsList[index].id];
