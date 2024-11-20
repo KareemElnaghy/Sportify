@@ -40,11 +40,9 @@ export async function POST(req: NextRequest): NextAPIRes<PartyPost> {
 	const body: PartyPostCreationParams = await req.json();
 	const partyReq: NewParty = {
 		ownerEmail: body.ownerEmail,
-		member: "",
 		eventName: body.eventName,
 		sport: body.sport,
 		location: body.location || "",
-		description: body.description || "",
 		startTime: body.startTime || new Date(),
 		endTime: body.endTime || new Date(),
 	};

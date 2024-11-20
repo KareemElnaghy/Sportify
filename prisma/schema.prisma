@@ -9,132 +9,153 @@ datasource db {
 }
 
 model admin {
-  email      String   @id @db.VarChar(255)
-  first_name String?  @db.VarChar(255)
-  last_name  String?  @db.VarChar(255)
-  pass_hash  String?  @db.VarChar(255)
-  is_super   Boolean?
+  email       String        @id @db.VarChar(255)
+  first_name  String?       @db.VarChar(255)
+  last_name   String?       @db.VarChar(255)
+  pass_hash   String?       @db.VarChar(255)
+  is_super    Boolean?
+  competition competition[]
 }
 
 model competition {
-  id          Int       @id
-  name        String?   @db.VarChar(255)
-  admin_email String?   @db.VarChar(255)
-  sport       String?   @db.VarChar(255)
-  location    String?   @db.VarChar(255)
-  description String?   @db.VarChar(65535)
-  start_time  DateTime? @db.Timestamp(6)
-  end_time    DateTime? @db.Timestamp(6)
+  id                Int                 @id @default(autoincrement())
+  name              String?             @db.VarChar(255)
+  admin_email       String?             @db.VarChar(255)
+  sport             String?             @db.VarChar(255)
+  location          String?             @db.VarChar(255)
+  description       String?             @db.VarChar(65535)
+  start_time        DateTime?           @db.Timestamp(6)
+  end_time          DateTime?           @db.Timestamp(6)
+  admin             admin?              @relation(fields: [admin_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  competitionMember competitionMember[] @ignore
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model competitionMember {
   competition_id Int?
-  user_email     String? @db.VarChar(255)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model competitionPlacement {
-  competition_id Int?
-  user_email     String? @db.VarChar(255)
-  place          String? @db.VarChar(255)
+  user_email     String?      @db.VarChar(255)
+  placement      Int?
+  competition    competition? @relation(fields: [competition_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  student        student?     @relation(fields: [user_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 
   @@ignore
 }
 
 model court {
-  id          Int     @id
-  sport       String? @db.VarChar(255)
-  location    String? @db.VarChar(255)
-  description String? @db.VarChar(65535)
-  name        String? @db.VarChar(255)
-  capacity    Int?    @db.SmallInt
+  id                Int                 @id @default(autoincrement())
+  sport             String?             @db.VarChar(255)
+  location          String?             @db.VarChar(255)
+  description       String?             @db.VarChar(65535)
+  name              String?             @db.VarChar(255)
+  capacity          Int?                @db.SmallInt
+  courtConfig       courtConfig[]
+  courtRegistration courtRegistration[]
 }
 
 model courtConfig {
   id         Int?
   start_time DateTime @db.Timestamp(6)
   end_time   DateTime @db.Timestamp(6)
+  court      court?   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([start_time, end_time])
 }
 
 model courtRegistration {
-  id         Int       @id
+  id         Int       @id @default(autoincrement())
   court_id   Int?
   user_email String?   @db.VarChar(255)
   start_time DateTime? @db.Timestamp(6)
   end_time   DateTime? @db.Timestamp(6)
+  court      court?    @relation(fields: [court_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  student    student?  @relation(fields: [user_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model message {
-  id             Int       @id
-  sender_email   String?   @db.VarChar(255)
-  receiver_email String?   @db.VarChar(255)
-  date           DateTime? @db.Timestamp(6)
-  content        String?   @db.VarChar(65535)
+  id                                      Int       @id @default(autoincrement())
+  sender_email                            String?   @db.VarChar(255)
+  receiver_email                          String?   @db.VarChar(255)
+  date                                    DateTime? @db.Timestamp(6)
+  content                                 String?   @db.VarChar(65535)
+  student_message_receiver_emailTostudent student?  @relation("message_receiver_emailTostudent", fields: [receiver_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  student_message_sender_emailTostudent   student?  @relation("message_sender_emailTostudent", fields: [sender_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model partyPost {
-  id          Int       @id
-  owner_email String?   @db.VarChar(255)
-  event_name  String?   @db.VarChar(255)
-  sport       String?   @db.VarChar(255)
-  court       String?   @db.VarChar(255)
-  start_time  DateTime? @db.Timestamp(6)
-  end_time    DateTime? @db.Timestamp(6)
+  id              Int               @id @default(autoincrement())
+  owner_email     String?           @db.VarChar(255)
+  event_name      String?           @db.VarChar(255)
+  sport           String?           @db.VarChar(255)
+  court           String?           @db.VarChar(255)
+  start_time      DateTime?         @db.Timestamp(6)
+  end_time        DateTime?         @db.Timestamp(6)
+  student         student?          @relation(fields: [owner_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  partyPostMember partyPostMember[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model partyPostMember {
+  id           Int?
+  member_email String?    @db.VarChar(255)
+  partyPost    partyPost? @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  student      student?   @relation(fields: [member_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@ignore
 }
 
 model peerTraining {
-  id            Int       @id
+  id            Int       @id @default(autoincrement())
   trainer_email String?   @db.VarChar(255)
   trainee_email String?   @db.VarChar(255)
   sport         String?   @db.VarChar(255)
   court         String?   @db.VarChar(255)
   start_time    DateTime? @db.Timestamp(6)
   end_time      DateTime? @db.Timestamp(6)
+  student       student?  @relation(fields: [trainee_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  trainer       trainer?  @relation(fields: [trainer_email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model student {
-  email        String   @id @db.VarChar(255)
-  first_name   String?  @db.VarChar(255)
-  last_name    String?  @db.VarChar(255)
-  photo_link   String?  @db.VarChar(255)
-  is_trainer   Boolean?
-  phone_number String?  @db.VarChar(255)
-  pass_hash    String?  @db.VarChar(255)
-  is_banned    Boolean?
+  email                                   String              @id @db.VarChar(255)
+  first_name                              String?             @db.VarChar(255)
+  last_name                               String?             @db.VarChar(255)
+  photo_link                              String?             @db.VarChar(255)
+  is_trainer                              Boolean?
+  phone_number                            String?             @db.VarChar(255)
+  pass_hash                               String?             @db.VarChar(255)
+  is_banned                               Boolean?
+  competitionMember                       competitionMember[] @ignore
+  courtRegistration                       courtRegistration[]
+  message_message_receiver_emailTostudent message[]           @relation("message_receiver_emailTostudent")
+  message_message_sender_emailTostudent   message[]           @relation("message_sender_emailTostudent")
+  partyPost                               partyPost[]
+  partyPostMember                         partyPostMember[]   @ignore
+  peerTraining                            peerTraining[]
+  trainer                                 trainer?
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model trainer {
-  email       String? @db.VarChar(255)
-  description String? @db.VarChar(65535)
-  rating      Int?
-
-  @@ignore
+  email         String         @unique @db.VarChar(255)
+  description   String?        @db.VarChar(65535)
+  rating        Int?
+  peerTraining  peerTraining[]
+  student       student        @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  trainerConfig trainerConfig?
+  trainerSport  trainerSport[]
 }
 
 model trainerConfig {
-  email      String?
+  email      String   @unique
   start_time DateTime @db.Timestamp(6)
   end_time   DateTime @db.Timestamp(6)
+  trainer    trainer  @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([start_time, end_time])
 }
 
 model trainerSport {
-  id    Int     @id
-  email String? @db.VarChar
-  sport String? @db.VarChar(255)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model partyPostMember {
-  id           Int?
-  member_email String? @db.VarChar(255)
-
-  @@ignore
+  id      Int      @id
+  email   String?  @db.VarChar
+  sport   String?  @db.VarChar(255)
+  trainer trainer? @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 }

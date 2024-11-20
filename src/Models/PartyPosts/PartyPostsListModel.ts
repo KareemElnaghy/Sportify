@@ -141,7 +141,12 @@ export function getPartyPostsListModel(
 		},
 		onAddParty: async (partyData: newPartyData) => {
 			const newParty = await addPartyPost({
-				party: partyData,
+				party: {
+					ownerEmail: "",
+					sport: "",
+					eventName: partyData.name,
+					startTime: new Date(partyData.meetingTime),
+				},
 			});
 			model.fetchData(true);
 		},

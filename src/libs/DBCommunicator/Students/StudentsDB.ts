@@ -1,5 +1,5 @@
 import prisma from "../prisma";
-import Student from "@/types/Student";
+import Student, { NewStudent, NewStudentIncomplete } from "@/types/Student";
 import {
 	StudentDTOExtractor,
 	StudentDTOTransformer,

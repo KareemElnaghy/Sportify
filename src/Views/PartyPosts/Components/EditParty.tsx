@@ -3,6 +3,7 @@ import Popup from "@/Views/Components/Popup";
 import PartyPost from "@/types/PartyPost";
 
 export interface PostDetails {
+	id: number;
 	name: string;
 	signUps: number;
 	location: string;
@@ -21,6 +22,7 @@ export default function EditPartyForm({
 	onSubmit,
 }: Props) {
 	const [formData, setFormData] = useState<PostDetails>({
+		id: 0,
 		name: "",
 		signUps: 0,
 		location: "",
@@ -29,6 +31,7 @@ export default function EditPartyForm({
 
 	useEffect(() => {
 		setFormData({
+			id: initialData.id,
 			name: initialData.sport,
 			signUps: 0,
 			location: initialData.location,
@@ -41,7 +44,7 @@ export default function EditPartyForm({
 
 		onSubmit(formData);
 		onClose(); // Close the pop-up after submit
-		setFormData({ name: "", signUps: 0, location: "", capacity: 0 }); // Clear form fields after submission
+		setFormData({ id: 0, name: "", signUps: 0, location: "", capacity: 0 }); // Clear form fields after submission
 	};
 
 	return (

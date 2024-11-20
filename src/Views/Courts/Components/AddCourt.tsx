@@ -5,7 +5,7 @@ export interface newCourtData {
 	name: string;
 	location: string;
 	sport: string;
-	maxCapacity: number;
+	capacity: number;
 }
 
 interface Props {
@@ -18,14 +18,14 @@ export default function AddCourtForm({ onClose, onSubmit }: Props) {
 		name: "",
 		location: "",
 		sport: "",
-		maxCapacity: 0,
+		capacity: 0,
 	});
 
 	const handleSubmit = (e: FormEvent<HTMLElement>) => {
 		e.preventDefault();
 		onClose();
 		onSubmit(formData);
-		setFormData({ name: "", location: "", sport: "", maxCapacity: 0 });
+		setFormData({ name: "", location: "", sport: "", capacity: 0 });
 	};
 
 	return (
@@ -60,7 +60,7 @@ export default function AddCourtForm({ onClose, onSubmit }: Props) {
 						<label htmlFor="email">Maximum Capacity:</label>
 						<input
 							type="number"
-							value={formData.maxCapacity}
+							value={formData.capacity}
 							onChange={(e) =>
 								setFormData((prev) => ({
 									...prev,

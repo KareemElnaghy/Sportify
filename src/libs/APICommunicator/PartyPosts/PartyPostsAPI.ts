@@ -74,7 +74,6 @@ export async function addPartyPost(
 			eventName: data.party.eventName,
 			sport: data.party.sport,
 			...(data.party.location && { location: data.party.location }),
-			...(data.party.description && { description: data.party.description }),
 			...(data.party.startTime && { startTime: data.party.startTime }),
 			...(data.party.endTime && { endTime: data.party.endTime }),
 		}
@@ -101,7 +100,6 @@ export async function updatePartyPost(
 			...(data.party.eventName && { eventName: data.party.eventName }),
 			...(data.party.sport && { sport: data.party.sport }),
 			...(data.party.location && { location: data.party.location }),
-			...(data.party.description && { description: data.party.description }),
 			...(data.party.startTime && { startTime: data.party.startTime }),
 			...(data.party.endTime && { endTime: data.party.endTime }),
 		}

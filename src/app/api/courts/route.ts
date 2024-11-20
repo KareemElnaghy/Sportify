@@ -27,6 +27,7 @@ export async function GET(req: NextRequest): NextAPIRes<Court[]> {
 interface CourtCreationParams {
 	name: string;
 	sport: string;
+	capacity: number;
 	description?: string;
 	location?: string;
 }
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest): NextAPIRes<Court> {
 		description: body.description || "",
 		location: body.location || "",
 		sport: body.sport,
+		capacity: body.capacity,
 	};
 	const res: Court = await db_addCourt({
 		court: courtReq,

@@ -68,7 +68,6 @@ export const PartyPostDTOTransformer = (
 		eventName: dto_object.event_name || "",
 		sport: dto_object.sport || "",
 		location: dto_object.court || "",
-		description: "",
 		startTime: dto_object.start_time || new Date(),
 		endTime: dto_object.end_time || new Date(),
 	};

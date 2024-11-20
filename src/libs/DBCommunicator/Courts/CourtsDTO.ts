@@ -4,6 +4,7 @@ export type CourtDTO = {
 	name: string | null;
 	id: number;
 	sport: string | null;
+	capacity: number | null;
 	location: string | null;
 	description: string | null;
 };
@@ -17,6 +18,7 @@ export const CourtsListDTOTransformer = (dto_object: CourtDTO[]): Court[] => {
 		name: c.name || "",
 		id: c.id,
 		sport: c.sport || "",
+		capacity: c.capacity || 0,
 		location: c.location || "",
 		description: c.description || "",
 	}));
@@ -31,6 +33,7 @@ export const CourtsItemsDTOTransformer = (dto_object: CourtDTO[]): Court[] => {
 		name: c.name || "",
 		id: c.id,
 		sport: c.sport || "",
+		capacity: c.capacity || 0,
 		location: c.location || "",
 		description: c.description || "",
 	}));
@@ -45,6 +48,7 @@ export const CourtDTOTransformer = (dto_object: CourtDTO): Court => {
 		name: dto_object.name || "",
 		id: dto_object.id,
 		sport: dto_object.sport || "",
+		capacity: dto_object.capacity || 0,
 		location: dto_object.location || "",
 		description: dto_object.description || "",
 	};

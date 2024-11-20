@@ -6,9 +6,10 @@ export default interface Court {
 	sport: string;
 	location: string;
 	description: string;
+	capacity: number;
 }
 
-type requiredNewCourtAttributes = "name" | "sport";
+type requiredNewCourtAttributes = "name" | "sport" | "capacity";
 export type NewCourt = RequirePartials<
 	Omit<Court, "id">,
 	requiredNewCourtAttributes
