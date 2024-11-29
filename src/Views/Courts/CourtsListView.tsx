@@ -15,7 +15,7 @@ interface propsType {
 
 export default function CourtsListView({ pm }: propsType) {
 	useEffect(() => {
-		document.title = "Courts List";
+		document.title = "";
 	});
 
 	const [isAddCourtPopupOpen, setIsAddCourtPopupOpen] = useState(false);

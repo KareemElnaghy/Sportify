@@ -15,6 +15,7 @@ interface PostResponseBody {
 
 export async function GET(req: NextRequest) {
 	let foo: string | null = req.nextUrl.searchParams.get("foo");
+
 	return NextResponse.json<GetResponseBody>({
 		message: foo,
 		name: "hello",

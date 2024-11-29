@@ -6,6 +6,12 @@ import CourtsListView from "@/Views/Courts/CourtsListView";
 import { useMemo } from "react";
 import { getCourtsListModel } from "@/Models/Courts/CourtsListModel";
 import { useRouter } from "next/navigation";
+import { Metadata } from "next";
+
+// export const metadata: Metadata = {
+// 	title: "Courts List",
+// 	description: "A list of all Courts",
+// };
 
 export default function CourtsListPage() {
 	const router = useRouter();

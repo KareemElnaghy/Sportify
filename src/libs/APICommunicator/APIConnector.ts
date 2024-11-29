@@ -5,9 +5,12 @@ import {
 	constructURLFromBase,
 	FetchParameters,
 } from "../Utils/URLParameterization";
+import { getAuthModel } from "@/Models/General/AuthModel";
+import { getFailureModel } from "@/Models/General/FailureModel";
 
-const baseURL = "http://localhost:3000";
+const baseURL = process.env.BASE_URL || "";
 const requestDelay = 100;
+const maxAPIRetyCount = Number(process.env.MAX_API_RETRY) || 1;
 
 function constructURL(path: string, parameters?: FetchParameters): string {
 	return constructURLFromBase(baseURL, path, parameters);
@@ -30,35 +33,44 @@ interface APIConnectorType {
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
-		body?: any
-	) => Promise<APIResponse<any>>;
+		body?: any,
+		retryCount?: number
+	) => Promise<APIResponse<any>> | never;
 
 	get: (
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null
-	) => Promise<APIResponse<any>>;
+	) => Promise<APIResponse<any>> | never;
 
 	post: (
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	) => Promise<APIResponse<any>>;
+	) => Promise<APIResponse<any>> | never;
 
 	put: (
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	) => Promise<APIResponse<any>>;
+	) => Promise<APIResponse<any>> | never;
 
 	delete: (
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
 		body?: any
-	) => Promise<APIResponse<any>>;
+	) => Promise<APIResponse<any>> | never;
+}
+
+interface CallRequest {
+	method: string;
+	path: string;
+	parameters?: FetchParameters;
+	headers?: HeadersInit | null;
+	body?: any;
 }
 
 export const APIConnector: APIConnectorType = {
@@ -79,9 +91,13 @@ export const APIConnector: APIConnectorType = {
 		path: string,
 		parameters?: FetchParameters,
 		headers?: HeadersInit | null,
-		body?: any
+		body?: any,
+		retryCount?: number
 	): Promise<APIResponse<any>> {
-		const reqObj = {
+		if (!retryCount) retryCount = maxAPIRetyCount;
+		if (retryCount <= 0) throw "Out of Retries";
+
+		const reqObj: CallRequest = {
 			method: method,
 			path: path,
 			parameters: parameters,
@@ -100,6 +116,14 @@ export const APIConnector: APIConnectorType = {
 		} else {
 			ReqHeaders = headers;
 		}
+		const auth = getAuthModel();
+		const user = auth.getUser();
+		if (user.isAuth) {
+			if (ReqHeaders !== undefined && !("authorization" in ReqHeaders)) {
+				ReqHeaders = { ...ReqHeaders, authoriaztion: `Bearer ${user.token}` };
+			}
+		}
+
 		const options: RequestInit = {
 			method: method,
 			headers: ReqHeaders,
@@ -115,10 +139,48 @@ export const APIConnector: APIConnectorType = {
 					resolve(res);
 					return;
 				} else {
-					const res = await fetch(url, options);
-					const resBody = await res.json();
+					let isFail = false;
+					let res: Response | undefined = undefined;
+					try {
+						res = await fetch(url, options);
+						if (res.status >= 400) isFail = true;
+					} catch {
+						isFail = true;
+					}
 
-					resolve(resBody);
+					// console.log(isFail, res);
+					if (isFail || !res) {
+						// repeat call
+
+						try {
+							const res = await APIConnector.call(
+								reqObj.method,
+								reqObj.path,
+								reqObj.parameters,
+								reqObj.headers,
+								reqObj.body,
+								retryCount - 1
+							);
+						} catch {
+							// call Failure Model to handle
+							// might be network error
+							getFailureModel().onCallFail();
+							throw "Failed to call";
+						}
+					} else {
+						const resBody = (await res.json()) as APIResponse<any>;
+						if (
+							resBody.status == "ERROR" &&
+							"errorMessage" in resBody.result &&
+							resBody.result["errorMessage"] == "Authentication Invalid"
+						) {
+							// call fail model to handle lack of auth
+							getFailureModel().onAuthFail();
+							throw "Auth Invalid";
+						}
+
+						resolve(resBody);
+					}
 					return;
 				}
 			}

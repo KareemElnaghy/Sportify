@@ -1,4 +1,6 @@
+import Cookies from "js-cookie";
 import { PMSidebar } from "@/PMs/Components/SidebarPM";
+import { getAuthModel } from "../General/AuthModel";
 
 interface PageWithSidebar {
 	pmSidebar: PMSidebar;
@@ -57,6 +59,12 @@ export function getSidebarModel<T extends PageWithSidebar>(
 					break;
 				case "Party Posts List":
 					router.push("/admin/partyposts");
+					break;
+
+				case "Log Out":
+					const auth = getAuthModel();
+					auth.logout();
+					router.push("/admin/login");
 					break;
 
 				default:
