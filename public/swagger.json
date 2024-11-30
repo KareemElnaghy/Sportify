@@ -46,10 +46,30 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Admin"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"adminsCount": {
+															"type": "number"
+														},
+														"adminsList": {
+															"type": "array",
+															"items": {
+																"$ref": "#/components/schemas/Admin"
+															}
+														}
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -81,10 +101,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Admin"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/Admin"
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -126,13 +158,20 @@
 						"description": "Successful response",
 						"content": {
 							"application/json": {
-								"example": {
-									"message": "Successful Response",
-									"admin": {
-										"email": "admin@example.com",
-										"firstName": "John",
-										"lastName": "Doe"
-									}
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/Admin"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -177,7 +216,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Admin"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/Admin"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -214,8 +265,20 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string",
-									"enum": ["Success", "Fail"]
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "string",
+													"enum": ["Success", "Fail"]
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -261,10 +324,26 @@
 								"schema": {
 									"allOf": [
 										{
-											"$ref": "#/components/schemas/Court"
+											"$ref": "#/components/schemas/BaseResponse"
 										},
 										{
-											"type": "integer"
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"courtsCount": {
+															"type": "number"
+														},
+														"courtsList": {
+															"type": "array",
+															"items": {
+																"$ref": "#/components/schemas/Court"
+															}
+														}
+													}
+												}
+											}
 										}
 									]
 								}
@@ -298,10 +377,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Court"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/Court"
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -345,7 +436,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Court"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/Court"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -393,7 +496,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Court"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/Court"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -427,8 +542,20 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string",
-									"enum": ["Success", "Fail"]
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "string",
+													"enum": ["Success", "Fail"]
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -472,10 +599,30 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/PartyPost"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"partyPostsCount": {
+															"type": "number"
+														},
+														"partyPostsList": {
+															"type": "array",
+															"items": {
+																"$ref": "#/components/schemas/PartyPost"
+															}
+														}
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -503,10 +650,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/PartyPost"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/PartyPost"
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -562,7 +721,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/PartyPost"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/PartyPost"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -621,7 +792,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/PartyPost"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/PartyPost"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -654,8 +837,20 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string",
-									"enum": ["Success", "Fail"]
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "string",
+													"enum": ["Success", "Fail"]
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -699,10 +894,30 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Student"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"studentsCount": {
+															"type": "number"
+														},
+														"studentsList": {
+															"type": "array",
+															"items": {
+																"$ref": "#/components/schemas/Student"
+															}
+														}
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -734,10 +949,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Student"
-									}
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/Student"
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -783,7 +1010,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Student"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"$ref": "#/components/schemas/Student"
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -819,8 +1058,130 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string",
-									"enum": ["Success", "Fail"]
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "string",
+													"enum": ["Success", "Fail"]
+												}
+											}
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "userLogin",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"passHash": {
+										"type": "string"
+									}
+								},
+								"required": ["username", "passHash"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"accessToken": {
+															"type": "string"
+														},
+														"renewalToken": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"/login/admin": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "userLogin",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"passHash": {
+										"type": "string"
+									}
+								},
+								"required": ["username", "passHash"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/BaseResponse"
+										},
+										{
+											"type": "object",
+											"properties": {
+												"result": {
+													"type": "object",
+													"properties": {
+														"accessToken": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						}
@@ -831,6 +1192,15 @@
 	},
 	"components": {
 		"schemas": {
+			"BaseResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": ["OK", "ERROR"]
+					}
+				}
+			},
 			"Admin": {
 				"type": "object",
 				"properties": {

@@ -1,5 +1,6 @@
 import { jwtHandler, TokenStruct } from "@/libs/JWT/JWTHandler";
 import { UserAccount, noAuth } from "@/types/Auth";
+import { Role, RolesArray } from "@/types/Authorization/Roles";
 import { NextRequest } from "next/server";
 
 interface AuthUtilstype {
@@ -24,11 +25,17 @@ export const AuthUtils: AuthUtilstype = {
 		const tokenPayload = await jwtHandler.verify("Access", token);
 		if (tokenPayload == null) return noAuth;
 
+		const r: Role = RolesArray.includes(tokenPayload.body.role as Role)
+			? (tokenPayload.body.role as Role)
+			: "NoAuth";
+
+		if (r == "NoAuth") return noAuth;
+
 		return {
 			isAuth: true,
 			token: token,
 			email: tokenPayload.body.username,
-			role: tokenPayload.body.role,
+			role: r,
 		};
 	},
 
@@ -43,11 +50,15 @@ export const AuthUtils: AuthUtilstype = {
 		if (!("username" in body)) return noAuth;
 		if (!("role" in body)) return noAuth;
 
+		const r: Role = RolesArray.includes(tokenPayload["body"]["role"] as Role)
+			? (tokenPayload["body"]["role"] as Role)
+			: "NoAuth";
+
 		return {
 			isAuth: true,
 			token: token,
 			email: tokenPayload["body"]["username"],
-			role: tokenPayload["body"]["role"],
+			role: r,
 		};
 	},
 

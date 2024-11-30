@@ -94,7 +94,7 @@ export const APIConnector: APIConnectorType = {
 		body?: any,
 		retryCount?: number
 	): Promise<APIResponse<any>> {
-		if (!retryCount) retryCount = maxAPIRetyCount;
+		if (retryCount === undefined) retryCount = maxAPIRetyCount;
 		if (retryCount <= 0) throw "Out of Retries";
 
 		const reqObj: CallRequest = {
